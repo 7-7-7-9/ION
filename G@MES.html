@@ -113,8 +113,8 @@
     .status-widget {
       position: fixed;
       top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 32px;
+      transform: none; /* Remove centering */
       display: flex;
       align-items: center;
       gap: 16px;
@@ -334,6 +334,8 @@
         padding: 6px 10px;
         gap: 8px;
         min-width: 140px;
+        left: 8px;
+        top: 8px;
       }
       .color-btn {
         width: 15px;
@@ -365,6 +367,7 @@
     <a href="#" tabindex="0">About</a>
     <a href="#" tabindex="0">Contact</a>
   </nav>
+  <!-- Status widget is now at top left -->
   <div class="status-widget" id="status-widget">
     <span id="battery-icon" title="Battery"></span>
     <span id="wifi-icon" title="Network"></span>
