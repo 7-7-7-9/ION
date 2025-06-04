@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 | Phantom.ION</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: #00bfff;
+      background: #0a0a18;
+      position: relative;
+    }
+    #vanta-bg {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 0;
+    }
+    .container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      text-align: center;
+      background: rgba(10, 10, 24, 0.85);
+      padding: 3rem 2rem 2rem 2rem;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      border: 2px solid #00bfff;
+      max-width: 90vw;
+    }
+    .brand {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: #00bfff;
+      text-shadow: 0 0 10px #007acc, 0 0 20px #00bfff;
+      margin-bottom: 0.5rem;
+      font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+      text-transform: uppercase;
+    }
+    .error {
+      font-size: 5rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.2em;
+      text-shadow: 0 0 20px #00bfff, 0 0 40px #007acc;
+    }
+    .msg {
+      font-size: 1.4rem;
+      color: #b3e6ff;
+      margin-bottom: 1.5rem;
+    }
+    .home-link {
+      display: inline-block;
+      padding: 0.7em 2em;
+      background: linear-gradient(90deg, #00bfff 0%, #007acc 100%);
+      color: #0a0a18;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px #007acc80;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      border: none;
+      letter-spacing: 0.05em;
+    }
+    .home-link:hover {
+      background: linear-gradient(90deg, #007acc 0%, #00bfff 100%);
+      color: #fff;
+      box-shadow: 0 4px 24px #00bfff80;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 2rem 0.5rem; }
+      .brand { font-size: 1.5rem; }
+      .error { font-size: 3rem; }
+      .msg { font-size: 1rem; }
+    }
+  </style>
+  <!-- Orbitron font for a sharp, tech look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="vanta-bg"></div>
+  <div class="container">
+    <div class="brand">Phantom.ION</div>
+    <div class="error">404</div>
+    <div class="msg">This page has vanished into the digital ether.<br>Let’s get you back to the action.</div>
+    <a class="home-link" href="/">Return Home</a>
+  </div>
+
+  <!-- Vanta.js + Three.js for animated background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.triangles.min.js"></script>
+  <script>
+    VANTA.TRIANGLES({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x00bfff,
+      color2: 0x007acc,
+      backgroundColor: 0x0a0a18,
+      shininess: 80.0,
+      waveHeight: 20.0,
+      waveSpeed: 1.0,
+      zoom: 1.15
+    })
+  </script>
+</body>
+</html>
