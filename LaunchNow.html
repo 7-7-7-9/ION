@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Launch Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+      overflow: hidden;
+      position: relative;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      pointer-events: none;
+      animation: float 10s linear infinite;
+      background: radial-gradient(circle, #2196f3 0%, #0d47a1 80%, transparent 100%);
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.15;
+      }
+      50% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0.1;
+      }
+    }
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 30, 50, 0.95);
+      border: 2px solid #2196f3;
+      box-shadow: 0 6px 24px 0 rgba(33,150,243,0.18);
+      padding: 48px 64px;
+      text-align: center;
+      min-width: 340px;
+      border-radius: 0;
+    }
+    h1 {
+      color: #4fc3f7;
+      font-size: 2.3rem;
+      letter-spacing: 2px;
+      margin-bottom: 36px;
+      font-weight: 700;
+      text-shadow: 0 2px 8px #000a;
+    }
+    .launch-btn {
+      background: linear-gradient(90deg, #2196f3 0%, #0d47a1 100%);
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 18px 48px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px #2196f366;
+      border-radius: 0;
+      transition: background 0.2s, transform 0.15s;
+      text-transform: uppercase;
+    }
+    .launch-btn:hover, .launch-btn:focus {
+      background: linear-gradient(90deg, #42a5f5 0%, #1976d2 100%);
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px #2196f399;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Create some animated blue particles
+    for(let i=0; i<18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 60 + 40;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.bottom = `-${size}px`;
+      p.style.animationDelay = `${Math.random() * 8}s`;
+      document.body.appendChild(p);
+    }
+
+    // Password prompt function
+    function launchWithPassword() {
+      const password = prompt("Enter the launch password:");
+      if (password === "7-7-7-8") {
+        window.location.href = 'https://7-7-7-8.github.io/ION/dest'; // Change as needed
+      } else if (password !== null) {
+        alert("Incorrect password. Please try again.");
+      }
+    }
+  </script>
+  <div class="container">
+    <h1>Ready to Launch?</h1>
+    <button class="launch-btn" onclick="launchWithPassword()">
+      Launch
+    </button>
+  </div>
+</body>
+</html>
