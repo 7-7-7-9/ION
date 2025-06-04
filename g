@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ION Game Vault – Your Portal to Unblocked Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    #vanta-bg {
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 60px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+    .container {
+      max-width: 960px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 4.5rem;
+      letter-spacing: 0.25em;
+      margin-bottom: 48px;
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light) 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 0 10px var(--theme-accent),
+        0 0 25px var(--theme-accent-light);
+      user-select: none;
+      text-align: center;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      background-clip: text;
+    }
+
+    .status-widget {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 14px;
+      background: rgba(10, 15, 44, 0.92);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      font-size: 1.1rem;
+      color: var(--theme-accent-light);
+      z-index: 1000;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: none;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .status-widget span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #battery-icon svg, #wifi-icon svg {
+      display: inline-block;
+      vertical-align: middle;
+      height: 1.2em;
+      width: 1.2em;
+    }
+    .color-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+    }
+    .color-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #0003;
+      cursor: pointer;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      position: relative;
+      background: #fff;
+      display: inline-block;
+      padding: 0;
+    }
+    .color-btn.selected, .color-btn:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .color-btn[data-hue="210"] { background: hsl(210,100%,56%); }
+    .color-btn[data-hue="0"]   { background: hsl(0,100%,56%); }
+    .color-btn[data-hue="30"]  { background: hsl(30,100%,56%); }
+    .color-btn[data-hue="50"]  { background: hsl(50,100%,56%); }
+    .color-btn[data-hue="120"] { background: hsl(120,100%,40%); }
+    .color-btn[data-hue="180"] { background: hsl(180,100%,40%); }
+    .color-btn[data-hue="270"] { background: hsl(270,100%,60%); }
+    .color-btn[data-hue="320"] { background: hsl(320,100%,60%); }
+    .color-btn[data-hue="220"] { background: hsl(220,10%,52%); }
+    .color-btn::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid #fff0;
+      position: absolute;
+      left: 0; top: 0;
+      pointer-events: none;
+    }
+
+    .scroll-area {
+      width: 100%;
+      max-width: 900px;
+      height: 600px;
+      overflow-y: auto;
+      position: relative;
+      margin-bottom: 32px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--theme-accent) var(--theme-bg);
+    }
+    .scroll-area::-webkit-scrollbar {
+      width: 14px;
+      background: var(--theme-bg);
+      border-radius: 8px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--theme-accent), var(--theme-accent-light) 70%);
+      border-radius: 8px;
+      border: 3px solid var(--theme-bg);
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+    }
+    .scroll-area::-webkit-scrollbar-thumb:hover {
+      background: var(--theme-accent-light);
+    }
+    .scroll-area::-webkit-scrollbar-corner {
+      background: var(--theme-bg);
+    }
+
+    .scroll-percent {
+      position: absolute;
+      top: 12px;
+      right: -44px;
+      width: 40px;
+      background: rgba(10, 15, 44, 0.85);
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+      text-align: center;
+      padding: 6px 0;
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      transition: top 0.15s cubic-bezier(.4,2,.6,1);
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 28px;
+      width: 100%;
+      padding-right: 18px;
+      box-sizing: border-box;
+    }
+    .game-button {
+      background: rgba(20, 30, 60, 0.93);
+      border: 2.5px solid var(--theme-accent);
+      border-radius: 16px;
+      height: 140px;
+      cursor: pointer;
+      transition: 
+        background 0.25s cubic-bezier(.4,2,.6,1),
+        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+        border-color 0.18s,
+        color 0.18s,
+        transform 0.18s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      user-select: none;
+      text-decoration: none;
+      box-shadow: 0 0 12px var(--theme-accent-dark);
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-button-canvas {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      display: block;
+    }
+    .game-button-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+    }
+    .game-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      border: 2.5px solid transparent;
+      transition: border-color 0.2s;
+      pointer-events: none;
+    }
+    .game-button:hover,
+    .game-button:focus {
+      background: #111a2e;
+      color: #fff;
+      border-color: var(--theme-accent-light);
+      box-shadow: 0 0 24px var(--theme-accent), 0 0 0 4px var(--theme-accent-dark);
+      transform: translateY(-5px) scale(1.04);
+      z-index: 1;
+    }
+    .game-button:hover::before,
+    .game-button:focus::before {
+      border-color: var(--theme-accent-light);
+      box-shadow: 0 0 20px var(--theme-accent-light);
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 32px;
+      }
+      .scroll-area {
+        height: 340px;
+      }
+      .game-button {
+        height: 90px;
+        font-size: 1rem;
+      }
+      .game-grid {
+        gap: 16px;
+      }
+      .scroll-percent {
+        font-size: 1rem;
+        width: 32px;
+        right: -36px;
+      }
+      .status-widget {
+        font-size: 0.98rem;
+        padding: 6px 10px;
+        gap: 8px;
+        min-width: 140px;
+      }
+      .color-btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="vanta-bg"></div>
+  <div class="status-widget" id="status-widget">
+    <span id="battery-icon" title="Battery"></span>
+    <span id="wifi-icon" title="Network"></span>
+    <span id="datetime"></span>
+    <span class="color-btns" id="color-btns" title="Theme Color">
+      <button class="color-btn selected" data-hue="210" aria-label="Default Blue"></button>
+      <button class="color-btn" data-hue="0" aria-label="Red"></button>
+      <button class="color-btn" data-hue="30" aria-label="Orange"></button>
+      <button class="color-btn" data-hue="50" aria-label="Yellow"></button>
+      <button class="color-btn" data-hue="120" aria-label="Green"></button>
+      <button class="color-btn" data-hue="180" aria-label="Cyan"></button>
+      <button class="color-btn" data-hue="270" aria-label="Purple"></button>
+      <button class="color-btn" data-hue="320" aria-label="Pink"></button>
+      <button class="color-btn" data-hue="220" aria-label="Gray"></button>
+    </span>
+  </div>
+  <div class="container">
+    <h1>ION GAME VAULT</h1>
+    <div class="scroll-area" id="scroll-area">
+      <div class="scroll-percent" id="scroll-percent">0%</div>
+      <div class="game-grid">
+        <!-- 50 Game Buttons -->
+        <!-- Each button gets a canvas and a content span -->
+        <!-- For brevity, only 5 are shown here; repeat for all 50 -->
+        <a href="#" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Game 1</span></a>
+        <a href="#" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Game 2</span></a>
+        <a href="#" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Game 3</span></a>
+        <a href="#" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Game 4</span></a>
+        <a href="#" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Game 5</span></a>
+        <!-- ...repeat up to Game 50... -->
+      </div>
+    </div>
+  </div>
+  <!-- VANTA.NET JS (requires three.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <script>
+    // Password prompt at page start
+    (function(){
+      var pwd = prompt("Enter password to access ION Game Vault:");
+      if (pwd !== "7-7-7-8") {
+        alert("Incorrect password.");
+        window.location.reload();
+      }
+    })();
+
+    // Randomize mesh parameters for a new look each load
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    let vantaEffect;
+    function setVantaTheme(hue) {
+      let color = `#${hslToHex(hue, 100, 56)}`;
+      if (vantaEffect) vantaEffect.destroy();
+      vantaEffect = VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: false,
+        touchControls: false,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: color,
+        backgroundColor: 0x0a0f2c,
+        points: rand(10, 20),
+        maxDistance: rand(18, 30),
+        spacing: rand(15, 28)
+      });
+    }
+    // Helper: HSL to HEX
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `${f(0)}${f(8)}${f(4)}`;
+    }
+    // Initial VANTA load (default blue)
+    setVantaTheme(210);
+
+    // Color button logic
+    const colorBtns = document.querySelectorAll('.color-btn');
+    colorBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        colorBtns.forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        const hue = this.getAttribute('data-hue');
+        document.documentElement.style.setProperty('--theme-hue', hue);
+        setVantaTheme(hue);
+        updateWifiIcon();
+        updateBatteryIcon(lastBatteryLevel, lastBatteryCharging);
+      });
+    });
+
+    // Scroll percentage indicator logic
+    const scrollArea = document.getElementById('scroll-area');
+    const scrollPercent = document.getElementById('scroll-percent');
+    function updateScrollPercent() {
+      const scrollTop = scrollArea.scrollTop;
+      const scrollHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
+      const percent = scrollHeight === 0 ? 100 : Math.round((scrollTop / scrollHeight) * 100);
+      scrollPercent.textContent = percent + '%';
+      // Move the indicator along with the thumb
+      const maxTop = scrollArea.clientHeight - scrollPercent.offsetHeight - 12;
+      scrollPercent.style.top = (12 + maxTop * (percent / 100)) + 'px';
+    }
+    scrollArea.addEventListener('scroll', updateScrollPercent);
+    window.addEventListener('load', updateScrollPercent);
+    window.addEventListener('resize', updateScrollPercent);
+
+    // Status widget (battery, wifi, date/time)
+    function updateDateTime() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' });
+      const timeStr = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('datetime').textContent = `${dateStr} ${timeStr}`;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Battery API
+    let lastBatteryLevel = 1, lastBatteryCharging = false;
+    function updateBatteryIcon(level, charging) {
+      lastBatteryLevel = level;
+      lastBatteryCharging = charging;
+      let percent = Math.round(level * 100);
+      let fill = `hsl(${getComputedStyle(document.documentElement).getPropertyValue('--theme-hue')},100%,56%)`;
+      let bolt = charging ? `<polygon points="13,7 11,13 15,13 11,19" fill="#ffe066"/>` : '';
+      document.getElementById('battery-icon').innerHTML =
+        `<svg viewBox="0 0 24 24">
+          <rect x="2" y="7" width="16" height="10" rx="3" fill="none" stroke="${fill}" stroke-width="2"/>
+          <rect x="3.5" y="8.5" width="${13 * level}" height="7" rx="2" fill="${fill}" opacity="0.7"/>
+          <rect x="18" y="10" width="2.5" height="4" rx="1" fill="${fill}" stroke="none"/>
+          ${bolt}
+        </svg> ${percent}%`;
+    }
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then(function(battery) {
+        function updateAllBattery() {
+          updateBatteryIcon(battery.level, battery.charging);
+        }
+        battery.addEventListener('levelchange', updateAllBattery);
+        battery.addEventListener('chargingchange', updateAllBattery);
+        updateAllBattery();
+      });
+    } else {
+      // Fallback for unsupported browsers
+      document.getElementById('battery-icon').innerHTML =
+        `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="3" fill="none" stroke="#444" stroke-width="2"/><rect x="18" y="10" width="2.5" height="4" rx="1" fill="#444" stroke="none"/></svg> N/A`;
+    }
+
+    // Network status
+    function updateWifiIcon() {
+      let online = navigator.onLine;
+      let hue = getComputedStyle(document.documentElement).getPropertyValue('--theme-hue');
+      let color = online ? `hsl(${hue},100%,72%)` : "#ffb347";
+      let icon = online
+        ? `<svg viewBox="0 0 24 24">
+            <path d="M2 9.5Q12 2 22 9.5" fill="none" stroke="${color}" stroke-width="2"/>
+            <path d="M6 13.5Q12 9 18 13.5" fill="none" stroke="${color}" stroke-width="2"/>
+            <circle cx="12" cy="18" r="2" fill="${color}" />
+          </svg> Online`
+        : `<svg viewBox="0 0 24 24">
+            <path d="M2 9.5Q12 2 22 9.5" fill="none" stroke="${color}" stroke-width="2"/>
+            <path d="M6 13.5Q12 9 18 13.5" fill="none" stroke="${color}" stroke-width="2"/>
+            <circle cx="12" cy="18" r="2" fill="${color}" />
+            <line x1="4" y1="20" x2="20" y2="4" stroke="#ffb347" stroke-width="2"/>
+          </svg> Offline`;
+      document.getElementById('wifi-icon').innerHTML = icon;
+    }
+    window.addEventListener('online', updateWifiIcon);
+    window.addEventListener('offline', updateWifiIcon);
+    updateWifiIcon();
+
+    // --- Particle Animation for Game Buttons ---
+    function animateGameButtonParticles() {
+      document.querySelectorAll('.game-button').forEach(btn => {
+        let canvas = btn.querySelector('.game-button-canvas');
+        let w = btn.clientWidth, h = btn.clientHeight;
+        canvas.width = w;
+        canvas.height = h;
+        let ctx = canvas.getContext('2d');
+        let pCount = Math.floor(rand(3, 6));
+        let particles = [];
+        for (let i = 0; i < pCount; ++i) {
+          particles.push({
+            x: rand(w * 0.15, w * 0.85),
+            y: rand(0, h),
+            r: rand(3, 7),
+            a: rand(0.15, 0.28),
+            v: rand(0.14, 0.24),
+            hue: 210 // blue
+          });
+        }
+        function drawParticles() {
+          ctx.clearRect(0, 0, w, h);
+          let hue = getComputedStyle(document.documentElement).getPropertyValue('--theme-hue') || 210;
+          for (let p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+            ctx.fillStyle = `hsla(${hue},100%,65%,${p.a})`;
+            ctx.shadowColor = `hsla(${hue},100%,65%,0.25)`;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            p.y += p.v;
+            if (p.y - p.r > h) {
+              p.y = -p.r;
+              p.x = rand(w * 0.15, w * 0.85);
+            }
+          }
+          requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+      });
+    }
+    window.addEventListener('load', animateGameButtonParticles);
+    window.addEventListener('resize', animateGameButtonParticles);
+    // Re-animate on theme change:
+    colorBtns.forEach(btn => btn.addEventListener('click', animateGameButtonParticles));
+  </script>
+</body>
+</html>
