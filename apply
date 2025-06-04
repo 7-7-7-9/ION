@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dark Themed AI/Game/Proxy Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #181a20;
+      --bg-alt: #23272f;
+      --primary: #00aeff;
+      --accent: #ff4a4a;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --card: #23272f;
+      --border: #2c2f36;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    header {
+      width: 100%;
+      background: var(--bg-alt);
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px #0004;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      margin: 0 0 0.5rem 0;
+      color: var(--primary);
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+    }
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px #0005;
+      border: 1px solid var(--border);
+    }
+
+    .button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.2s;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+    }
+    .button:hover {
+      background: var(--accent);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      main {
+        padding: 1rem;
+        margin: 1rem;
+      }
+      header {
+        padding: 1rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Phantom.ION</h1>
+    <p>Welcome to Phantom.ION-Where Unblocked meets Unlimited</p>
+  </header>
+  <main>
+    <h2>Get Started</h2>
+    <p>
+      a cutting-edge platform that combines unblocked gaming, secure proxy access, and powerful AI tools in one seamless experience. Using advanced AI-driven proxy technology, it bypasses restrictions, optimizes performance, and ensures fast, private connections. With Phantom.ION, enjoy unlimited digital freedom where unblocked meets unlimited possibilities.
+<a href="https://www.authpro.com/auth/packgoat778/?action=reg">Sign Up</a>
+    </p>
+    <a href="https://www.authpro.com/auth/packgoat778/" class="button">Login</a>
+ <a href="https://www.authpro.com/auth/packgoat778/?action=logout" class="button">Sign Up</a>
+ 
+  </main>
+</body>
+</html>
