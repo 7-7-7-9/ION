@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>ION Game Vault</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Montserrat for the title -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -38,6 +37,29 @@
       min-height: 100vh;
       position: relative;
       z-index: 1;
+      transition: padding-top 0.2s;
+    }
+    #fake-url-bar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 3000;
+      background: #f8f9fa;
+      border-bottom: 1.5px solid #d1dbe3;
+      color: #222;
+      font-family: Arial, sans-serif;
+      font-size: 1.12rem;
+      height: 38px;
+      line-height: 38px;
+      box-shadow: 0 2px 10px #0002;
+      padding-left: 19px;
+      padding-right: 19px;
+      letter-spacing: 0.01em;
+      user-select: text;
+      display: flex;
+      align-items: center;
     }
     .container {
       max-width: 960px;
@@ -80,7 +102,6 @@
         word-break: break-word;
       }
     }
-    /* Navigation Bar Styles */
     .navbar {
       position: fixed;
       top: 18px;
@@ -370,95 +391,6 @@
         font-size: 0.95rem;
       }
     }
-    /* Custom Dialog styles for alert */
-    dialog[open] {
-      border: none;
-      border-radius: 16px;
-      background: rgba(24,30,60,0.99);
-      color: #e0e6fa;
-      box-shadow: 0 8px 32px #0a0f2caa;
-      min-width: 260px;
-      max-width: 94vw;
-      padding: 0;
-      font-family: 'Montserrat', Arial, sans-serif;
-      z-index: 9999;
-      animation: dialogIn 0.18s cubic-bezier(.4,2,.6,1);
-    }
-    @keyframes dialogIn {
-      from { transform: scale(0.88); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .custom-alert-content {
-      padding: 32px 28px 18px 28px;
-      text-align: center;
-    }
-    .custom-alert-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--theme-accent-light);
-      margin-bottom: 9px;
-      letter-spacing: 0.05em;
-    }
-    .custom-alert-message {
-      margin-bottom: 18px;
-      color: #b2cdfa;
-      font-size: 1.08rem;
-    }
-    .custom-alert-controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .custom-alert-checkbox-label {
-      font-size: 1rem;
-      color: #b2cdfa;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
-      user-select: none;
-    }
-    .custom-alert-btns {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding-bottom: 22px;
-    }
-    .custom-alert-btn {
-      font-family: inherit;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 26px;
-      background: var(--theme-accent);
-      color: #fff;
-      cursor: pointer;
-      font-size: 1.03rem;
-      box-shadow: 0 2px 14px #1e90ff66;
-      transition: background 0.14s, box-shadow 0.16s;
-    }
-    .custom-alert-btn:active {
-      background: var(--theme-accent-dark);
-      box-shadow: 0 1px 8px #1e90ff44;
-    }
-    .custom-alert-toggle-label {
-      background: rgba(55,90,140,0.17);
-      color: var(--theme-accent);
-      font-weight: 700;
-      font-size: 1.09rem;
-      justify-content: flex-start;
-      gap: 8px;
-      padding-left: 9px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-    }
-
-    /* --- Failsafe Settings FAB and Popup Styles --- */
     .settings-fab {
       position: fixed;
       bottom: 28px;
@@ -614,7 +546,6 @@
 </head>
 <body>
   <div id="vanta-bg"></div>
-  <!-- Navigation Bar -->
   <nav class="navbar" id="navbar">
     <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
     <a href="index.html" tabindex="0">Home</a>
@@ -625,7 +556,6 @@
     <a href="#" tabindex="0">Contact</a>
     <a href="Settings.html" tabindex="0">Settings</a>
   </nav>
-  <!-- Status widget is now at top left -->
   <div class="status-widget" id="status-widget">
     <span id="battery-icon" title="Battery"></span>
     <span id="wifi-icon" title="Network"></span>
@@ -644,11 +574,6 @@
   </div>
   <div class="container">
     <h1>ION GAME VAULT</h1>
-    <!-- Custom Alert Toggle -->
-    <div class="custom-alert-toggle-label" style="margin-bottom: 20px;">
-      <input type="checkbox" id="show-custom-alert">
-      Show Custom Alert
-    </div>
     <div class="scroll-area" id="scroll-area">
       <div class="scroll-percent" id="scroll-percent">0%</div>
       <div class="game-grid">
@@ -657,6 +582,11 @@
         <!-- ... other game buttons ... -->
       </div>
     </div>
+  </div>
+  <!-- Fake URL Bar (hidden by default) -->
+  <div id="fake-url-bar">
+    <img id="fake-url-favicon" src="" alt="" style="width:20px;height:20px;margin-right:10px;vertical-align:middle;"/>
+    <span id="fake-url-text"></span>
   </div>
   <!-- Settings FAB and Popup -->
   <button class="settings-fab" id="settings-fab" title="Quick Cloak Settings">
@@ -694,84 +624,73 @@
           <span class="slider"></span>
         </span>
       </div>
+      <div class="popup-switch-row">
+        Confirm Before Exit
+        <span class="switch">
+          <input type="checkbox" id="popup-beforeunload-toggle">
+          <span class="slider"></span>
+        </span>
+      </div>
+      <div class="popup-switch-row">
+        Fake URL Bar
+        <span class="switch">
+          <input type="checkbox" id="popup-fake-url-toggle">
+          <span class="slider"></span>
+        </span>
+      </div>
+      <div style="margin-top:7px;display:flex;align-items:center;gap:10px;">
+        <select id="fake-url-select" class="premade-cloak-select" style="width:180px;">
+          <option value="">Choose...</option>
+          <option value="classroom">Google Classroom</option>
+          <option value="docs">Google Docs</option>
+          <option value="slides">Google Slides</option>
+          <option value="sheets">Google Sheets</option>
+          <option value="kahoot">Kahoot!</option>
+          <option value="custom">Custom...</option>
+        </select>
+        <input id="fake-url-custom" type="text" placeholder="Custom URL" style="width:140px;font-size:1.05rem;border-radius:6px;border:1.5px solid #385599;background:#232d48;color:#d1e5ff;display:none;" autocomplete="off" />
+        <input id="fake-url-custom-favicon" type="text" placeholder="Favicon URL" style="width:120px;font-size:1.05rem;border-radius:6px;border:1.5px solid #385599;background:#232d48;color:#d1e5ff;display:none;" autocomplete="off" />
+      </div>
+      <div class="popup-switch-row" style="margin-top:10px;">
+        Panic Key
+        <input id="panic-key-input" type="text" maxlength="1" style="width:36px;text-align:center;font-size:1.1rem;margin-left:7px;border-radius:6px;border:1.5px solid #385599;background:#232d48;color:#d1e5ff;" autocomplete="off" />
+        &nbsp;URL:
+        <input id="panic-url-input" type="text" placeholder="https://example.com" style="width:140px;font-size:1.05rem;margin-left:7px;border-radius:6px;border:1.5px solid #385599;background:#232d48;color:#d1e5ff;" autocomplete="off" />
+      </div>
+      <div class="popup-switch-row" style="margin-top:10px;">
+        Close Tab On Blur
+        <span class="switch">
+          <input type="checkbox" id="popup-close-on-blur-toggle">
+          <span class="slider"></span>
+        </span>
+      </div>
+      <div style="font-size:0.98rem;color:#98b6ea;margin-top:4px;margin-left:2px;">
+        When enabled, the tab will automatically close itself if you switch to another tab or window.<br>
+        (Not all browsers allow tabs to be closed by script.)
+      </div>
     </div>
   </div>
-  <!-- Custom Alert Dialog -->
-  <dialog id="custom-alert-dialog">
-    <form method="dialog" class="custom-alert-content">
-      <div class="custom-alert-title">Notice</div>
-      <div class="custom-alert-message">This is a custom alert dialog!<br>You can toggle its appearance in settings.</div>
-      <div class="custom-alert-controls">
-        <label class="custom-alert-checkbox-label">
-          <input type="checkbox" id="block-future-dialogs">
-          Don't allow this page to create any additional dialogs
-        </label>
-      </div>
-      <div class="custom-alert-btns">
-        <button value="ok" class="custom-alert-btn">OK</button>
-      </div>
-    </form>
-  </dialog>
-  <!-- VANTA.NET JS (requires three.js) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
     // --- Premade cloaks dictionary ---
     const premadeCloaks = {
-      classroom: {
-        title: "Classes",
-        favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
-      },
-      slides: {
-        title: "Google Slides",
-        favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
-      },
-      docs: {
-        title: "Google Docs",
-        favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
-      },
-      sheets: {
-        title: "Google Sheets",
-        favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
-      },
-      adobe: {
-        title: "Adobe Acrobat",
-        favicon: "https://www.adobe.com/favicon.ico"
-      },
-      googlenewtab: {
-        title: "New Tab",
-        favicon: "https://www.google.com/images/branding/product/ico/googleg_lodp.ico"
-      },
-      bingnewtab: {
-        title: "New Tab",
-        favicon: "https://www.bing.com/sa/simg/favicon-2x.ico"
-      },
-      kahoot: {
-        title: "Kahoot!",
-        favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico"
-      },
-      quizzez: {
-        title: "Quizizz",
-        favicon: "https://cf.quizizz.com/img/favicon.ico"
-      },
-      sora: {
-        title: "Sora",
-        favicon: "https://soraapp.com/favicon.ico"
-      },
-      aboutblank: {
-        title: "",
-        favicon: ""
-      }
+      classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
+      slides: { title: "Google Slides", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
+      docs: { title: "Google Docs", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
+      sheets: { title: "Google Sheets", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
+      adobe: { title: "Adobe Acrobat", favicon: "https://www.adobe.com/favicon.ico" },
+      googlenewtab: { title: "New Tab", favicon: "https://www.google.com/images/branding/product/ico/googleg_lodp.ico" },
+      bingnewtab: { title: "New Tab", favicon: "https://www.bing.com/sa/simg/favicon-2x.ico" },
+      kahoot: { title: "Kahoot!", favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico" },
+      quizzez: { title: "Quizizz", favicon: "https://cf.quizizz.com/img/favicon.ico" },
+      sora: { title: "Sora", favicon: "https://soraapp.com/favicon.ico" },
+      aboutblank: { title: "", favicon: "" }
     };
 
     // --- Storage helpers ---
-    function saveSetting(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-    function loadSetting(key, def) {
-      let v = localStorage.getItem(key);
-      return v === null ? def : JSON.parse(v);
-    }
+    function saveSetting(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
     function featureEnabled(key, def) { return loadSetting(key, def); }
 
     // --- Cloaking logic for main page ---
@@ -779,30 +698,18 @@
     let cloakTitle = loadSetting('cloakTitle', '');
     let cloakFavicon = loadSetting('cloakFavicon', '');
     let originalTabTitle = document.title;
-    let originalFavicon = (function() {
-      let link = document.querySelector("link[rel~='icon']");
-      return link ? link.href : '';
-    })();
+    let originalFavicon = (function() { let link = document.querySelector("link[rel~='icon']"); return link ? link.href : ''; })();
 
-    function setTabTitle(title) {
-      if (title && title.trim() !== "") document.title = title;
-    }
+    function setTabTitle(title) { if (title && title.trim() !== "") document.title = title; }
     function setFavicon(url) {
       let link = document.querySelector("link[rel~='icon']");
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-      }
+      if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
       link.href = url;
     }
-
-    // Set tab title and favicon on load if cloakOnBlur is not enabled
     if (!cloakOnBlur) {
       if (cloakTitle && cloakTitle.trim() !== "") setTabTitle(cloakTitle);
       if (cloakFavicon && cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
     }
-
     function cloakTab() {
       if (cloakTitle && cloakTitle.trim() !== "") document.title = cloakTitle;
       if (cloakFavicon && cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
@@ -813,26 +720,178 @@
     }
     function handleVisibilityChange() {
       if (cloakOnBlur) {
-        if (document.hidden) {
-          cloakTab();
-        } else {
-          uncloakTab();
-        }
+        if (document.hidden) { cloakTab(); }
+        else { uncloakTab(); }
       }
     }
     document.addEventListener("visibilitychange", handleVisibilityChange);
     if (cloakOnBlur && document.hidden) cloakTab();
 
+    // --- Confirm Before Exit logic ---
+    let beforeunloadEnabled = loadSetting('beforeunloadConfirm', false);
+    const popupBeforeUnload = document.getElementById('popup-beforeunload-toggle');
+    function updateBeforeUnloadListener() {
+      window.onbeforeunload = beforeunloadEnabled
+        ? (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+          }
+        : null;
+    }
+    updateBeforeUnloadListener();
+
+    // --- Panic Key Logic ---
+    let panicKey = loadSetting('panicKey', '');
+    let panicUrl = loadSetting('panicUrl', '');
+    const panicKeyInput = document.getElementById('panic-key-input');
+    const panicUrlInput = document.getElementById('panic-url-input');
+    if (panicKeyInput) panicKeyInput.value = panicKey;
+    if (panicUrlInput) panicUrlInput.value = panicUrl;
+    if (panicKeyInput) panicKeyInput.addEventListener('input', function() {
+      panicKey = this.value.trim().toLowerCase();
+      saveSetting('panicKey', panicKey);
+    });
+    if (panicUrlInput) panicUrlInput.addEventListener('input', function() {
+      panicUrl = this.value.trim();
+      saveSetting('panicUrl', panicUrl);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (
+        document.activeElement &&
+        (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
+      ) return;
+      if (
+        panicKey &&
+        panicUrl &&
+        e.key.toLowerCase() === panicKey
+      ) {
+        let url = panicUrl;
+        if (!/^https?:\/\//i.test(url) && !/^\/\//.test(url)) url = 'https://' + url;
+        window.location.href = url;
+      }
+    });
+
+    // --- Fake URL Bar logic ---
+    const fakeUrlPresets = {
+      classroom: { url: "https://classroom.google.com/u/0/h", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
+      docs: { url: "https://docs.google.com/document/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
+      slides: { url: "https://docs.google.com/presentation/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
+      sheets: { url: "https://docs.google.com/spreadsheets/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
+      kahoot: { url: "https://kahoot.it", favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico" }
+    };
+    const fakeUrlToggle = document.getElementById('popup-fake-url-toggle');
+    const fakeUrlSelect = document.getElementById('fake-url-select');
+    const fakeUrlCustom = document.getElementById('fake-url-custom');
+    const fakeUrlCustomFavicon = document.getElementById('fake-url-custom-favicon');
+    const fakeUrlBarDiv = document.getElementById('fake-url-bar');
+    const fakeUrlBarText = document.getElementById('fake-url-text');
+    const fakeUrlBarFavicon = document.getElementById('fake-url-favicon');
+
+    let fakeUrlEnabled = loadSetting('fakeUrlEnabled', false);
+    let fakeUrlValue = loadSetting('fakeUrlValue', "");
+    let fakeUrlFavicon = loadSetting('fakeUrlFavicon', "");
+
+    function updateFakeUrlPopupUI() {
+      fakeUrlToggle.checked = fakeUrlEnabled;
+      let found = null;
+      for(const k in fakeUrlPresets) {
+        if(fakeUrlValue === fakeUrlPresets[k].url && fakeUrlFavicon === fakeUrlPresets[k].favicon) {
+          found = k;
+          break;
+        }
+      }
+      if(found) {
+        fakeUrlSelect.value = found;
+        fakeUrlCustom.style.display = "none";
+        fakeUrlCustomFavicon.style.display = "none";
+      } else if(fakeUrlValue || fakeUrlFavicon) {
+        fakeUrlSelect.value = "custom";
+        fakeUrlCustom.value = fakeUrlValue;
+        fakeUrlCustomFavicon.value = fakeUrlFavicon;
+        fakeUrlCustom.style.display = "";
+        fakeUrlCustomFavicon.style.display = "";
+      } else {
+        fakeUrlSelect.value = "";
+        fakeUrlCustom.style.display = "none";
+        fakeUrlCustomFavicon.style.display = "none";
+      }
+    }
+    fakeUrlSelect.addEventListener('change', function() {
+      let key = fakeUrlSelect.value;
+      if (key === "custom") {
+        fakeUrlCustom.style.display = "";
+        fakeUrlCustomFavicon.style.display = "";
+        fakeUrlValue = fakeUrlCustom.value;
+        fakeUrlFavicon = fakeUrlCustomFavicon.value;
+      } else if (key && fakeUrlPresets[key]) {
+        fakeUrlValue = fakeUrlPresets[key].url;
+        fakeUrlFavicon = fakeUrlPresets[key].favicon;
+        fakeUrlCustom.style.display = "none";
+        fakeUrlCustomFavicon.style.display = "none";
+      } else {
+        fakeUrlValue = "";
+        fakeUrlFavicon = "";
+        fakeUrlCustom.style.display = "none";
+        fakeUrlCustomFavicon.style.display = "none";
+      }
+      saveSetting('fakeUrlValue', fakeUrlValue);
+      saveSetting('fakeUrlFavicon', fakeUrlFavicon);
+      updateFakeUrlBar();
+    });
+    fakeUrlCustom.addEventListener('input', function() {
+      fakeUrlValue = this.value;
+      saveSetting('fakeUrlValue', fakeUrlValue);
+      updateFakeUrlBar();
+    });
+    fakeUrlCustomFavicon.addEventListener('input', function() {
+      fakeUrlFavicon = this.value;
+      saveSetting('fakeUrlFavicon', fakeUrlFavicon);
+      updateFakeUrlBar();
+    });
+    fakeUrlToggle.addEventListener('change', function() {
+      fakeUrlEnabled = this.checked;
+      saveSetting('fakeUrlEnabled', fakeUrlEnabled);
+      updateFakeUrlBar();
+    });
+    function updateFakeUrlBar() {
+      if (fakeUrlEnabled && fakeUrlValue) {
+        fakeUrlBarDiv.style.display = "";
+        fakeUrlBarText.textContent = fakeUrlValue;
+        fakeUrlBarFavicon.src = fakeUrlFavicon || "";
+        document.body.style.paddingTop = '38px';
+      } else {
+        fakeUrlBarDiv.style.display = "none";
+        document.body.style.paddingTop = '';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      updateFakeUrlBar();
+    });
+
+    // --- Close Tab On Blur Logic ---
+    let closeOnBlurEnabled = loadSetting('closeOnBlurEnabled', false);
+    const closeOnBlurToggle = document.getElementById('popup-close-on-blur-toggle');
+    if (closeOnBlurToggle) closeOnBlurToggle.checked = closeOnBlurEnabled;
+    function closeOnBlurHandler() {
+      if (closeOnBlurEnabled && document.hidden) {
+        window.close();
+        setTimeout(() => {
+          if (!window.closed) {
+            window.location.replace("about:blank");
+          }
+        }, 200);
+      }
+    }
+    document.addEventListener('visibilitychange', closeOnBlurHandler);
+
     // --- Failsafe FAB and Popup Logic ---
-    const fab = document.getElementById('settings-fab');
     const popup = document.getElementById('settings-popup');
+    const fab = document.getElementById('settings-fab');
     const popupClose = document.getElementById('settings-popup-close');
     const popupPremadeCloak = document.getElementById('popup-premade-cloak');
     const popupCloakOnBlur = document.getElementById('popup-cloak-on-blur');
-
-    // Populate initial popup values from storage
     function updatePopupUI() {
-      // Set premade selection based on cloakTitle/favIcon
       let foundKey = "";
       for (let key in premadeCloaks) {
         if (
@@ -845,10 +904,12 @@
       }
       popupPremadeCloak.value = foundKey;
       popupCloakOnBlur.checked = cloakOnBlur;
+      if (popupBeforeUnload) popupBeforeUnload.checked = beforeunloadEnabled;
+      updateFakeUrlPopupUI();
+      if (panicKeyInput) panicKeyInput.value = panicKey;
+      if (panicUrlInput) panicUrlInput.value = panicUrl;
+      if (closeOnBlurToggle) closeOnBlurToggle.checked = closeOnBlurEnabled;
     }
-    updatePopupUI();
-
-    // Show/hide popup
     fab.addEventListener('click', () => {
       popup.classList.toggle('open');
       updatePopupUI();
@@ -856,14 +917,11 @@
     popupClose.addEventListener('click', () => {
       popup.classList.remove('open');
     });
-    // Close popup on outside click
     document.addEventListener('mousedown', (e) => {
       if (popup.classList.contains('open') && !popup.contains(e.target) && e.target !== fab) {
         popup.classList.remove('open');
       }
     });
-
-    // Change premade cloak from popup
     popupPremadeCloak.addEventListener('change', function() {
       let val = this.value;
       if (premadeCloaks[val]) {
@@ -871,7 +929,6 @@
         cloakFavicon = premadeCloaks[val].favicon;
         saveSetting('cloakTitle', cloakTitle);
         saveSetting('cloakFavicon', cloakFavicon);
-        // If not clickoff, set immediately
         if (!cloakOnBlur) {
           setTabTitle(cloakTitle);
           setFavicon(cloakFavicon);
@@ -880,8 +937,6 @@
         }
       }
     });
-
-    // Toggle clickoff cloaking
     popupCloakOnBlur.addEventListener('change', function() {
       cloakOnBlur = this.checked;
       saveSetting('cloakOnBlur', cloakOnBlur);
@@ -893,9 +948,19 @@
         if (document.hidden) cloakTab();
       }
     });
-
-    // ... (rest of your scripts for theme, particles, status, etc) ...
+    if (popupBeforeUnload) {
+      popupBeforeUnload.addEventListener('change', function() {
+        beforeunloadEnabled = this.checked;
+        saveSetting('beforeunloadConfirm', beforeunloadEnabled);
+        updateBeforeUnloadListener();
+      });
+    }
+    if (closeOnBlurToggle) {
+      closeOnBlurToggle.addEventListener('change', function() {
+        closeOnBlurEnabled = this.checked;
+        saveSetting('closeOnBlurEnabled', closeOnBlurEnabled);
+      });
+    }
   </script>
-  <!-- Your other scripts for status widget, themes, particles, etc, go here (unchanged from previous version) -->
 </body>
 </html>
