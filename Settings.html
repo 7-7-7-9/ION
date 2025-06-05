@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ION Game Vault - Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+    }
+    #vanta-bg {
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+    .navbar {
+      position: fixed;
+      top: 18px;
+      right: 32px;
+      z-index: 1002;
+      background: rgba(10, 15, 44, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 8px 20px 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      font-size: 1.09rem;
+      letter-spacing: 0.04em;
+      transition: color 0.16s, text-shadow 0.16s;
+      padding: 3px 10px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .navbar a:hover, .navbar a:focus-visible {
+      color: #fff;
+      background: var(--theme-accent);
+      text-shadow: 0 0 8px var(--theme-accent-light), 0 0 2px #fff;
+      outline: none;
+    }
+    .navbar .nav-logo {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--theme-accent);
+      background: none;
+      cursor: pointer;
+      padding: 0 10px 0 0;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 8px var(--theme-accent-light);
+      border: none;
+    }
+    .container {
+      max-width: 540px;
+      width: 92%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      background: rgba(30,40,70,0.97);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #1e90ff33;
+      padding: 36px 24px 44px 24px;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 7vw, 2.9rem);
+      letter-spacing: clamp(0.03em, 3vw, 0.18em);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin-top: 0;
+      margin-bottom: 34px;
+      text-align: center;
+      user-select: none;
+      white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-shadow: none;
+      overflow-x: auto;
+    }
+    .settings-group {
+      margin-bottom: 28px;
+      width: 100%;
+    }
+    .settings-group label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.13rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: var(--theme-accent-light);
+      background: rgba(22,32,52,0.4);
+      padding: 13px 16px;
+      border-radius: 9px;
+      transition: background 0.12s;
+      cursor: pointer;
+    }
+    .settings-group:last-child label {
+      margin-bottom: 0;
+    }
+    .premade-cloak-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--theme-accent-light);
+      margin-bottom: 16px;
+      background: rgba(22,32,52,0.24);
+      padding: 8px 14px;
+      border-radius: 9px;
+    }
+    .premade-cloak-select {
+      font-size: 1.01rem;
+      border-radius: 7px;
+      border: 1.5px solid #385599;
+      background: #232d48;
+      color: #d1e5ff;
+      padding: 7px 11px;
+      outline: none;
+      transition: border 0.13s;
+    }
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+      margin-left: 18px;
+    }
+    .switch input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #2d3959;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 4px; bottom: 4px;
+      background: var(--theme-accent);
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background: var(--theme-accent-light);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+      background: var(--theme-accent-dark);
+    }
+    /* Color Picker */
+    .color-picker-label {
+      justify-content: flex-start;
+      gap: 14px;
+    }
+    .color-picker {
+      margin-left: 10px;
+      width: 42px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 4px #0008;
+      outline: none;
+      transition: border 0.12s;
+    }
+    /* Cloaking input */
+    .cloaking-input {
+      background: #232d48;
+      color: #d1e5ff;
+      border: 1.5px solid #385599;
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      width: 60%;
+      margin-left: 10px;
+    }
+    .cloaking-desc {
+      font-size: 0.96rem;
+      color: #98b6ea;
+      margin-top: 6px;
+      margin-bottom: 0;
+      padding-left: 3px;
+    }
+    /* Custom Dialog styles */
+    dialog[open] {
+      border: none;
+      border-radius: 16px;
+      background: rgba(24,30,60,0.99);
+      color: #e0e6fa;
+      box-shadow: 0 8px 32px #0a0f2caa;
+      min-width: 260px;
+      max-width: 94vw;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      z-index: 9999;
+      animation: dialogIn 0.18s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes dialogIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .custom-alert-content {
+      padding: 32px 28px 18px 28px;
+      text-align: center;
+    }
+    .custom-alert-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--theme-accent-light);
+      margin-bottom: 9px;
+      letter-spacing: 0.05em;
+    }
+    .custom-alert-message {
+      margin-bottom: 18px;
+      color: #b2cdfa;
+      font-size: 1.08rem;
+    }
+    .custom-alert-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .custom-alert-checkbox-label {
+      font-size: 1rem;
+      color: #b2cdfa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      user-select: none;
+    }
+    .custom-alert-btns {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 22px;
+    }
+    .custom-alert-btn {
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 26px;
+      background: var(--theme-accent);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.03rem;
+      box-shadow: 0 2px 14px #1e90ff66;
+      transition: background 0.14s, box-shadow 0.16s;
+    }
+    .custom-alert-btn:active {
+      background: var(--theme-accent-dark);
+      box-shadow: 0 1px 8px #1e90ff44;
+    }
+    .settings-group .custom-alert-toggle-label {
+      background: rgba(55,90,140,0.17);
+      color: var(--theme-accent);
+      font-weight: 700;
+      font-size: 1.09rem;
+      justify-content: flex-start;
+      gap: 8px;
+      padding-left: 9px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="vanta-bg"></div>
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
+    <a href="index.html" tabindex="0">Home</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="PR0XIES.html" tabindex="0">Proxies</a>
+    <a href="AI.html" tabindex="0">AI</a>
+    <a href="#" tabindex="0">About</a>
+    <a href="#" tabindex="0">Contact</a>
+    <a href="Settings.html" tabindex="0">Settings</a>
+  </nav>
+  <div class="container">
+    <h1>Settings</h1>
+    <form autocomplete="off">
+      <!-- Premade Cloak Dropdown -->
+      <div class="settings-group">
+        <label class="premade-cloak-label">
+          Premade Tab Cloak:
+          <select id="premade-cloak" class="premade-cloak-select">
+            <option value="">Choose a premade...</option>
+            <option value="classroom">Google Classroom</option>
+            <option value="slides">Google Slides</option>
+            <option value="docs">Google Docs</option>
+            <option value="sheets">Google Sheets</option>
+            <option value="adobe">Adobe</option>
+            <option value="googlenewtab">Google New Tab</option>
+            <option value="bingnewtab">Bing New Tab</option>
+            <option value="kahoot">Kahoot</option>
+            <option value="quizzez">Quizzez</option>
+            <option value="sora">Sora</option>
+            <option value="aboutblank">Fake about:blank</option>
+          </select>
+        </label>
+      </div>
+      <!-- Feature Toggles -->
+      <div class="settings-group">
+        <label>
+          Enable Animated Backgrounds
+          <span class="switch">
+            <input type="checkbox" id="toggle-vanta" checked>
+            <span class="slider"></span>
+          </span>
+        </label>
+        <label>
+          Enable Particles on Buttons
+          <span class="switch">
+            <input type="checkbox" id="toggle-particles" checked>
+            <span class="slider"></span>
+          </span>
+        </label>
+        <label>
+          Show Battery/Network Widget
+          <span class="switch">
+            <input type="checkbox" id="toggle-status-widget" checked>
+            <span class="slider"></span>
+          </span>
+        </label>
+        <label>
+          Enable Scroll Percentage
+          <span class="switch">
+            <input type="checkbox" id="toggle-scroll-percent" checked>
+            <span class="slider"></span>
+          </span>
+        </label>
+      </div>
+      <!-- Color Picker -->
+      <div class="settings-group">
+        <label class="color-picker-label">
+          Theme Color
+          <input type="color" id="theme-color" class="color-picker" value="#2196f3">
+        </label>
+      </div>
+      <!-- Cloaking Settings -->
+      <div class="settings-group">
+        <label>
+          Cloak Tab Title
+          <input type="text" id="cloak-title" class="cloaking-input" placeholder="Ex: Math Homework" maxlength="40">
+        </label>
+        <p class="cloaking-desc">Change the browser tab title for stealth.</p>
+        <label>
+          Cloak Tab Favicon URL
+          <input type="text" id="cloak-favicon" class="cloaking-input" placeholder="Paste favicon URL">
+        </label>
+        <p class="cloaking-desc">Paste a link to an image/icon to cloak the tab favicon.</p>
+        <label>
+          Cloak When Tab Inactive
+          <span class="switch">
+            <input type="checkbox" id="cloak-on-blur">
+            <span class="slider"></span>
+          </span>
+        </label>
+        <p class="cloaking-desc">When enabled, your tab's title and favicon will be replaced with the above when you click away or switch tabs. (Restores when you return!)</p>
+      </div>
+
+      <!-- About:blank Generator + URL Tab Cloak Generator -->
+      <div class="settings-group">
+        <label class="premade-cloak-label" style="margin-bottom: 8px;">
+          About:blank/URL Tab Cloak Generator:
+          <input type="text" id="aboutblank-url" class="cloaking-input" placeholder="Paste any site URL here" style="width: 60%;" />
+          <select id="aboutblank-cloak-preset" class="premade-cloak-select" style="width:auto;max-width:160px;margin-left:10px;">
+            <option value="">Preset (optional)...</option>
+            <option value="classroom">Google Classroom</option>
+            <option value="slides">Google Slides</option>
+            <option value="docs">Google Docs</option>
+            <option value="sheets">Google Sheets</option>
+            <option value="adobe">Adobe</option>
+            <option value="googlenewtab">Google New Tab</option>
+            <option value="bingnewtab">Bing New Tab</option>
+            <option value="kahoot">Kahoot</option>
+            <option value="quizzez">Quizzez</option>
+            <option value="sora">Sora</option>
+            <option value="aboutblank">Fake about:blank</option>
+          </select>
+          <button type="button" id="aboutblank-btn" style="margin-left:10px;padding:8px 16px;border-radius:8px;background:var(--theme-accent);color:#fff;font-size:1rem;font-family:inherit;font-weight:700;border:none;cursor:pointer;">Open Stealth Tab</button>
+        </label>
+        <p class="cloaking-desc">Enter any site URL, pick a preset (optional), and click "Open Stealth Tab" to open that site in an about:blank tab with a cloaked title and favicon.</p>
+      </div>
+
+      <!-- Custom Alert Toggle -->
+      <div class="settings-group">
+        <label class="custom-alert-toggle-label">
+          <input type="checkbox" id="show-custom-alert">
+          Show Custom Alert
+        </label>
+      </div>
+    </form>
+  </div>
+  <!-- Custom Alert Dialog -->
+  <dialog id="custom-alert-dialog">
+    <form method="dialog" class="custom-alert-content">
+      <div class="custom-alert-title">Notice</div>
+      <div class="custom-alert-message">This is a custom alert dialog!<br>You can toggle its appearance in settings.</div>
+      <div class="custom-alert-controls">
+        <label class="custom-alert-checkbox-label">
+          <input type="checkbox" id="block-future-dialogs">
+          Don't allow this page to create any additional dialogs
+        </label>
+      </div>
+      <div class="custom-alert-btns">
+        <button value="ok" class="custom-alert-btn">OK</button>
+      </div>
+    </form>
+  </dialog>
+  <!-- Vanta background (optional, for preview) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <script>
+    // --- Vanta preview background for settings page ---
+    let vantaEffect;
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `${f(0)}${f(8)}${f(4)}`;
+    }
+    function setVantaThemeFromColor(hex) {
+      let r = parseInt(hex.substr(1,2),16) / 255;
+      let g = parseInt(hex.substr(3,2),16) / 255;
+      let b = parseInt(hex.substr(5,2),16) / 255;
+      let max = Math.max(r,g,b), min = Math.min(r,g,b);
+      let h,s,l = (max+min)/2;
+      if(max==min){
+        h = s = 0;
+      }else{
+        let d = max-min;
+        s = l>0.5 ? d/(2-max-min) : d/(max+min);
+        switch(max){
+          case r: h = (g-b)/d+(g<b?6:0); break;
+          case g: h = (b-r)/d+2; break;
+          case b: h = (r-g)/d+4; break;
+        }
+        h *= 60;
+      }
+      if (vantaEffect) vantaEffect.destroy();
+      vantaEffect = VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: false,
+        touchControls: false,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: hex,
+        backgroundColor: 0x0a0f2c,
+        points: rand(10, 17),
+        maxDistance: rand(18, 30),
+        spacing: rand(15, 28)
+      });
+    }
+    setVantaThemeFromColor("#2196f3");
+
+    // --- Feature Toggles Storage ---
+    function saveSetting(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    function loadSetting(key, def) {
+      let v = localStorage.getItem(key);
+      return v === null ? def : JSON.parse(v);
+    }
+
+    // Premade Tab Cloak logic
+    const premadeCloaks = {
+      classroom: {
+        title: "Classes",
+        favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
+      },
+      slides: {
+        title: "Google Slides",
+        favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
+      },
+      docs: {
+        title: "Google Docs",
+        favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
+      },
+      sheets: {
+        title: "Google Sheets",
+        favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
+      },
+      adobe: {
+        title: "Adobe Acrobat",
+        favicon: "https://www.adobe.com/favicon.ico"
+      },
+      googlenewtab: {
+        title: "New Tab",
+        favicon: "https://www.google.com/images/branding/product/ico/googleg_lodp.ico"
+      },
+      bingnewtab: {
+        title: "New Tab",
+        favicon: "https://www.bing.com/sa/simg/favicon-2x.ico"
+      },
+      kahoot: {
+        title: "Kahoot!",
+        favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico"
+      },
+      quizzez: {
+        title: "Quizizz",
+        favicon: "https://cf.quizizz.com/img/favicon.ico"
+      },
+      sora: {
+        title: "Sora",
+        favicon: "https://soraapp.com/favicon.ico"
+      },
+      aboutblank: {
+        title: "",
+        favicon: ""
+      }
+    };
+    const premadeCloakSelect = document.getElementById('premade-cloak');
+    const titleInput = document.getElementById('cloak-title');
+    const faviconInput = document.getElementById('cloak-favicon');
+    premadeCloakSelect.addEventListener('change', function() {
+      const val = this.value;
+      if (premadeCloaks[val]) {
+        titleInput.value = premadeCloaks[val].title;
+        faviconInput.value = premadeCloaks[val].favicon;
+        saveSetting('cloakTitle', titleInput.value);
+        saveSetting('cloakFavicon', faviconInput.value);
+        if (!document.getElementById('cloak-on-blur').checked) {
+          setTabTitle(titleInput.value);
+          setFavicon(faviconInput.value);
+        } else if (document.hidden) {
+          cloakTab();
+        }
+      }
+    });
+
+    // Toggles
+    function setupToggle(id, key, onChange) {
+      const el = document.getElementById(id);
+      el.checked = loadSetting(key, el.checked);
+      el.addEventListener('change', e => {
+        saveSetting(key, el.checked);
+        if (onChange) onChange(el.checked);
+      });
+    }
+    setupToggle('toggle-vanta', 'enableVanta', checked => {
+      document.getElementById('vanta-bg').style.display = checked ? '' : 'none';
+    });
+    setupToggle('toggle-particles', 'enableParticles');
+    setupToggle('toggle-status-widget', 'enableStatusWidget');
+    setupToggle('toggle-scroll-percent', 'enableScrollPercent');
+    setupToggle('cloak-on-blur', 'cloakOnBlur');
+
+    // Color Picker
+    const colorPicker = document.getElementById('theme-color');
+    let storedColor = loadSetting('themeColor', colorPicker.value);
+    colorPicker.value = storedColor;
+    colorPicker.addEventListener('input', e => {
+      saveSetting('themeColor', colorPicker.value);
+      setVantaThemeFromColor(colorPicker.value);
+      document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
+    });
+    document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
+
+    // Cloaking logic
+    function setTabTitle(title) {
+      if(title.trim() !== "") document.title = title;
+    }
+    function setFavicon(url) {
+      let link = document.querySelector("link[rel~='icon']");
+      if(!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = url;
+    }
+    const cloakOnBlurInput = document.getElementById('cloak-on-blur');
+    titleInput.value = loadSetting('cloakTitle', '');
+    faviconInput.value = loadSetting('cloakFavicon', '');
+    if(titleInput.value) setTabTitle(titleInput.value);
+    if(faviconInput.value) setFavicon(faviconInput.value);
+    titleInput.addEventListener('input', () => {
+      saveSetting('cloakTitle', titleInput.value);
+      if (!cloakOnBlurInput.checked) setTabTitle(titleInput.value);
+    });
+    faviconInput.addEventListener('input', () => {
+      saveSetting('cloakFavicon', faviconInput.value);
+      if (!cloakOnBlurInput.checked) setFavicon(faviconInput.value);
+    });
+
+    // --- Click-off Cloaking logic ---
+    let originalTabTitle = document.title;
+    let originalFavicon = (function() {
+      let link = document.querySelector("link[rel~='icon']");
+      return link ? link.href : '';
+    })();
+
+    function cloakTab() {
+      if (titleInput.value.trim() !== "") document.title = titleInput.value;
+      if (faviconInput.value.trim() !== "") setFavicon(faviconInput.value);
+    }
+    function uncloakTab() {
+      document.title = originalTabTitle;
+      setFavicon(originalFavicon);
+    }
+
+    function handleVisibilityChange() {
+      if (cloakOnBlurInput.checked) {
+        if (document.hidden) {
+          cloakTab();
+        } else {
+          uncloakTab();
+        }
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    cloakOnBlurInput.addEventListener('change', function() {
+      saveSetting('cloakOnBlur', this.checked);
+      if (!this.checked) {
+        uncloakTab();
+        if (titleInput.value.trim() !== "") setTabTitle(titleInput.value);
+        if (faviconInput.value.trim() !== "") setFavicon(faviconInput.value);
+      } else {
+        if (document.hidden) cloakTab();
+      }
+    });
+    if (cloakOnBlurInput.checked && document.hidden) cloakTab();
+
+    // --- About:blank/URL Tab Cloak Generator ---
+    document.getElementById('aboutblank-btn').addEventListener('click', function() {
+      const urlInput = document.getElementById('aboutblank-url');
+      const url = urlInput.value.trim();
+      const preset = document.getElementById('aboutblank-cloak-preset').value;
+      let title = "";
+      let favicon = "";
+      if (preset && premadeCloaks[preset]) {
+        title = premadeCloaks[preset].title;
+        favicon = premadeCloaks[preset].favicon;
+      }
+
+      if (!url) {
+        alert("Please enter a URL.");
+        return;
+      }
+      let siteUrl = url;
+      if (!/^https?:\/\//i.test(siteUrl)) {
+        siteUrl = "https://" + siteUrl;
+      }
+      // About:blank launcher with cloaked tab
+      const win = window.open("about:blank", "_blank");
+      if (win) {
+        win.document.write(`
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>${title ? title.replace(/</g,"&lt;").replace(/>/g,"&gt;") : "about:blank"}</title>
+              ${favicon ? `<link rel="icon" href="${favicon}">` : ""}
+              <style>body,html{margin:0;padding:0;height:100%;width:100%;background:#111;}</style>
+              <script>
+                window.location.replace(${JSON.stringify(siteUrl)});
+              <\/script>
+            </head>
+            <body>
+              <noscript>Redirecting to ${siteUrl}...</noscript>
+            </body>
+          </html>
+        `);
+        win.document.close();
+      } else {
+        alert("Pop-up blocked! Please allow pop-ups for this site.");
+      }
+    });
+
+    // --- Custom Alert Dialog logic ---
+    const showAlertToggle = document.getElementById('show-custom-alert');
+    const customAlertDialog = document.getElementById('custom-alert-dialog');
+    const blockDialogsCheckbox = document.getElementById('block-future-dialogs');
+    let blockDialogs = loadSetting('blockCustomDialogs', false);
+    blockDialogsCheckbox.checked = blockDialogs;
+    blockDialogsCheckbox.addEventListener('change', function() {
+      blockDialogs = this.checked;
+      saveSetting('blockCustomDialogs', blockDialogs);
+    });
+    function maybeShowDialog() {
+      if (showAlertToggle.checked && !blockDialogs) {
+        if (!customAlertDialog.open) {
+          customAlertDialog.showModal();
+        }
+      } else {
+        if (customAlertDialog.open) {
+          customAlertDialog.close();
+        }
+      }
+    }
+    showAlertToggle.checked = loadSetting('showCustomAlert', false);
+    showAlertToggle.addEventListener('change', function() {
+      saveSetting('showCustomAlert', this.checked);
+      maybeShowDialog();
+    });
+    customAlertDialog.addEventListener('close', function() {
+      maybeShowDialog();
+    });
+    maybeShowDialog();
+    blockDialogsCheckbox.addEventListener('change', maybeShowDialog);
+  </script>
+</body>
+</html>
