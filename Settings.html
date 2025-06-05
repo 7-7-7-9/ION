@@ -118,7 +118,6 @@
       overflow-x: auto;
     }
 
-    /* --- Unified Settings Row Styles --- */
     .settings-section {
       width: 100%;
       display: flex;
@@ -149,38 +148,10 @@
       font-size: 1.08rem;
       font-family: inherit;
     }
-    .settings-row .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 28px;
+    .settings-row select.setting-toggle {
+      min-width: 100px;
+      max-width: 120px;
       margin-left: 18px;
-      flex-shrink: 0;
-    }
-    .settings-row .switch input { display: none; }
-    .settings-row .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #2d3959;
-      transition: .3s;
-      border-radius: 24px;
-    }
-    .settings-row .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px; width: 20px;
-      left: 4px; bottom: 4px;
-      background: var(--theme-accent);
-      transition: .3s;
-      border-radius: 50%;
-    }
-    .settings-row input:checked + .slider {
-      background: var(--theme-accent-light);
-    }
-    .settings-row input:checked + .slider:before {
-      transform: translateX(22px);
-      background: var(--theme-accent-dark);
     }
     .settings-row input[type="text"] {
       border-radius: 7px;
@@ -221,9 +192,6 @@
       max-width: 350px;
       transition: border 0.13s;
     }
-    .settings-row .switch {
-      margin-left: 18px;
-    }
     .settings-row .desc {
       display: block;
       width: 100%;
@@ -231,12 +199,6 @@
       font-size: 0.96rem;
       color: #98b6ea;
       font-weight: 400;
-    }
-    .settings-row input[type="checkbox"] {
-      margin-right: 7px;
-    }
-    .settings-row > * {
-      margin-bottom: 0;
     }
     .settings-row .fake-url-row {
       display: flex;
@@ -259,9 +221,7 @@
       .settings-section { gap: 13px; margin-bottom: 20px; }
       .settings-row { font-size: 1rem; flex-direction: column; align-items: flex-start; gap: 11px; padding: 9px 7px; }
       .settings-row input[type="text"], .settings-row select, .settings-row input[type="color"] { font-size: 1rem; min-width: 100px; margin-left: 0; }
-      .settings-row .switch { margin-left: 0; width: 38px; height: 20px;}
-      .settings-row .slider:before { height: 13px; width: 13px; left: 4px; bottom: 3px;}
-      .settings-row input:checked + .slider:before { transform: translateX(14px); }
+      .settings-row select.setting-toggle { margin-left: 0; }
     }
   </style>
 </head>
@@ -271,7 +231,7 @@
   <nav class="navbar" id="navbar">
     <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
     <a href="index.html" tabindex="0">Home</a>
-    <a href="Games.html" tabindex="0">Games</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
     <a href="PR0XIES.html" tabindex="0">Proxies</a>
     <a href="AI.html" tabindex="0">AI</a>
     <a href="#" tabindex="0">About</a>
@@ -281,7 +241,6 @@
   <div class="container">
     <h1>Settings</h1>
     <form autocomplete="off">
-
       <div class="settings-section">
         <div class="settings-row">
           Panic Key:
@@ -291,17 +250,17 @@
         </div>
         <div class="settings-row">
           Confirm Before Exit
-          <span class="switch">
-            <input type="checkbox" id="popup-beforeunload-toggle">
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-beforeunload-toggle" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           Fake URL Bar
-          <span class="switch">
-            <input type="checkbox" id="popup-fake-url-toggle">
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-fake-url-toggle" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           <div class="fake-url-row">
@@ -338,31 +297,31 @@
         </div>
         <div class="settings-row">
           Enable Animated Backgrounds
-          <span class="switch">
-            <input type="checkbox" id="toggle-vanta" checked>
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-vanta" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           Enable Particles on Buttons
-          <span class="switch">
-            <input type="checkbox" id="toggle-particles" checked>
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-particles" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           Show Battery/Network Widget
-          <span class="switch">
-            <input type="checkbox" id="toggle-status-widget" checked>
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-status-widget" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           Enable Scroll Percentage
-          <span class="switch">
-            <input type="checkbox" id="toggle-scroll-percent" checked>
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-scroll-percent" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           Theme Color
@@ -384,10 +343,10 @@
         </div>
         <div class="settings-row">
           Cloak When Tab Inactive
-          <span class="switch">
-            <input type="checkbox" id="cloak-on-blur">
-            <span class="slider"></span>
-          </span>
+          <select id="dropdown-cloak-on-blur" class="setting-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
         </div>
         <div class="settings-row">
           <span class="desc">When enabled, your tab's title and favicon will be replaced with the above when you click away or switch tabs. (Restores when you return!)</span>
@@ -446,18 +405,21 @@
   </dialog>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-  <!-- (JavaScript logic is unchanged, as in previous code) -->
   <script>
-    // --- Helper for toggles ---
+    // --- Helper for dropdowns (replaces toggles) ---
     function saveSetting(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
     function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
-    function setupToggle(id, key, onChange) {
+    function setupDropdown(id, key, onChange) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.checked = loadSetting(key, el.checked);
+      // Set select based on saved value (default to "on" if true, "off" if false)
+      let stored = loadSetting(key, el.value === "on");
+      el.value = stored ? "on" : "off";
+      // Handle change
       el.addEventListener('change', () => {
-        saveSetting(key, el.checked);
-        if (onChange) onChange(el.checked);
+        const isOn = el.value === "on";
+        saveSetting(key, isOn);
+        if (onChange) onChange(isOn);
       });
     }
     // --- Vanta preview background for settings page ---
@@ -482,6 +444,7 @@
       });
     }
     setVantaThemeFromColor("#2196f3");
+
     // Premade Tab Cloak logic
     const premadeCloaks = {
       classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
@@ -527,8 +490,8 @@
       }
     });
     // --- Confirm Before Exit logic ---
-    function updateBeforeUnloadListener() {
-      window.onbeforeunload = loadSetting('beforeunloadConfirm', false)
+    function updateBeforeUnloadListener(checked) {
+      window.onbeforeunload = checked
         ? (e) => {
             e.preventDefault();
             e.returnValue = '';
@@ -536,8 +499,8 @@
           }
         : null;
     }
-    setupToggle('popup-beforeunload-toggle', 'beforeunloadConfirm', updateBeforeUnloadListener);
-    updateBeforeUnloadListener();
+    setupDropdown('dropdown-beforeunload-toggle', 'beforeunloadConfirm', updateBeforeUnloadListener);
+    updateBeforeUnloadListener(loadSetting('beforeunloadConfirm', false));
 
     // --- Fake URL Bar logic ---
     const fakeUrlPresets = {
@@ -547,7 +510,7 @@
       sheets: { url: "https://docs.google.com/spreadsheets/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
       kahoot: { url: "https://kahoot.it", favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico" }
     };
-    const fakeUrlToggle = document.getElementById('popup-fake-url-toggle');
+    const fakeUrlToggle = document.getElementById('dropdown-fake-url-toggle');
     const fakeUrlSelect = document.getElementById('fake-url-select');
     const fakeUrlCustom = document.getElementById('fake-url-custom');
     const fakeUrlCustomFavicon = document.getElementById('fake-url-custom-favicon');
@@ -560,7 +523,7 @@
     let fakeUrlFavicon = loadSetting('fakeUrlFavicon', "");
 
     function updateFakeUrlPopupUI() {
-      fakeUrlToggle.checked = fakeUrlEnabled;
+      fakeUrlToggle.value = fakeUrlEnabled ? "on" : "off";
       let found = null;
       for(const k in fakeUrlPresets) {
         if(fakeUrlValue === fakeUrlPresets[k].url && fakeUrlFavicon === fakeUrlPresets[k].favicon) {
@@ -616,7 +579,7 @@
       saveSetting('fakeUrlFavicon', fakeUrlFavicon);
       updateFakeUrlBar();
     });
-    setupToggle('popup-fake-url-toggle', 'fakeUrlEnabled', function(checked) {
+    setupDropdown('dropdown-fake-url-toggle', 'fakeUrlEnabled', function(checked) {
       fakeUrlEnabled = checked;
       updateFakeUrlBar();
     });
@@ -638,6 +601,7 @@
       updateFakeUrlBar();
       updateFakeUrlPopupUI();
     });
+
     // Premade Cloak
     const premadeCloakSelect = document.getElementById('premade-cloak');
     const titleInput = document.getElementById('cloak-title');
@@ -649,7 +613,7 @@
         faviconInput.value = premadeCloaks[val].favicon;
         saveSetting('cloakTitle', titleInput.value);
         saveSetting('cloakFavicon', faviconInput.value);
-        if (!document.getElementById('cloak-on-blur').checked) {
+        if (!loadSetting('cloakOnBlur', false)) {
           setTabTitle(titleInput.value);
           setFavicon(faviconInput.value);
         } else if (document.hidden) {
@@ -658,14 +622,14 @@
       }
     });
 
-    // Toggles
-    setupToggle('toggle-vanta', 'enableVanta', checked => {
+    // Dropdowns for all previous toggles
+    setupDropdown('dropdown-vanta', 'enableVanta', checked => {
       document.getElementById('vanta-bg').style.display = checked ? '' : 'none';
     });
-    setupToggle('toggle-particles', 'enableParticles');
-    setupToggle('toggle-status-widget', 'enableStatusWidget');
-    setupToggle('toggle-scroll-percent', 'enableScrollPercent');
-    setupToggle('cloak-on-blur', 'cloakOnBlur');
+    setupDropdown('dropdown-particles', 'enableParticles');
+    setupDropdown('dropdown-status-widget', 'enableStatusWidget');
+    setupDropdown('dropdown-scroll-percent', 'enableScrollPercent');
+    setupDropdown('dropdown-cloak-on-blur', 'cloakOnBlur');
 
     // Color Picker
     const colorPicker = document.getElementById('theme-color');
@@ -691,18 +655,18 @@
       }
       link.href = url;
     }
-    const cloakOnBlurInput = document.getElementById('cloak-on-blur');
+    const cloakOnBlurInput = document.getElementById('dropdown-cloak-on-blur');
     titleInput.value = loadSetting('cloakTitle', '');
     faviconInput.value = loadSetting('cloakFavicon', '');
     if(titleInput.value) setTabTitle(titleInput.value);
     if(faviconInput.value) setFavicon(faviconInput.value);
     titleInput.addEventListener('input', () => {
       saveSetting('cloakTitle', titleInput.value);
-      if (!cloakOnBlurInput.checked) setTabTitle(titleInput.value);
+      if (!loadSetting('cloakOnBlur', false)) setTabTitle(titleInput.value);
     });
     faviconInput.addEventListener('input', () => {
       saveSetting('cloakFavicon', faviconInput.value);
-      if (!cloakOnBlurInput.checked) setFavicon(faviconInput.value);
+      if (!loadSetting('cloakOnBlur', false)) setFavicon(faviconInput.value);
     });
 
     // --- Click-off Cloaking logic ---
@@ -722,7 +686,7 @@
     }
 
     function handleVisibilityChange() {
-      if (cloakOnBlurInput.checked) {
+      if (loadSetting('cloakOnBlur', false)) {
         if (document.hidden) {
           cloakTab();
         } else {
@@ -731,17 +695,7 @@
       }
     }
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    cloakOnBlurInput.addEventListener('change', function() {
-      saveSetting('cloakOnBlur', this.checked);
-      if (!this.checked) {
-        uncloakTab();
-        if (titleInput.value.trim() !== "") setTabTitle(titleInput.value);
-        if (faviconInput.value.trim() !== "") setFavicon(faviconInput.value);
-      } else {
-        if (document.hidden) cloakTab();
-      }
-    });
-    if (cloakOnBlurInput.checked && document.hidden) cloakTab();
+    // "cloakOnBlur" is handled by dropdown now
 
     // --- About:blank/URL Tab Cloak Generator ---
     document.getElementById('aboutblank-btn').addEventListener('click', function() {
