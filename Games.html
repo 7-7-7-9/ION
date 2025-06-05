@@ -693,6 +693,17 @@
     function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
     function featureEnabled(key, def) { return loadSetting(key, def); }
 
+    // --- Helper for popup toggles in Games.html ---
+    function setupToggle(id, key, onChange) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.checked = loadSetting(key, el.checked);
+      el.addEventListener('change', () => {
+        saveSetting(key, el.checked);
+        if (onChange) onChange(el.checked);
+      });
+    }
+
     // --- Cloaking logic for main page ---
     let cloakOnBlur = featureEnabled('cloakOnBlur', false);
     let cloakTitle = loadSetting('cloakTitle', '');
@@ -719,7 +730,7 @@
       setFavicon(originalFavicon);
     }
     function handleVisibilityChange() {
-      if (cloakOnBlur) {
+      if (featureEnabled('cloakOnBlur', false)) {
         if (document.hidden) { cloakTab(); }
         else { uncloakTab(); }
       }
@@ -731,7 +742,7 @@
     let beforeunloadEnabled = loadSetting('beforeunloadConfirm', false);
     const popupBeforeUnload = document.getElementById('popup-beforeunload-toggle');
     function updateBeforeUnloadListener() {
-      window.onbeforeunload = beforeunloadEnabled
+      window.onbeforeunload = loadSetting('beforeunloadConfirm', false)
         ? (e) => {
             e.preventDefault();
             e.returnValue = '';
@@ -849,12 +860,10 @@
       saveSetting('fakeUrlFavicon', fakeUrlFavicon);
       updateFakeUrlBar();
     });
-    fakeUrlToggle.addEventListener('change', function() {
-      fakeUrlEnabled = this.checked;
-      saveSetting('fakeUrlEnabled', fakeUrlEnabled);
-      updateFakeUrlBar();
-    });
     function updateFakeUrlBar() {
+      fakeUrlEnabled = loadSetting('fakeUrlEnabled', false);
+      fakeUrlValue = loadSetting('fakeUrlValue', "");
+      fakeUrlFavicon = loadSetting('fakeUrlFavicon', "");
       if (fakeUrlEnabled && fakeUrlValue) {
         fakeUrlBarDiv.style.display = "";
         fakeUrlBarText.textContent = fakeUrlValue;
@@ -867,14 +876,31 @@
     }
     window.addEventListener('DOMContentLoaded', function() {
       updateFakeUrlBar();
+      // Initialize all toggles in quick settings popup
+      setupToggle('popup-cloak-on-blur', 'cloakOnBlur', (checked) => {
+        cloakOnBlur = checked;
+        if (!checked) {
+          uncloakTab();
+          if (cloakTitle && cloakTitle.trim() !== "") setTabTitle(cloakTitle);
+          if (cloakFavicon && cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
+        } else {
+          if (document.hidden) cloakTab();
+        }
+      });
+      setupToggle('popup-beforeunload-toggle', 'beforeunloadConfirm', (checked) => {
+        beforeunloadEnabled = checked;
+        updateBeforeUnloadListener();
+      });
+      setupToggle('popup-fake-url-toggle', 'fakeUrlEnabled', (checked) => {
+        fakeUrlEnabled = checked;
+        updateFakeUrlBar();
+      });
+      setupToggle('popup-close-on-blur-toggle', 'closeOnBlurEnabled');
     });
 
     // --- Close Tab On Blur Logic ---
-    let closeOnBlurEnabled = loadSetting('closeOnBlurEnabled', false);
-    const closeOnBlurToggle = document.getElementById('popup-close-on-blur-toggle');
-    if (closeOnBlurToggle) closeOnBlurToggle.checked = closeOnBlurEnabled;
     function closeOnBlurHandler() {
-      if (closeOnBlurEnabled && document.hidden) {
+      if (featureEnabled('closeOnBlurEnabled', false) && document.hidden) {
         window.close();
         setTimeout(() => {
           if (!window.closed) {
@@ -890,7 +916,6 @@
     const fab = document.getElementById('settings-fab');
     const popupClose = document.getElementById('settings-popup-close');
     const popupPremadeCloak = document.getElementById('popup-premade-cloak');
-    const popupCloakOnBlur = document.getElementById('popup-cloak-on-blur');
     function updatePopupUI() {
       let foundKey = "";
       for (let key in premadeCloaks) {
@@ -903,12 +928,9 @@
         }
       }
       popupPremadeCloak.value = foundKey;
-      popupCloakOnBlur.checked = cloakOnBlur;
-      if (popupBeforeUnload) popupBeforeUnload.checked = beforeunloadEnabled;
       updateFakeUrlPopupUI();
       if (panicKeyInput) panicKeyInput.value = panicKey;
       if (panicUrlInput) panicUrlInput.value = panicUrl;
-      if (closeOnBlurToggle) closeOnBlurToggle.checked = closeOnBlurEnabled;
     }
     fab.addEventListener('click', () => {
       popup.classList.toggle('open');
@@ -929,7 +951,7 @@
         cloakFavicon = premadeCloaks[val].favicon;
         saveSetting('cloakTitle', cloakTitle);
         saveSetting('cloakFavicon', cloakFavicon);
-        if (!cloakOnBlur) {
+        if (!featureEnabled('cloakOnBlur', false)) {
           setTabTitle(cloakTitle);
           setFavicon(cloakFavicon);
         } else if (document.hidden) {
@@ -937,30 +959,6 @@
         }
       }
     });
-    popupCloakOnBlur.addEventListener('change', function() {
-      cloakOnBlur = this.checked;
-      saveSetting('cloakOnBlur', cloakOnBlur);
-      if (!cloakOnBlur) {
-        uncloakTab();
-        if (cloakTitle && cloakTitle.trim() !== "") setTabTitle(cloakTitle);
-        if (cloakFavicon && cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
-      } else {
-        if (document.hidden) cloakTab();
-      }
-    });
-    if (popupBeforeUnload) {
-      popupBeforeUnload.addEventListener('change', function() {
-        beforeunloadEnabled = this.checked;
-        saveSetting('beforeunloadConfirm', beforeunloadEnabled);
-        updateBeforeUnloadListener();
-      });
-    }
-    if (closeOnBlurToggle) {
-      closeOnBlurToggle.addEventListener('change', function() {
-        closeOnBlurEnabled = this.checked;
-        saveSetting('closeOnBlurEnabled', closeOnBlurEnabled);
-      });
-    }
   </script>
 </body>
 </html>
