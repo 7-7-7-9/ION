@@ -81,8 +81,8 @@
       border: none;
     }
     .container {
-      max-width: 540px;
-      width: 92%;
+      max-width: 900px;
+      width: 98%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -415,7 +415,7 @@
       <div class="settings-group">
         <label class="premade-cloak-label" style="margin-bottom: 8px;">
           About:blank/URL Tab Cloak Generator:
-          <input type="text" id="aboutblank-url" class="cloaking-input" placeholder="Paste any site URL here" style="width: 60%;" />
+          <input type="text" id="aboutblank-url" class="cloaking-input" placeholder="Paste any site URL here" style="width: 330px; max-width: 90vw; font-size: 1.12rem;" />
           <select id="aboutblank-cloak-preset" class="premade-cloak-select" style="width:auto;max-width:160px;margin-left:10px;">
             <option value="">Preset (optional)...</option>
             <option value="classroom">Google Classroom</option>
@@ -702,7 +702,7 @@
       if (!/^https?:\/\//i.test(siteUrl)) {
         siteUrl = "https://" + siteUrl;
       }
-      // About:blank launcher with cloaked tab
+      // Open about:blank and inject the iframe + custom tab cloak (persistent cloak)
       const win = window.open("about:blank", "_blank");
       if (win) {
         win.document.write(`
@@ -711,13 +711,13 @@
               <meta charset="utf-8">
               <title>${title ? title.replace(/</g,"&lt;").replace(/>/g,"&gt;") : "about:blank"}</title>
               ${favicon ? `<link rel="icon" href="${favicon}">` : ""}
-              <style>body,html{margin:0;padding:0;height:100%;width:100%;background:#111;}</style>
-              <script>
-                window.location.replace(${JSON.stringify(siteUrl)});
-              <\/script>
+              <style>
+                html,body { margin:0; padding:0; height:100%; width:100%; background:#181b24; }
+                iframe { border:none; width:100vw; height:100vh; display:block; }
+              </style>
             </head>
             <body>
-              <noscript>Redirecting to ${siteUrl}...</noscript>
+              <iframe src="${siteUrl}" allowfullscreen></iframe>
             </body>
           </html>
         `);
