@@ -13,30 +13,16 @@
     }
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+      background: #0a0c17; /* fallback background, hidden by vanta */
       overflow: hidden;
       position: relative;
     }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.15;
+    #vanta-bg {
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
       pointer-events: none;
-      animation: float 10s linear infinite;
-      background: radial-gradient(circle, #2196f3 0%, #0d47a1 80%, transparent 100%);
-    }
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.15;
-      }
-      50% {
-        opacity: 0.35;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.2);
-        opacity: 0.1;
-      }
     }
     .container {
       position: absolute;
@@ -50,14 +36,25 @@
       text-align: center;
       min-width: 340px;
       border-radius: 0;
+      z-index: 1;
     }
     h1 {
       color: #4fc3f7;
       font-size: 2.3rem;
       letter-spacing: 2px;
-      margin-bottom: 36px;
+      margin-bottom: 20px;
       font-weight: 700;
       text-shadow: 0 2px 8px #000a;
+    }
+    .small-text {
+      font-size: 1.1rem;
+      color: #b2e0fa;
+      margin-bottom: 32px;
+      margin-top: -14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      display: block;
+      white-space: nowrap;
     }
     .launch-btn {
       background: linear-gradient(90deg, #2196f3 0%, #0d47a1 100%);
@@ -79,22 +76,54 @@
       transform: scale(1.05);
       box-shadow: 0 8px 32px #2196f399;
     }
+    @media (max-width: 420px) {
+      .container {
+        padding: 24px 8vw;
+        min-width: 0;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      .small-text {
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 22px;
+        margin-top: -10px;
+        white-space: normal;
+      }
+      .launch-btn {
+        padding: 15px 10vw;
+        font-size: 1rem;
+      }
+    }
   </style>
+  <!-- Vanta.js/three.js for background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.triangles.min.js"></script>
 </head>
 <body>
+  <div id="vanta-bg"></div>
   <script>
-    // Create some animated blue particles
-    for(let i=0; i<18; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const size = Math.random() * 60 + 40;
-      p.style.width = `${size}px`;
-      p.style.height = `${size}px`;
-      p.style.left = `${Math.random() * 100}%`;
-      p.style.bottom = `-${size}px`;
-      p.style.animationDelay = `${Math.random() * 8}s`;
-      document.body.appendChild(p);
-    }
+    // Vanta TRIANGLES blue/black background
+    window.addEventListener('DOMContentLoaded', function() {
+      VANTA.TRIANGLES({
+        el: "#vanta-bg",
+        mouseControls: false,
+        touchControls: false,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x2196f3, // blue triangles
+        color2: 0x0a0c17, // black/dark blue
+        backgroundColor: 0x0a0c17,
+        shininess: 30.00,
+        waveHeight: 13.00,
+        waveSpeed: 0.65,
+        zoom: 0.85
+      });
+    });
 
     // Password prompt function
     function launchWithPassword() {
@@ -107,8 +136,8 @@
     }
   </script>
   <div class="container">
-    <h1>Ready to Launch? </h1>
-    <h1>(Bookmark This Tab So the Site stays Secure)</h1>
+    <h1>Ready to Launch?</h1>
+    <span class="small-text">(Bookmark This Tab So the Site stays Secure)</span>
     <button class="launch-btn" onclick="launchWithPassword()">
       Launch
     </button>
