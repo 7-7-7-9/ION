@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>ION Game Vault</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Montserrat for the title -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -48,11 +47,10 @@
       position: relative;
       z-index: 2;
     }
-    /* Responsive main-title using clamp and fit-content */
     h1 {
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 900;
-      font-size: clamp(1.3rem, 7vw, 4.2rem); /* Responsive! */
+      font-size: clamp(1.3rem, 7vw, 4.2rem);
       max-width: 100vw;
       letter-spacing: clamp(0.03em, 3vw, 0.18em);
       background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
@@ -81,8 +79,6 @@
         word-break: break-word;
       }
     }
-
-    /* Navigation Bar Styles */
     .navbar {
       position: fixed;
       top: 18px;
@@ -126,7 +122,6 @@
       text-shadow: 0 0 8px var(--theme-accent-light);
       border: none;
     }
-
     .status-widget {
       position: fixed;
       top: 18px;
@@ -204,7 +199,6 @@
       left: 0; top: 0;
       pointer-events: none;
     }
-
     .scroll-area {
       width: 100%;
       max-width: 900px;
@@ -233,7 +227,6 @@
     .scroll-area::-webkit-scrollbar-corner {
       background: var(--theme-bg);
     }
-
     .scroll-percent {
       position: absolute;
       top: 12px;
@@ -252,7 +245,6 @@
       z-index: 10;
       transition: top 0.15s cubic-bezier(.4,2,.6,1);
     }
-
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -376,6 +368,92 @@
         font-size: 0.95rem;
       }
     }
+    dialog[open] {
+      border: none;
+      border-radius: 16px;
+      background: rgba(24,30,60,0.99);
+      color: #e0e6fa;
+      box-shadow: 0 8px 32px #0a0f2caa;
+      min-width: 260px;
+      max-width: 94vw;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      z-index: 9999;
+      animation: dialogIn 0.18s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes dialogIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .custom-alert-content {
+      padding: 32px 28px 18px 28px;
+      text-align: center;
+    }
+    .custom-alert-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--theme-accent-light);
+      margin-bottom: 9px;
+      letter-spacing: 0.05em;
+    }
+    .custom-alert-message {
+      margin-bottom: 18px;
+      color: #b2cdfa;
+      font-size: 1.08rem;
+    }
+    .custom-alert-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .custom-alert-checkbox-label {
+      font-size: 1rem;
+      color: #b2cdfa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      user-select: none;
+    }
+    .custom-alert-btns {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 22px;
+    }
+    .custom-alert-btn {
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 26px;
+      background: var(--theme-accent);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.03rem;
+      box-shadow: 0 2px 14px #1e90ff66;
+      transition: background 0.14s, box-shadow 0.16s;
+    }
+    .custom-alert-btn:active {
+      background: var(--theme-accent-dark);
+      box-shadow: 0 1px 8px #1e90ff44;
+    }
+    .custom-alert-toggle-label {
+      background: rgba(55,90,140,0.17);
+      color: var(--theme-accent);
+      font-weight: 700;
+      font-size: 1.09rem;
+      justify-content: flex-start;
+      gap: 8px;
+      padding-left: 9px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -386,8 +464,10 @@
     <a href="index.html" tabindex="0">Home</a>
     <a href="G@MES.html" tabindex="0">Games</a>
     <a href="PR0XIES.html" tabindex="0">Proxies</a>
+    <a href="AI.html" tabindex="0">AI</a>
     <a href="#" tabindex="0">About</a>
     <a href="#" tabindex="0">Contact</a>
+    <a href="Settings.html" tabindex="0">Settings</a>
   </nav>
   <!-- Status widget is now at top left -->
   <div class="status-widget" id="status-widget">
@@ -411,7 +491,6 @@
     <div class="scroll-area" id="scroll-area">
       <div class="scroll-percent" id="scroll-percent">0%</div>
       <div class="game-grid">
-        <!-- Game Buttons -->
         <a href="games.html/CookieClicker.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cookie Clicker</span></a>
         <a href="games.html/DriveMad.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Drive Mad</span></a>
         <a href="games.html/bobtherobber2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bob the Robber 2</span></a>
@@ -435,30 +514,50 @@
         <a href="games.html/Run3.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Run3</span></a>
         <a href="games.html/ClusterRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cluster Rush</span></a>
         <a href="games.html/MonkeyMart.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Monkey Mart</span></a>
-        <!-- ...add remaining games as needed... -->
       </div>
     </div>
   </div>
+  <!-- Custom Alert Dialog -->
+  <dialog id="custom-alert-dialog">
+    <form method="dialog" class="custom-alert-content">
+      <div class="custom-alert-title">Notice</div>
+      <div class="custom-alert-message">This is a custom alert dialog!<br>You can toggle its appearance in settings.</div>
+      <div class="custom-alert-controls">
+        <label class="custom-alert-checkbox-label">
+          <input type="checkbox" id="block-future-dialogs">
+          Don't allow this page to create any additional dialogs
+        </label>
+      </div>
+      <div class="custom-alert-btns">
+        <button value="ok" class="custom-alert-btn">OK</button>
+      </div>
+    </form>
+  </dialog>
   <!-- VANTA.NET JS (requires three.js) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    // Password prompt at page start
-    (function(){
-      var pwd = prompt("Enter password to access ION Game Vault:");
-      if (pwd !== "7-7-7-8") {
-        alert("Incorrect password.");
-        window.location.reload();
-      }
-    })();
-
-    // Randomize mesh parameters for a new look each load
-    function rand(min, max) {
-      return Math.random() * (max - min) + min;
+    // --- Settings integration helpers ---
+    function saveSetting(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
     }
+    function loadSetting(key, def) {
+      let v = localStorage.getItem(key);
+      return v === null ? def : JSON.parse(v);
+    }
+
+    // --- THEME AND VANTA ---
+    let themeColor = loadSetting('themeColor', '#2196f3');
+    document.documentElement.style.setProperty('--theme-accent', themeColor);
+
+    // Vanta background enable/disable
+    let vantaEnabled = loadSetting('enableVanta', true);
+    document.getElementById('vanta-bg').style.display = vantaEnabled ? '' : 'none';
+
+    // Vanta background
+    function rand(min, max) { return Math.random() * (max - min) + min; }
     let vantaEffect;
-    function setVantaTheme(hue) {
-      let color = `#${hslToHex(hue, 100, 56)}`;
+    function setVantaTheme(hex) {
       if (vantaEffect) vantaEffect.destroy();
       vantaEffect = VANTA.NET({
         el: "#vanta-bg",
@@ -469,40 +568,37 @@
         minWidth: 200.00,
         scale: 1.00,
         scaleMobile: 1.00,
-        color: color,
+        color: hex,
         backgroundColor: 0x0a0f2c,
         points: rand(10, 20),
         maxDistance: rand(18, 30),
         spacing: rand(15, 28)
       });
     }
-    // Helper: HSL to HEX
-    function hslToHex(h, s, l) {
-      l /= 100;
-      const a = s * Math.min(l, 1 - l) / 100;
-      const f = n => {
-        const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * color).toString(16).padStart(2, '0');
-      };
-      return `${f(0)}${f(8)}${f(4)}`;
-    }
-    // Initial VANTA load (default blue)
-    setVantaTheme(210);
+    setVantaTheme(themeColor);
 
-    // Color button logic
+    // Color button logic (live preview only, doesn't persist unless you save in settings)
     const colorBtns = document.querySelectorAll('.color-btn');
     colorBtns.forEach(btn => {
       btn.addEventListener('click', function() {
         colorBtns.forEach(b => b.classList.remove('selected'));
         this.classList.add('selected');
         const hue = this.getAttribute('data-hue');
+        let color = `hsl(${hue},100%,56%)`;
         document.documentElement.style.setProperty('--theme-hue', hue);
-        setVantaTheme(hue);
+        document.documentElement.style.setProperty('--theme-accent', color);
+        setVantaTheme(color);
         updateWifiIcon();
         updateBatteryIcon(lastBatteryLevel, lastBatteryCharging);
       });
     });
+
+    // --- STATUS WIDGET + TOGGLES ---
+    let particlesEnabled = loadSetting('enableParticles', true);
+    let statusWidgetEnabled = loadSetting('enableStatusWidget', true);
+    document.getElementById('status-widget').style.display = statusWidgetEnabled ? '' : 'none';
+    let scrollPercentEnabled = loadSetting('enableScrollPercent', true);
+    document.getElementById('scroll-percent').style.display = scrollPercentEnabled ? '' : 'none';
 
     // Scroll percentage indicator logic
     const scrollArea = document.getElementById('scroll-area');
@@ -512,7 +608,6 @@
       const scrollHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
       const percent = scrollHeight === 0 ? 100 : Math.round((scrollTop / scrollHeight) * 100);
       scrollPercent.textContent = percent + '%';
-      // Move the indicator along with the thumb
       const maxTop = scrollArea.clientHeight - scrollPercent.offsetHeight - 12;
       scrollPercent.style.top = (12 + maxTop * (percent / 100)) + 'px';
     }
@@ -530,7 +625,6 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // Battery API
     let lastBatteryLevel = 1, lastBatteryCharging = false;
     function updateBatteryIcon(level, charging) {
       lastBatteryLevel = level;
@@ -556,12 +650,10 @@
         updateAllBattery();
       });
     } else {
-      // Fallback for unsupported browsers
       document.getElementById('battery-icon').innerHTML =
         `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="3" fill="none" stroke="#444" stroke-width="2"/><rect x="18" y="10" width="2.5" height="4" rx="1" fill="#444" stroke="none"/></svg> N/A`;
     }
 
-    // Network status
     function updateWifiIcon() {
       let online = navigator.onLine;
       let hue = getComputedStyle(document.documentElement).getPropertyValue('--theme-hue');
@@ -584,8 +676,9 @@
     window.addEventListener('offline', updateWifiIcon);
     updateWifiIcon();
 
-    // --- Particle Animation for Game Buttons ---
+    // --- PARTICLE ANIMATION ---
     function animateGameButtonParticles() {
+      if (!particlesEnabled) return;
       document.querySelectorAll('.game-button').forEach(btn => {
         let canvas = btn.querySelector('.game-button-canvas');
         let w = btn.clientWidth, h = btn.clientHeight;
@@ -601,7 +694,7 @@
             r: rand(3, 7),
             a: rand(0.15, 0.28),
             v: rand(0.14, 0.24),
-            hue: 210 // blue
+            hue: 210
           });
         }
         function drawParticles() {
@@ -626,9 +719,76 @@
         drawParticles();
       });
     }
-    window.addEventListener('load', animateGameButtonParticles);
-    window.addEventListener('resize', animateGameButtonParticles);
-    colorBtns.forEach(btn => btn.addEventListener('click', animateGameButtonParticles));
+    if (particlesEnabled) {
+      window.addEventListener('load', animateGameButtonParticles);
+      window.addEventListener('resize', animateGameButtonParticles);
+      colorBtns.forEach(btn => btn.addEventListener('click', animateGameButtonParticles));
+    }
+
+    // --- CLOAKING ON BLUR ---
+    let cloakOnBlur = loadSetting('cloakOnBlur', false);
+    let cloakTitle = loadSetting('cloakTitle', '');
+    let cloakFavicon = loadSetting('cloakFavicon', '');
+    let originalTabTitle = document.title;
+    let originalFavicon = (function() {
+      let link = document.querySelector("link[rel~='icon']");
+      return link ? link.href : '';
+    })();
+    function setTabTitle(title) {
+      if(title.trim() !== "") document.title = title;
+    }
+    function setFavicon(url) {
+      let link = document.querySelector("link[rel~='icon']");
+      if(!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = url;
+    }
+    function cloakTab() {
+      if (cloakTitle.trim() !== "") document.title = cloakTitle;
+      if (cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
+    }
+    function uncloakTab() {
+      document.title = originalTabTitle;
+      setFavicon(originalFavicon);
+    }
+    function handleVisibilityChange() {
+      if (cloakOnBlur) {
+        if (document.hidden) {
+          cloakTab();
+        } else {
+          uncloakTab();
+        }
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    if (cloakOnBlur && document.hidden) cloakTab();
+
+    // --- SHOW CUSTOM ALERT (toggle dialog box on load if enabled) ---
+    const showAlertToggle = loadSetting('showCustomAlert', false);
+    const blockDialogs = loadSetting('blockCustomDialogs', false);
+    const customAlertDialog = document.getElementById('custom-alert-dialog');
+    const blockDialogsCheckbox = document.getElementById('block-future-dialogs');
+    blockDialogsCheckbox.checked = blockDialogs;
+    blockDialogsCheckbox.addEventListener('change', function() {
+      saveSetting('blockCustomDialogs', this.checked);
+    });
+    function maybeShowDialog() {
+      const show = loadSetting('showCustomAlert', false);
+      const block = loadSetting('blockCustomDialogs', false);
+      if (show && !block) {
+        if (!customAlertDialog.open) customAlertDialog.showModal();
+      } else {
+        if (customAlertDialog.open) customAlertDialog.close();
+      }
+    }
+    customAlertDialog.addEventListener('close', function() {
+      maybeShowDialog();
+    });
+    maybeShowDialog();
+
   </script>
 </body>
 </html>
