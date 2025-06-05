@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <title>ION Game Vault – Your Portal to Unblocked Games</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Montserrat for the title -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     :root {
       --theme-hue: 210;
@@ -32,7 +34,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 60px;
+      padding-top: 100px; /* Increased padding to move title lower */
       min-height: 100vh;
       position: relative;
       z-index: 1;
@@ -46,23 +48,43 @@
       position: relative;
       z-index: 2;
     }
+    /* Features.html style main-title but on one line and lower */
     h1 {
-      font-weight: 700;
-      font-size: 4.5rem;
-      letter-spacing: 0.25em;
-      margin-bottom: 48px;
-      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light) 70%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: 0.13em;
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow:
-        0 0 10px var(--theme-accent),
-        0 0 25px var(--theme-accent-light);
-      user-select: none;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin: 0 0 32px 0;
       text-align: center;
+      user-select: none;
+      white-space: nowrap; /* Force single line */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
       border: none;
       box-shadow: none;
       padding: 0;
-      background-clip: text;
+      text-shadow: none;
+    }
+    @media (max-width: 1100px) {
+      h1 {
+        font-size: 2.2rem;
+        letter-spacing: 0.09em;
+      }
+    }
+    @media (max-width: 750px) {
+      h1 {
+        font-size: 1.3rem;
+        letter-spacing: 0.06em;
+      }
+      body {
+        padding-top: 60px;
+      }
     }
 
     /* Navigation Bar Styles */
@@ -316,6 +338,10 @@
         font-size: 2.2rem;
         letter-spacing: 0.12em;
         margin-bottom: 32px;
+        white-space: normal;
+      }
+      body {
+        padding-top: 60px;
       }
       .game-button {
         height: 90px;
@@ -385,43 +411,35 @@
     </span>
   </div>
   <div class="container">
-    <h1>ION GAME VAULT</h1>
+    <h1>ION GAME VAULT – YOUR PORTAL TO UNBLOCKED GAMES</h1>
     <div class="scroll-area" id="scroll-area">
       <div class="scroll-percent" id="scroll-percent">0%</div>
       <div class="game-grid">
-        <!-- 50 Game Buttons -->
+        <!-- Game Buttons -->
         <a href="games.html/CookieClicker.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cookie Clicker</span></a>
         <a href="games.html/DriveMad.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Drive Mad</span></a>
         <a href="games.html/bobtherobber2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bob the Robber 2</span></a>
         <a href="games.html/BubbleTanks2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bubble Tanks 2</span></a>
         <a href="games.html/GeometryDash.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Geometry Dash</span></a>
-          <a href="games.html/LearnToFly.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Learn to Fly</span></a>
+        <a href="games.html/LearnToFly.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Learn to Fly</span></a>
         <a href="games.html/LearnToFly2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Learn to Fly 2</span></a>
         <a href="games.html/MotoX3M.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">MotoX3M</span></a>
         <a href="games.html/MotoX3M-Pool.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">MotoX3M Pool Party</span></a>
         <a href="games.html/MotoX3m-Winter.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">MotoX3M WInter</span></a>
-          <a href="games.html/MotoX3M-Spooky.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">MotoX3M Spooky</span></a>
+        <a href="games.html/MotoX3M-Spooky.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">MotoX3M Spooky</span></a>
         <a href="games.html/Minecraft1.5.2" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Minecraft 1.5.2</span></a>
         <a href="games.html/Minecraft1.8.8" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Minecraft 1.8.8</span></a>
         <a href="games.html/BobTheRobber4.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bob the Robber 4</span></a>
         <a href="games.html/Drift boss.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Drift Boss</span></a>
-        
         <a href="games.html/Slope.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Slope</span></a>
         <a href="games.html/Slope2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Slope 2</span></a>
         <a href="games.html/HelixJump.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Helix Jump</span></a>
         <a href="games.html/TunnelRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Tunnel Rush</span></a>
         <a href="games.html/ChromeDino.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Chrome://Dino</span></a>
-
-                <a href="games.html/Run3.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Run3</span></a>
-         <a href="games.html/ClusterRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cluster Rush</span></a>
-    <a href="games.html/MonkeyMart.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Monkey Mart</span></a>
-             
-
-        <!-- ...repeat up to Game 50... -->
-      </div>
-        <!-- ...repeat up to Game 50... -->
-      </div>
-        <!-- ...repeat up to Game 50... -->
+        <a href="games.html/Run3.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Run3</span></a>
+        <a href="games.html/ClusterRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cluster Rush</span></a>
+        <a href="games.html/MonkeyMart.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Monkey Mart</span></a>
+        <!-- ...add remaining games as needed... -->
       </div>
     </div>
   </div>
