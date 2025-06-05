@@ -1,4 +1,665 @@
-<!-- ... all previous code remains the same up to the popup ... -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ION Game Vault</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Montserrat for the title -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    #vanta-bg {
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+    .container {
+      max-width: 960px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 7vw, 4.2rem);
+      max-width: 100vw;
+      letter-spacing: clamp(0.03em, 3vw, 0.18em);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin: 0 0 32px 0;
+      text-align: center;
+      user-select: none;
+      white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-shadow: none;
+      overflow-x: auto;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: clamp(1rem, 6vw, 2.3rem);
+        margin-bottom: 28px;
+        white-space: normal;
+        word-break: break-word;
+      }
+    }
+    /* Navigation Bar Styles */
+    .navbar {
+      position: fixed;
+      top: 18px;
+      right: 32px;
+      z-index: 1002;
+      background: rgba(10, 15, 44, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 8px 20px 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      font-size: 1.09rem;
+      letter-spacing: 0.04em;
+      transition: color 0.16s, text-shadow 0.16s;
+      padding: 3px 10px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .navbar a:hover, .navbar a:focus-visible {
+      color: #fff;
+      background: var(--theme-accent);
+      text-shadow: 0 0 8px var(--theme-accent-light), 0 0 2px #fff;
+      outline: none;
+    }
+    .navbar .nav-logo {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--theme-accent);
+      background: none;
+      cursor: pointer;
+      padding: 0 10px 0 0;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 8px var(--theme-accent-light);
+      border: none;
+    }
+    .status-widget {
+      position: fixed;
+      top: 18px;
+      left: 32px;
+      transform: none;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 14px;
+      background: rgba(10, 15, 44, 0.92);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      font-size: 1.1rem;
+      color: var(--theme-accent-light);
+      z-index: 1000;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: none;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .status-widget span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #battery-icon svg, #wifi-icon svg {
+      display: inline-block;
+      vertical-align: middle;
+      height: 1.2em;
+      width: 1.2em;
+    }
+    .color-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+    }
+    .color-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #0003;
+      cursor: pointer;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      position: relative;
+      background: #fff;
+      display: inline-block;
+      padding: 0;
+    }
+    .color-btn.selected, .color-btn:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .color-btn[data-hue="210"] { background: hsl(210,100%,56%); }
+    .color-btn[data-hue="0"]   { background: hsl(0,100%,56%); }
+    .color-btn[data-hue="30"]  { background: hsl(30,100%,56%); }
+    .color-btn[data-hue="50"]  { background: hsl(50,100%,56%); }
+    .color-btn[data-hue="120"] { background: hsl(120,100%,40%); }
+    .color-btn[data-hue="180"] { background: hsl(180,100%,40%); }
+    .color-btn[data-hue="270"] { background: hsl(270,100%,60%); }
+    .color-btn[data-hue="320"] { background: hsl(320,100%,60%); }
+    .color-btn[data-hue="220"] { background: hsl(220,10%,52%); }
+    .color-btn::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid #fff0;
+      position: absolute;
+      left: 0; top: 0;
+      pointer-events: none;
+    }
+    .scroll-area {
+      width: 100%;
+      max-width: 900px;
+      height: 700px;
+      overflow-y: auto;
+      position: relative;
+      margin-bottom: 32px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--theme-accent) var(--theme-bg);
+      padding-bottom: 40px;
+    }
+    .scroll-area::-webkit-scrollbar {
+      width: 14px;
+      background: var(--theme-bg);
+      border-radius: 8px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--theme-accent), var(--theme-accent-light) 70%);
+      border-radius: 8px;
+      border: 3px solid var(--theme-bg);
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+    }
+    .scroll-area::-webkit-scrollbar-thumb:hover {
+      background: var(--theme-accent-light);
+    }
+    .scroll-area::-webkit-scrollbar-corner {
+      background: var(--theme-bg);
+    }
+    .scroll-percent {
+      position: absolute;
+      top: 12px;
+      right: -44px;
+      width: 40px;
+      background: rgba(10, 15, 44, 0.85);
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+      text-align: center;
+      padding: 6px 0;
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      transition: top 0.15s cubic-bezier(.4,2,.6,1);
+    }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 28px;
+      width: 100%;
+      padding-right: 18px;
+      box-sizing: border-box;
+    }
+    .game-button {
+      background: rgba(20, 30, 60, 0.93);
+      border: 2.5px solid var(--theme-accent);
+      border-radius: 16px;
+      height: 140px;
+      cursor: pointer;
+      transition: 
+        background 0.25s cubic-bezier(.4,2,.6,1),
+        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+        border-color 0.18s,
+        color 0.18s,
+        transform 0.18s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      user-select: none;
+      text-decoration: none;
+      box-shadow: 0 0 12px var(--theme-accent-dark);
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-button-canvas {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      display: block;
+    }
+    .game-button-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+    }
+    .game-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      border: 2.5px solid transparent;
+      transition: border-color 0.2s;
+      pointer-events: none;
+    }
+    .game-button:hover,
+    .game-button:focus {
+      background: #111a2e;
+      color: #fff;
+      border-color: var(--theme-accent-light);
+      box-shadow: 0 0 24px var(--theme-accent), 0 0 0 4px var(--theme-accent-dark);
+      transform: translateY(-5px) scale(1.04);
+      z-index: 1;
+    }
+    .game-button:hover::before,
+    .game-button:focus::before {
+      border-color: var(--theme-accent-light);
+      box-shadow: 0 0 20px var(--theme-accent-light);
+    }
+    @media (max-width: 600px) {
+      .scroll-area {
+        height: 400px;
+        padding-bottom: 30px;
+      }
+      body {
+        padding-top: 60px;
+      }
+      h1 {
+        font-size: clamp(1.1rem, 7vw, 2.3rem);
+        margin-bottom: 28px;
+        white-space: normal;
+        word-break: break-word;
+      }
+      .game-button {
+        height: 90px;
+        font-size: 1rem;
+      }
+      .game-grid {
+        gap: 16px;
+      }
+      .scroll-percent {
+        font-size: 1rem;
+        width: 32px;
+        right: -36px;
+      }
+      .status-widget {
+        font-size: 0.98rem;
+        padding: 6px 10px;
+        gap: 8px;
+        min-width: 140px;
+        left: 8px;
+        top: 8px;
+      }
+      .color-btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 4px;
+      }
+      .navbar {
+        top: 8px;
+        right: 8px;
+        padding: 5px 7px 5px 8px;
+        border-radius: 10px;
+        font-size: 0.98rem;
+        gap: 10px;
+      }
+      .navbar a {
+        padding: 3px 6px;
+        font-size: 0.95rem;
+      }
+    }
+    /* Custom Dialog styles for alert */
+    dialog[open] {
+      border: none;
+      border-radius: 16px;
+      background: rgba(24,30,60,0.99);
+      color: #e0e6fa;
+      box-shadow: 0 8px 32px #0a0f2caa;
+      min-width: 260px;
+      max-width: 94vw;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      z-index: 9999;
+      animation: dialogIn 0.18s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes dialogIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .custom-alert-content {
+      padding: 32px 28px 18px 28px;
+      text-align: center;
+    }
+    .custom-alert-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--theme-accent-light);
+      margin-bottom: 9px;
+      letter-spacing: 0.05em;
+    }
+    .custom-alert-message {
+      margin-bottom: 18px;
+      color: #b2cdfa;
+      font-size: 1.08rem;
+    }
+    .custom-alert-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .custom-alert-checkbox-label {
+      font-size: 1rem;
+      color: #b2cdfa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      user-select: none;
+    }
+    .custom-alert-btns {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 22px;
+    }
+    .custom-alert-btn {
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 26px;
+      background: var(--theme-accent);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.03rem;
+      box-shadow: 0 2px 14px #1e90ff66;
+      transition: background 0.14s, box-shadow 0.16s;
+    }
+    .custom-alert-btn:active {
+      background: var(--theme-accent-dark);
+      box-shadow: 0 1px 8px #1e90ff44;
+    }
+    .custom-alert-toggle-label {
+      background: rgba(55,90,140,0.17);
+      color: var(--theme-accent);
+      font-weight: 700;
+      font-size: 1.09rem;
+      justify-content: flex-start;
+      gap: 8px;
+      padding-left: 9px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* --- Failsafe Settings FAB and Popup Styles --- */
+    .settings-fab {
+      position: fixed;
+      bottom: 28px;
+      right: 32px;
+      z-index: 2000;
+      background: var(--theme-accent);
+      color: #fff;
+      border: none;
+      outline: none;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px #1e90ff55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.2s;
+    }
+    .settings-fab:hover {
+      background: var(--theme-accent-dark);
+      box-shadow: 0 4px 22px #1e90ff77;
+    }
+    .settings-popup {
+      position: fixed;
+      bottom: 97px;
+      right: 32px;
+      z-index: 2001;
+      background: rgba(24,30,60,0.99);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #0a0f2caa;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      width: 342px;
+      max-width: 94vw;
+      padding: 0 0 20px 0;
+      display: none;
+      flex-direction: column;
+      animation: dialogIn 0.18s cubic-bezier(.4,2,.6,1);
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .settings-popup.open {
+      display: flex;
+    }
+    .settings-popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 17px 20px 7px 20px;
+    }
+    .settings-popup-title {
+      font-size: 1.13rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--theme-accent-light);
+    }
+    .settings-popup-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.45rem;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px 10px 2px 10px;
+      transition: background 0.13s;
+    }
+    .settings-popup-close:hover {
+      background: var(--theme-accent);
+      color: #fff;
+    }
+    .settings-popup-content {
+      padding: 0 22px 0 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .popup-cloak-group {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .premade-cloak-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--theme-accent-light);
+      background: rgba(22,32,52,0.24);
+      padding: 8px 14px;
+      border-radius: 9px;
+      margin-bottom: 0;
+    }
+    .premade-cloak-select {
+      font-size: 1.01rem;
+      border-radius: 7px;
+      border: 1.5px solid #385599;
+      background: #232d48;
+      color: #d1e5ff;
+      padding: 7px 11px;
+      outline: none;
+      transition: border 0.13s;
+      margin-left: 12px;
+    }
+    .popup-switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(22,32,52,0.4);
+      padding: 11px 13px;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      margin-top: 7px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+      margin-left: 18px;
+    }
+    .switch input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #2d3959;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 4px; bottom: 4px;
+      background: var(--theme-accent);
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background: var(--theme-accent-light);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+      background: var(--theme-accent-dark);
+    }
+  </style>
+</head>
+<body>
+  <div id="vanta-bg"></div>
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
+    <a href="index.html" tabindex="0">Home</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="PR0XIES.html" tabindex="0">Proxies</a>
+    <a href="AI.html" tabindex="0">AI</a>
+    <a href="#" tabindex="0">About</a>
+    <a href="#" tabindex="0">Contact</a>
+    <a href="Settings.html" tabindex="0">Settings</a>
+  </nav>
+  <!-- Status widget is now at top left -->
+  <div class="status-widget" id="status-widget">
+    <span id="battery-icon" title="Battery"></span>
+    <span id="wifi-icon" title="Network"></span>
+    <span id="datetime"></span>
+    <span class="color-btns" id="color-btns" title="Theme Color">
+      <button class="color-btn selected" data-hue="210" aria-label="Default Blue"></button>
+      <button class="color-btn" data-hue="0" aria-label="Red"></button>
+      <button class="color-btn" data-hue="30" aria-label="Orange"></button>
+      <button class="color-btn" data-hue="50" aria-label="Yellow"></button>
+      <button class="color-btn" data-hue="120" aria-label="Green"></button>
+      <button class="color-btn" data-hue="180" aria-label="Cyan"></button>
+      <button class="color-btn" data-hue="270" aria-label="Purple"></button>
+      <button class="color-btn" data-hue="320" aria-label="Pink"></button>
+      <button class="color-btn" data-hue="220" aria-label="Gray"></button>
+    </span>
+  </div>
+  <div class="container">
+    <h1>ION GAME VAULT</h1>
+    <!-- Custom Alert Toggle -->
+    <div class="custom-alert-toggle-label" style="margin-bottom: 20px;">
+      <input type="checkbox" id="show-custom-alert">
+      Show Custom Alert
+    </div>
+    <div class="scroll-area" id="scroll-area">
+      <div class="scroll-percent" id="scroll-percent">0%</div>
+      <div class="game-grid">
+        <!-- Game Buttons -->
+        <a href="games.html/CookieClicker.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cookie Clicker</span></a>
+        <!-- ... other game buttons ... -->
+      </div>
+    </div>
+  </div>
+  <!-- Settings FAB and Popup -->
+<!-- ... [everything above remains unchanged up to the popup] ... -->
   <button class="settings-fab" id="settings-fab" title="Quick Cloak Settings">
     <svg width="30" height="30" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/><path d="M12 8v4m0 4h.01" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
   </button>
@@ -60,28 +721,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    // ... previous script code remains above ...
+    // ... [rest of your code above remains unchanged] ...
 
     // --- Panic Key Logic ---
-    function saveSetting(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-    function loadSetting(key, def) {
-      let v = localStorage.getItem(key);
-      return v === null ? def : JSON.parse(v);
-    }
-
-    // Panic key and URL
     let panicKey = loadSetting('panicKey', '');
     let panicUrl = loadSetting('panicUrl', '');
-
-    // Update inputs in UI
     const panicKeyInput = document.getElementById('panic-key-input');
     const panicUrlInput = document.getElementById('panic-url-input');
     if (panicKeyInput) panicKeyInput.value = panicKey;
     if (panicUrlInput) panicUrlInput.value = panicUrl;
 
-    // Update storage and live value when user edits
     if (panicKeyInput) panicKeyInput.addEventListener('input', function() {
       panicKey = this.value.trim().toLowerCase();
       saveSetting('panicKey', panicKey);
@@ -91,7 +740,6 @@
       saveSetting('panicUrl', panicUrl);
     });
 
-    // Listen globally for panic key if set and URL present
     document.addEventListener('keydown', function(e) {
       // Ignore if in an input or textarea
       if (
@@ -103,15 +751,98 @@
         panicUrl &&
         e.key.toLowerCase() === panicKey
       ) {
-        // Add http if missing, for user convenience
         let url = panicUrl;
         if (!/^https?:\/\//i.test(url) && !/^\/\//.test(url)) url = 'https://' + url;
         window.location.href = url;
       }
     });
 
-    // --- (rest of your scripts: popup, cloak, theme, particles, etc.) ---
-    // ... (unchanged from previous version) ...
+    // --- Beforeunload Confirmation (Custom Alert as page exit warning) ---
+    let beforeunloadEnabled = loadSetting('beforeunloadConfirm', false);
+    function updateBeforeUnloadListener() {
+      window.onbeforeunload = beforeunloadEnabled
+        ? (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+          }
+        : null;
+    }
+    updateBeforeUnloadListener();
+
+    // --- Failsafe FAB and Popup Logic ---
+    const fab = document.getElementById('settings-fab');
+    const popup = document.getElementById('settings-popup');
+    const popupClose = document.getElementById('settings-popup-close');
+    const popupPremadeCloak = document.getElementById('popup-premade-cloak');
+    const popupCloakOnBlur = document.getElementById('popup-cloak-on-blur');
+    const popupBeforeUnload = document.getElementById('popup-beforeunload-toggle');
+
+    function updatePopupUI() {
+      let foundKey = "";
+      for (let key in premadeCloaks) {
+        if (
+          premadeCloaks[key].title === cloakTitle &&
+          premadeCloaks[key].favicon === cloakFavicon
+        ) {
+          foundKey = key;
+          break;
+        }
+      }
+      popupPremadeCloak.value = foundKey;
+      popupCloakOnBlur.checked = cloakOnBlur;
+      popupBeforeUnload.checked = beforeunloadEnabled;
+      if (panicKeyInput) panicKeyInput.value = panicKey;
+      if (panicUrlInput) panicUrlInput.value = panicUrl;
+    }
+    fab.addEventListener('click', () => {
+      popup.classList.toggle('open');
+      updatePopupUI();
+    });
+    popupClose.addEventListener('click', () => {
+      popup.classList.remove('open');
+    });
+    document.addEventListener('mousedown', (e) => {
+      if (popup.classList.contains('open') && !popup.contains(e.target) && e.target !== fab) {
+        popup.classList.remove('open');
+      }
+    });
+
+    popupPremadeCloak.addEventListener('change', function() {
+      let val = this.value;
+      if (premadeCloaks[val]) {
+        cloakTitle = premadeCloaks[val].title;
+        cloakFavicon = premadeCloaks[val].favicon;
+        saveSetting('cloakTitle', cloakTitle);
+        saveSetting('cloakFavicon', cloakFavicon);
+        if (!cloakOnBlur) {
+          setTabTitle(cloakTitle);
+          setFavicon(cloakFavicon);
+        } else if (document.hidden) {
+          cloakTab();
+        }
+      }
+    });
+
+    popupCloakOnBlur.addEventListener('change', function() {
+      cloakOnBlur = this.checked;
+      saveSetting('cloakOnBlur', cloakOnBlur);
+      if (!cloakOnBlur) {
+        uncloakTab();
+        if (cloakTitle && cloakTitle.trim() !== "") setTabTitle(cloakTitle);
+        if (cloakFavicon && cloakFavicon.trim() !== "") setFavicon(cloakFavicon);
+      } else {
+        if (document.hidden) cloakTab();
+      }
+    });
+
+    popupBeforeUnload.addEventListener('change', function() {
+      beforeunloadEnabled = this.checked;
+      saveSetting('beforeunloadConfirm', beforeunloadEnabled);
+      updateBeforeUnloadListener();
+    });
+
+    // ... (rest of your scripts: theme, particles, status, etc.) ...
   </script>
 </body>
 </html>
