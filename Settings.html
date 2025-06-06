@@ -444,22 +444,20 @@
     }
     setVantaThemeFromColor("#2196f3");
 
-    // --- Helper for toggles ---
+    // --- Storage helpers ---
     function saveSetting(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
     function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
 
-    // Utility to setup each toggle
-    function setupToggle(id, key, onChange) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.checked = !!loadSetting(key, false);
-      el.addEventListener('change', () => {
-        saveSetting(key, el.checked);
-        if (onChange) onChange(el.checked);
-      });
-    }
+    // --- Elements ---
+    const titleInput = document.getElementById('cloak-title');
+    const faviconInput = document.getElementById('cloak-favicon');
+    const cloakOnBlurToggle = document.getElementById('toggle-cloak-on-blur');
+    const vantaToggle = document.getElementById('toggle-vanta');
+    const particlesToggle = document.getElementById('toggle-particles');
+    const scrollToggle = document.getElementById('toggle-scroll-percent');
+    const premadeCloakSelect = document.getElementById('premade-cloak');
 
-    // Premade Tab Cloak logic
+    // --- Premade Tab Cloak logic ---
     const premadeCloaks = {
       classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
       slides: { title: "Google Slides", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
@@ -473,9 +471,6 @@
       sora: { title: "Sora", favicon: "https://soraapp.com/favicon.ico" },
       aboutblank: { title: "", favicon: "" }
     };
-    const premadeCloakSelect = document.getElementById('premade-cloak');
-    const titleInput = document.getElementById('cloak-title');
-    const faviconInput = document.getElementById('cloak-favicon');
     premadeCloakSelect.addEventListener('change', function() {
       const val = this.value;
       if (premadeCloaks[val]) {
@@ -483,7 +478,7 @@
         faviconInput.value = premadeCloaks[val].favicon;
         saveSetting('cloakTitle', titleInput.value);
         saveSetting('cloakFavicon', faviconInput.value);
-        if (!loadSetting('cloakOnBlur', false)) {
+        if (!cloakOnBlurToggle.checked) {
           setTabTitle(titleInput.value);
           setFavicon(faviconInput.value);
         } else if (document.hidden) {
@@ -492,28 +487,16 @@
       }
     });
 
-    // Setup toggles
-    setupToggle('toggle-vanta', 'enableVanta', checked => {
-      document.getElementById('vanta-bg').style.display = checked ? '' : 'none';
-    });
-    setupToggle('toggle-particles', 'enableParticles');
-    setupToggle('toggle-scroll-percent', 'enableScrollPercent');
-    setupToggle('toggle-cloak-on-blur', 'cloakOnBlur');
+    // --- Remember original values for "uncloak" ---
+    let originalTabTitle = document.title;
+    let originalFavicon = (function() {
+      let link = document.querySelector("link[rel~='icon']");
+      return link ? link.href : '';
+    })();
 
-    // Color Picker
-    const colorPicker = document.getElementById('theme-color');
-    let storedColor = loadSetting('themeColor', colorPicker.value);
-    colorPicker.value = storedColor;
-    colorPicker.addEventListener('input', e => {
-      saveSetting('themeColor', colorPicker.value);
-      setVantaThemeFromColor(colorPicker.value);
-      document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
-    });
-    document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
-
-    // Cloaking logic
+    // --- Cloak logic: always use storage, always persist ---
     function setTabTitle(title) {
-      if(title.trim() !== "") document.title = title;
+      if (title && title.trim() !== "") document.title = title;
     }
     function setFavicon(url) {
       let link = document.querySelector("link[rel~='icon']");
@@ -524,52 +507,104 @@
       }
       link.href = url;
     }
-    titleInput.value = loadSetting('cloakTitle', '');
-    faviconInput.value = loadSetting('cloakFavicon', '');
-    if(titleInput.value) setTabTitle(titleInput.value);
-    if(faviconInput.value) setFavicon(faviconInput.value);
-    titleInput.addEventListener('input', () => {
-      saveSetting('cloakTitle', titleInput.value);
-      if (!loadSetting('cloakOnBlur', false)) setTabTitle(titleInput.value);
-    });
-    faviconInput.addEventListener('input', () => {
-      saveSetting('cloakFavicon', faviconInput.value);
-      if (!loadSetting('cloakOnBlur', false)) setFavicon(faviconInput.value);
-    });
-
-    // --- Click-off Cloaking logic ---
-    let originalTabTitle = document.title;
-    let originalFavicon = (function() {
-      let link = document.querySelector("link[rel~='icon']");
-      return link ? link.href : '';
-    })();
-
     function cloakTab() {
-      if (titleInput.value.trim() !== "") document.title = titleInput.value;
-      if (faviconInput.value.trim() !== "") setFavicon(faviconInput.value);
+      const title = loadSetting('cloakTitle', '');
+      const favicon = loadSetting('cloakFavicon', '');
+      if (title) document.title = title;
+      if (favicon) setFavicon(favicon);
     }
     function uncloakTab() {
       document.title = originalTabTitle;
       setFavicon(originalFavicon);
     }
 
-    function handleVisibilityChange() {
-      if (loadSetting('cloakOnBlur', false)) {
-        if (document.hidden) {
-          cloakTab();
-        } else {
-          uncloakTab();
+    // --- Settings - persist, update, and apply logic ---
+    // Restore values from storage (including toggles)
+    function restoreSettingsFromStorage() {
+      titleInput.value = loadSetting('cloakTitle', '');
+      faviconInput.value = loadSetting('cloakFavicon', '');
+      vantaToggle.checked = !!loadSetting('enableVanta', true);
+      particlesToggle.checked = !!loadSetting('enableParticles', false);
+      scrollToggle.checked = !!loadSetting('enableScrollPercent', false);
+      cloakOnBlurToggle.checked = !!loadSetting('cloakOnBlur', false);
+      // Set premade dropdown based on saved values
+      let found = "";
+      for (const key in premadeCloaks) {
+        if (
+          titleInput.value === premadeCloaks[key].title &&
+          faviconInput.value === premadeCloaks[key].favicon
+        ) {
+          found = key;
+          break;
         }
       }
+      premadeCloakSelect.value = found;
     }
-    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Set toggles to saved value on page load
-    window.addEventListener("DOMContentLoaded", function() {
-      document.getElementById('toggle-vanta').checked = !!loadSetting('enableVanta', true);
-      document.getElementById('toggle-particles').checked = !!loadSetting('enableParticles', false);
-      document.getElementById('toggle-scroll-percent').checked = !!loadSetting('enableScrollPercent', false);
-      document.getElementById('toggle-cloak-on-blur').checked = !!loadSetting('cloakOnBlur', false);
+    // On input, update storage and (if cloakOnBlur is OFF) update tab immediately
+    titleInput.addEventListener('input', () => {
+      saveSetting('cloakTitle', titleInput.value);
+      if (!cloakOnBlurToggle.checked) setTabTitle(titleInput.value);
+    });
+    faviconInput.addEventListener('input', () => {
+      saveSetting('cloakFavicon', faviconInput.value);
+      if (!cloakOnBlurToggle.checked) setFavicon(faviconInput.value);
+    });
+
+    cloakOnBlurToggle.addEventListener('change', () => {
+      saveSetting('cloakOnBlur', cloakOnBlurToggle.checked);
+      // Reapply state immediately on toggle
+      if (cloakOnBlurToggle.checked) {
+        if (document.hidden) cloakTab();
+        else uncloakTab();
+      } else {
+        setTabTitle(titleInput.value);
+        setFavicon(faviconInput.value);
+      }
+    });
+
+    // --- Feature toggles ---
+    vantaToggle.addEventListener('change', function() {
+      saveSetting('enableVanta', vantaToggle.checked);
+      document.getElementById('vanta-bg').style.display = vantaToggle.checked ? '' : 'none';
+    });
+    particlesToggle.addEventListener('change', function() {
+      saveSetting('enableParticles', particlesToggle.checked);
+    });
+    scrollToggle.addEventListener('change', function() {
+      saveSetting('enableScrollPercent', scrollToggle.checked);
+    });
+
+    // --- Color Picker ---
+    const colorPicker = document.getElementById('theme-color');
+    let storedColor = loadSetting('themeColor', colorPicker.value);
+    colorPicker.value = storedColor;
+    colorPicker.addEventListener('input', e => {
+      saveSetting('themeColor', colorPicker.value);
+      setVantaThemeFromColor(colorPicker.value);
+      document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
+    });
+    document.documentElement.style.setProperty('--theme-accent', colorPicker.value);
+
+    // --- On page load, apply correct state ---
+    window.addEventListener('DOMContentLoaded', function() {
+      restoreSettingsFromStorage();
+      if (cloakOnBlurToggle.checked) {
+        if (document.hidden) cloakTab();
+        else uncloakTab();
+      } else {
+        setTabTitle(titleInput.value);
+        setFavicon(faviconInput.value);
+      }
+      document.getElementById('vanta-bg').style.display = vantaToggle.checked ? '' : 'none';
+    });
+
+    // --- Listen for tab visibility changes ---
+    document.addEventListener("visibilitychange", function() {
+      if (cloakOnBlurToggle.checked) {
+        if (document.hidden) cloakTab();
+        else uncloakTab();
+      }
     });
 
     // --- Announcement Banner Logic ---
