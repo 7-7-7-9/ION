@@ -148,11 +148,6 @@
       font-size: 1.08rem;
       font-family: inherit;
     }
-    .settings-row select.setting-toggle {
-      min-width: 100px;
-      max-width: 120px;
-      margin-left: 18px;
-    }
     .settings-row input[type="text"] {
       border-radius: 7px;
       border: 1.5px solid #385599;
@@ -200,30 +195,139 @@
       color: #98b6ea;
       font-weight: 400;
     }
-    .settings-row .fake-url-row {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      width: 100%;
+    /* Toggle Switch Styles */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      margin-left: 8px;
+      margin-right: 8px;
+      vertical-align: middle;
     }
-    .settings-row .fake-url-row select,
-    .settings-row .fake-url-row input[type="text"] {
-      margin-left: 0;
-      margin-right: 0;
-      width: 100%;
-      max-width: 100%;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    .settings-row .fake-url-row label {
-      margin-bottom: 2px;
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #c2cddf;
+      border-radius: 24px;
+      transition: .3s;
     }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 19px;
+      width: 19px;
+      left: 2.5px; bottom: 2.5px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: .3s;
+      box-shadow: 0 1px 5px #0002;
+    }
+    input:checked + .slider {
+      background-color: var(--theme-accent);
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+    /* End Toggle Switch Styles */
     @media (max-width: 600px) {
       .container { padding: 12px 3vw 34px 3vw; }
       .settings-section { gap: 13px; margin-bottom: 20px; }
       .settings-row { font-size: 1rem; flex-direction: column; align-items: flex-start; gap: 11px; padding: 9px 7px; }
       .settings-row input[type="text"], .settings-row select, .settings-row input[type="color"] { font-size: 1rem; min-width: 100px; margin-left: 0; }
-      .settings-row select.setting-toggle { margin-left: 0; }
+    }
+
+    /* Announcement Banner Styles */
+    #announcement-banner {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 40px;
+      transform: translateX(-50%);
+      width: 50vw;
+      min-width: 220px;
+      max-width: 480px;
+      height: 56px;
+      background: linear-gradient(90deg, #101526 70%, var(--theme-accent, #2196f3));
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #0004, 0 2px 10px var(--theme-accent-dark, #1e90ff44);
+      color: #fff;
+      z-index: 50000;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s cubic-bezier(.7,1.8,.2,1);
+    }
+    #announcement-banner.visible {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+      animation: bannerIn 0.22s cubic-bezier(.7,1.8,.2,1);
+    }
+    @keyframes bannerIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.97);}
+      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1);}
+    }
+    #announcement-banner-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 22px 4px 22px;
+    }
+    #announcement-banner-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-shadow: 0 1px 10px #0007;
+      line-height: 1.1;
+    }
+    #announcement-banner-desc {
+      font-size: 0.97rem;
+      color: #dbe8fd;
+      font-weight: 500;
+      margin-top: 2px;
+      opacity: 0.92;
+      text-shadow: 0 1px 6px #0003;
+    }
+    #announcement-banner-timerbar {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--theme-accent-light, #53a8fc), var(--theme-accent, #2196f3));
+      border-radius: 0 0 14px 14px;
+      transition: width 0.1s linear;
+      width: 100%;
+    }
+    @media (max-width: 600px) {
+      #announcement-banner {
+        width: 94vw;
+        min-width: 0;
+        font-size: 1rem;
+        height: 54px;
+        max-width: 99vw;
+        left: 50%;
+        padding: 0;
+      }
+      #announcement-banner-content {
+        padding: 8px 8vw 4px 8vw;
+      }
+      #announcement-banner-title {
+        font-size: 1.05rem;
+      }
+      #announcement-banner-desc {
+        font-size: 0.88rem;
+      }
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.triangles.min.js"></script>
 </head>
 <body>
   <div id="vanta-bg"></div>
@@ -231,7 +335,7 @@
   <nav class="navbar" id="navbar">
     <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
     <a href="index.html" tabindex="0">Home</a>
-    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="Games.html" tabindex="0">Games</a>
     <a href="PR0XIES.html" tabindex="0">Proxies</a>
     <a href="AI.html" tabindex="0">AI</a>
     <a href="#" tabindex="0">About</a>
@@ -242,42 +346,6 @@
     <h1>Settings</h1>
     <form autocomplete="off">
       <div class="settings-section">
-        <div class="settings-row">
-          Panic Key:
-          <input id="panic-key-input" type="text" maxlength="1" style="width:36px;text-align:center;" autocomplete="off" />
-          URL:
-          <input id="panic-url-input" type="text" placeholder="https://example.com" style="width:140px;" autocomplete="off" />
-        </div>
-        <div class="settings-row">
-          Confirm Before Exit
-          <select id="dropdown-beforeunload-toggle" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
-        </div>
-        <div class="settings-row">
-          Fake URL Bar
-          <select id="dropdown-fake-url-toggle" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
-        </div>
-        <div class="settings-row">
-          <div class="fake-url-row">
-            <label for="fake-url-select">Fake URL Preset:</label>
-            <select id="fake-url-select" class="premade-cloak-select">
-              <option value="">Choose...</option>
-              <option value="classroom">Google Classroom</option>
-              <option value="docs">Google Docs</option>
-              <option value="slides">Google Slides</option>
-              <option value="sheets">Google Sheets</option>
-              <option value="kahoot">Kahoot!</option>
-              <option value="custom">Custom...</option>
-            </select>
-            <input id="fake-url-custom" type="text" placeholder="Custom URL" style="display:none;" autocomplete="off" />
-            <input id="fake-url-custom-favicon" type="text" placeholder="Favicon URL" style="display:none;" autocomplete="off" />
-          </div>
-        </div>
         <div class="settings-row">
           Premade Tab Cloak:
           <select id="premade-cloak" class="premade-cloak-select">
@@ -297,31 +365,24 @@
         </div>
         <div class="settings-row">
           Enable Animated Backgrounds
-          <select id="dropdown-vanta" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
+          <label class="switch">
+            <input type="checkbox" id="toggle-vanta" />
+            <span class="slider"></span>
+          </label>
         </div>
         <div class="settings-row">
           Enable Particles on Buttons
-          <select id="dropdown-particles" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
-        </div>
-        <div class="settings-row">
-          Show Battery/Network Widget
-          <select id="dropdown-status-widget" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
+          <label class="switch">
+            <input type="checkbox" id="toggle-particles" />
+            <span class="slider"></span>
+          </label>
         </div>
         <div class="settings-row">
           Enable Scroll Percentage
-          <select id="dropdown-scroll-percent" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
+          <label class="switch">
+            <input type="checkbox" id="toggle-scroll-percent" />
+            <span class="slider"></span>
+          </label>
         </div>
         <div class="settings-row">
           Theme Color
@@ -343,91 +404,31 @@
         </div>
         <div class="settings-row">
           Cloak When Tab Inactive
-          <select id="dropdown-cloak-on-blur" class="setting-toggle">
-            <option value="on">On</option>
-            <option value="off">Off</option>
-          </select>
+          <label class="switch">
+            <input type="checkbox" id="toggle-cloak-on-blur" />
+            <span class="slider"></span>
+          </label>
         </div>
         <div class="settings-row">
           <span class="desc">When enabled, your tab's title and favicon will be replaced with the above when you click away or switch tabs. (Restores when you return!)</span>
         </div>
-        <div class="settings-row">
-          About:blank/URL Tab Cloak Generator:
-          <input type="text" id="aboutblank-url" class="cloaking-input" placeholder="Paste any site URL here" style="width: 330px; max-width: 90vw; font-size: 1.12rem;" />
-          <select id="aboutblank-cloak-preset" class="premade-cloak-select" style="width:auto;max-width:160px;margin-left:10px;">
-            <option value="">Preset (optional)...</option>
-            <option value="classroom">Google Classroom</option>
-            <option value="slides">Google Slides</option>
-            <option value="docs">Google Docs</option>
-            <option value="sheets">Google Sheets</option>
-            <option value="adobe">Adobe</option>
-            <option value="googlenewtab">Google New Tab</option>
-            <option value="bingnewtab">Bing New Tab</option>
-            <option value="kahoot">Kahoot</option>
-            <option value="quizzez">Quizzez</option>
-            <option value="sora">Sora</option>
-            <option value="aboutblank">Fake about:blank</option>
-          </select>
-          <button type="button" id="aboutblank-btn" style="margin-left:10px;padding:8px 16px;border-radius:8px;background:var(--theme-accent);color:#fff;font-size:1rem;font-family:inherit;font-weight:700;border:none;cursor:pointer;">Open Stealth Tab</button>
-        </div>
-        <div class="settings-row">
-          <span class="desc">Enter any site URL, pick a preset (optional), and click "Open Stealth Tab" to open that site in an about:blank tab with a cloaked title and favicon.</span>
-        </div>
-        <div class="settings-row">
-          <label class="custom-alert-toggle-label" style="background:none; color:inherit; font-weight:600; font-size:1.09rem;gap:10px;">
-            <input type="checkbox" id="show-custom-alert">
-            Show Custom Alert
-          </label>
-        </div>
       </div>
     </form>
   </div>
-  <!-- Fake URL Bar (hidden by default) -->
-  <div id="fake-url-bar" style="display:none;">
-    <img id="fake-url-favicon" src="" alt="" style="width:20px;height:20px;margin-right:10px;vertical-align:middle;"/>
-    <span id="fake-url-text"></span>
+  <!-- Announcement Banner -->
+  <div id="announcement-banner">
+    <div id="announcement-banner-content">
+      <div id="announcement-banner-title">Settings Updated!</div>
+      <div id="announcement-banner-desc"></div>
+    </div>
+    <div id="announcement-banner-timerbar"></div>
   </div>
-  <!-- Custom Alert Dialog -->
-  <dialog id="custom-alert-dialog">
-    <form method="dialog" class="custom-alert-content">
-      <div class="custom-alert-title">Notice</div>
-      <div class="custom-alert-message">This is a custom alert dialog!<br>You can toggle its appearance in settings.</div>
-      <div class="custom-alert-controls">
-        <label class="custom-alert-checkbox-label">
-          <input type="checkbox" id="block-future-dialogs">
-          Don't allow this page to create any additional dialogs
-        </label>
-      </div>
-      <div class="custom-alert-btns">
-        <button value="ok" class="custom-alert-btn">OK</button>
-      </div>
-    </form>
-  </dialog>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    // --- Helper for dropdowns (replaces toggles) ---
-    function saveSetting(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-    function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
-    function setupDropdown(id, key, onChange) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      // Set select based on saved value (default to "on" if true, "off" if false)
-      let stored = loadSetting(key, el.value === "on");
-      el.value = stored ? "on" : "off";
-      // Handle change
-      el.addEventListener('change', () => {
-        const isOn = el.value === "on";
-        saveSetting(key, isOn);
-        if (onChange) onChange(isOn);
-      });
-    }
-    // --- Vanta preview background for settings page ---
+    // --- Vanta Triangles background always on ---
     let vantaEffect;
-    function rand(min, max) { return Math.random() * (max - min) + min; }
     function setVantaThemeFromColor(hex) {
       if (vantaEffect) vantaEffect.destroy();
-      vantaEffect = VANTA.NET({
+      vantaEffect = VANTA.TRIANGLES({
         el: "#vanta-bg",
         mouseControls: false,
         touchControls: false,
@@ -436,14 +437,27 @@
         minWidth: 200.00,
         scale: 1.0,
         scaleMobile: 1.0,
-        color: hex,
-        backgroundColor: 0x0a0f2c,
-        points: rand(10, 17),
-        maxDistance: rand(18, 30),
-        spacing: rand(15, 28)
+        color1: hex,
+        color2: "#0a0f2c",
+        backgroundColor: "#0a0f2c"
       });
     }
     setVantaThemeFromColor("#2196f3");
+
+    // --- Helper for toggles ---
+    function saveSetting(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    function loadSetting(key, def) { let v = localStorage.getItem(key); return v === null ? def : JSON.parse(v); }
+
+    // Utility to setup each toggle
+    function setupToggle(id, key, onChange) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.checked = !!loadSetting(key, false);
+      el.addEventListener('change', () => {
+        saveSetting(key, el.checked);
+        if (onChange) onChange(el.checked);
+      });
+    }
 
     // Premade Tab Cloak logic
     const premadeCloaks = {
@@ -459,150 +473,6 @@
       sora: { title: "Sora", favicon: "https://soraapp.com/favicon.ico" },
       aboutblank: { title: "", favicon: "" }
     };
-    // --- Panic Key Logic ---
-    let panicKey = loadSetting('panicKey', '');
-    let panicUrl = loadSetting('panicUrl', '');
-    const panicKeyInput = document.getElementById('panic-key-input');
-    const panicUrlInput = document.getElementById('panic-url-input');
-    if (panicKeyInput) panicKeyInput.value = panicKey;
-    if (panicUrlInput) panicUrlInput.value = panicUrl;
-    if (panicKeyInput) panicKeyInput.addEventListener('input', function() {
-      panicKey = this.value.trim().toLowerCase();
-      saveSetting('panicKey', panicKey);
-    });
-    if (panicUrlInput) panicUrlInput.addEventListener('input', function() {
-      panicUrl = this.value.trim();
-      saveSetting('panicUrl', panicUrl);
-    });
-    document.addEventListener('keydown', function(e) {
-      if (
-        document.activeElement &&
-        (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')
-      ) return;
-      if (
-        panicKey &&
-        panicUrl &&
-        e.key.toLowerCase() === panicKey
-      ) {
-        let url = panicUrl;
-        if (!/^https?:\/\//i.test(url) && !/^\/\//.test(url)) url = 'https://' + url;
-        window.location.href = url;
-      }
-    });
-    // --- Confirm Before Exit logic ---
-    function updateBeforeUnloadListener(checked) {
-      window.onbeforeunload = checked
-        ? (e) => {
-            e.preventDefault();
-            e.returnValue = '';
-            return '';
-          }
-        : null;
-    }
-    setupDropdown('dropdown-beforeunload-toggle', 'beforeunloadConfirm', updateBeforeUnloadListener);
-    updateBeforeUnloadListener(loadSetting('beforeunloadConfirm', false));
-
-    // --- Fake URL Bar logic ---
-    const fakeUrlPresets = {
-      classroom: { url: "https://classroom.google.com/u/0/h", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
-      docs: { url: "https://docs.google.com/document/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
-      slides: { url: "https://docs.google.com/presentation/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
-      sheets: { url: "https://docs.google.com/spreadsheets/d/1FakeId", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
-      kahoot: { url: "https://kahoot.it", favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico" }
-    };
-    const fakeUrlToggle = document.getElementById('dropdown-fake-url-toggle');
-    const fakeUrlSelect = document.getElementById('fake-url-select');
-    const fakeUrlCustom = document.getElementById('fake-url-custom');
-    const fakeUrlCustomFavicon = document.getElementById('fake-url-custom-favicon');
-    const fakeUrlBarDiv = document.getElementById('fake-url-bar');
-    const fakeUrlBarText = document.getElementById('fake-url-text');
-    const fakeUrlBarFavicon = document.getElementById('fake-url-favicon');
-
-    let fakeUrlEnabled = loadSetting('fakeUrlEnabled', false);
-    let fakeUrlValue = loadSetting('fakeUrlValue', "");
-    let fakeUrlFavicon = loadSetting('fakeUrlFavicon', "");
-
-    function updateFakeUrlPopupUI() {
-      fakeUrlToggle.value = fakeUrlEnabled ? "on" : "off";
-      let found = null;
-      for(const k in fakeUrlPresets) {
-        if(fakeUrlValue === fakeUrlPresets[k].url && fakeUrlFavicon === fakeUrlPresets[k].favicon) {
-          found = k;
-          break;
-        }
-      }
-      if(found) {
-        fakeUrlSelect.value = found;
-        fakeUrlCustom.style.display = "none";
-        fakeUrlCustomFavicon.style.display = "none";
-      } else if(fakeUrlValue || fakeUrlFavicon) {
-        fakeUrlSelect.value = "custom";
-        fakeUrlCustom.value = fakeUrlValue;
-        fakeUrlCustomFavicon.value = fakeUrlFavicon;
-        fakeUrlCustom.style.display = "";
-        fakeUrlCustomFavicon.style.display = "";
-      } else {
-        fakeUrlSelect.value = "";
-        fakeUrlCustom.style.display = "none";
-        fakeUrlCustomFavicon.style.display = "none";
-      }
-    }
-    fakeUrlSelect.addEventListener('change', function() {
-      let key = fakeUrlSelect.value;
-      if (key === "custom") {
-        fakeUrlCustom.style.display = "";
-        fakeUrlCustomFavicon.style.display = "";
-        fakeUrlValue = fakeUrlCustom.value;
-        fakeUrlFavicon = fakeUrlCustomFavicon.value;
-      } else if (key && fakeUrlPresets[key]) {
-        fakeUrlValue = fakeUrlPresets[key].url;
-        fakeUrlFavicon = fakeUrlPresets[key].favicon;
-        fakeUrlCustom.style.display = "none";
-        fakeUrlCustomFavicon.style.display = "none";
-      } else {
-        fakeUrlValue = "";
-        fakeUrlFavicon = "";
-        fakeUrlCustom.style.display = "none";
-        fakeUrlCustomFavicon.style.display = "none";
-      }
-      saveSetting('fakeUrlValue', fakeUrlValue);
-      saveSetting('fakeUrlFavicon', fakeUrlFavicon);
-      updateFakeUrlBar();
-    });
-    fakeUrlCustom.addEventListener('input', function() {
-      fakeUrlValue = this.value;
-      saveSetting('fakeUrlValue', fakeUrlValue);
-      updateFakeUrlBar();
-    });
-    fakeUrlCustomFavicon.addEventListener('input', function() {
-      fakeUrlFavicon = this.value;
-      saveSetting('fakeUrlFavicon', fakeUrlFavicon);
-      updateFakeUrlBar();
-    });
-    setupDropdown('dropdown-fake-url-toggle', 'fakeUrlEnabled', function(checked) {
-      fakeUrlEnabled = checked;
-      updateFakeUrlBar();
-    });
-    function updateFakeUrlBar() {
-      fakeUrlEnabled = loadSetting('fakeUrlEnabled', false);
-      fakeUrlValue = loadSetting('fakeUrlValue', "");
-      fakeUrlFavicon = loadSetting('fakeUrlFavicon', "");
-      if (fakeUrlEnabled && fakeUrlValue) {
-        fakeUrlBarDiv.style.display = "";
-        fakeUrlBarText.textContent = fakeUrlValue;
-        fakeUrlBarFavicon.src = fakeUrlFavicon || "";
-        document.body.style.paddingTop = '38px';
-      } else {
-        fakeUrlBarDiv.style.display = "none";
-        document.body.style.paddingTop = '';
-      }
-    }
-    window.addEventListener('DOMContentLoaded', function() {
-      updateFakeUrlBar();
-      updateFakeUrlPopupUI();
-    });
-
-    // Premade Cloak
     const premadeCloakSelect = document.getElementById('premade-cloak');
     const titleInput = document.getElementById('cloak-title');
     const faviconInput = document.getElementById('cloak-favicon');
@@ -622,14 +492,13 @@
       }
     });
 
-    // Dropdowns for all previous toggles
-    setupDropdown('dropdown-vanta', 'enableVanta', checked => {
+    // Setup toggles
+    setupToggle('toggle-vanta', 'enableVanta', checked => {
       document.getElementById('vanta-bg').style.display = checked ? '' : 'none';
     });
-    setupDropdown('dropdown-particles', 'enableParticles');
-    setupDropdown('dropdown-status-widget', 'enableStatusWidget');
-    setupDropdown('dropdown-scroll-percent', 'enableScrollPercent');
-    setupDropdown('dropdown-cloak-on-blur', 'cloakOnBlur');
+    setupToggle('toggle-particles', 'enableParticles');
+    setupToggle('toggle-scroll-percent', 'enableScrollPercent');
+    setupToggle('toggle-cloak-on-blur', 'cloakOnBlur');
 
     // Color Picker
     const colorPicker = document.getElementById('theme-color');
@@ -655,7 +524,6 @@
       }
       link.href = url;
     }
-    const cloakOnBlurInput = document.getElementById('dropdown-cloak-on-blur');
     titleInput.value = loadSetting('cloakTitle', '');
     faviconInput.value = loadSetting('cloakFavicon', '');
     if(titleInput.value) setTabTitle(titleInput.value);
@@ -695,84 +563,59 @@
       }
     }
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    // "cloakOnBlur" is handled by dropdown now
 
-    // --- About:blank/URL Tab Cloak Generator ---
-    document.getElementById('aboutblank-btn').addEventListener('click', function() {
-      const urlInput = document.getElementById('aboutblank-url');
-      const url = urlInput.value.trim();
-      const preset = document.getElementById('aboutblank-cloak-preset').value;
-      let title = "";
-      let favicon = "";
-      if (preset && premadeCloaks[preset]) {
-        title = premadeCloaks[preset].title;
-        favicon = premadeCloaks[preset].favicon;
-      }
-
-      if (!url) {
-        alert("Please enter a URL.");
-        return;
-      }
-      let siteUrl = url;
-      if (!/^https?:\/\//i.test(siteUrl)) {
-        siteUrl = "https://" + siteUrl;
-      }
-      // Open about:blank and inject the iframe + custom tab cloak (persistent cloak)
-      const win = window.open("about:blank", "_blank");
-      if (win) {
-        win.document.write(`
-          <html>
-            <head>
-              <meta charset="utf-8">
-              <title>${title ? title.replace(/</g,"&lt;").replace(/>/g,"&gt;") : "about:blank"}</title>
-              ${favicon ? `<link rel="icon" href="${favicon}">` : ""}
-              <style>
-                html,body { margin:0; padding:0; height:100%; width:100%; background:#181b24; }
-                iframe { border:none; width:100vw; height:100vh; display:block; }
-              </style>
-            </head>
-            <body>
-              <iframe src="${siteUrl}" allowfullscreen></iframe>
-            </body>
-          </html>
-        `);
-        win.document.close();
-      } else {
-        alert("Pop-up blocked! Please allow pop-ups for this site.");
-      }
+    // Set toggles to saved value on page load
+    window.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('toggle-vanta').checked = !!loadSetting('enableVanta', true);
+      document.getElementById('toggle-particles').checked = !!loadSetting('enableParticles', false);
+      document.getElementById('toggle-scroll-percent').checked = !!loadSetting('enableScrollPercent', false);
+      document.getElementById('toggle-cloak-on-blur').checked = !!loadSetting('cloakOnBlur', false);
     });
 
-    // --- Custom Alert Dialog logic ---
-    const showAlertToggle = document.getElementById('show-custom-alert');
-    const customAlertDialog = document.getElementById('custom-alert-dialog');
-    const blockDialogsCheckbox = document.getElementById('block-future-dialogs');
-    let blockDialogs = loadSetting('blockCustomDialogs', false);
-    blockDialogsCheckbox.checked = blockDialogs;
-    blockDialogsCheckbox.addEventListener('change', function() {
-      blockDialogs = this.checked;
-      saveSetting('blockCustomDialogs', blockDialogs);
-    });
-    function maybeShowDialog() {
-      if (showAlertToggle.checked && !blockDialogs) {
-        if (!customAlertDialog.open) {
-          customAlertDialog.showModal();
-        }
+    // --- Announcement Banner Logic ---
+    function showAnnouncement(feature, state, isStealth) {
+      const banner = document.getElementById('announcement-banner');
+      const desc = document.getElementById('announcement-banner-desc');
+      const timerbar = document.getElementById('announcement-banner-timerbar');
+      let msg = "";
+      if (isStealth) {
+        msg = state ? "Stealth Mode Activated" : "Stealth Mode Deactivated";
       } else {
-        if (customAlertDialog.open) {
-          customAlertDialog.close();
-        }
+        msg = feature.charAt(0).toUpperCase() + feature.slice(1).replace(/([A-Z])/g, ' $1').trim() +
+          (typeof state === "boolean"
+            ? (state ? " Enabled" : " Disabled")
+            : "");
+      }
+      desc.textContent = msg;
+      banner.classList.add('visible');
+      banner.style.display = "flex";
+      timerbar.style.width = "100%";
+      timerbar.style.transition = "none";
+      void timerbar.offsetWidth;
+      timerbar.style.transition = "width 7.5s linear";
+      timerbar.style.width = "0%";
+      clearTimeout(window._announcementBannerTimeout);
+      window._announcementBannerTimeout = setTimeout(() => {
+        banner.classList.remove('visible');
+        setTimeout(() => { banner.style.display = "none"; }, 280);
+      }, 7500);
+    }
+
+    // --- Attach to toggles ---
+    const toggleMap = [
+      {id:"toggle-vanta", feature:"Animated Backgrounds", isStealth:false},
+      {id:"toggle-particles", feature:"Particles on Buttons", isStealth:false},
+      {id:"toggle-scroll-percent", feature:"Scroll Percentage", isStealth:false},
+      {id:"toggle-cloak-on-blur", feature:"Stealth", isStealth:true}
+    ];
+    for(const item of toggleMap) {
+      const el = document.getElementById(item.id);
+      if (el) {
+        el.addEventListener('change', function() {
+          showAnnouncement(item.feature, el.checked, item.isStealth);
+        });
       }
     }
-    showAlertToggle.checked = loadSetting('showCustomAlert', false);
-    showAlertToggle.addEventListener('change', function() {
-      saveSetting('showCustomAlert', this.checked);
-      maybeShowDialog();
-    });
-    customAlertDialog.addEventListener('close', function() {
-      maybeShowDialog();
-    });
-    maybeShowDialog();
-    blockDialogsCheckbox.addEventListener('change', maybeShowDialog);
   </script>
 </body>
 </html>
