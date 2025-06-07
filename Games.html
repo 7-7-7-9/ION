@@ -22,12 +22,7 @@
       width: 100vw;
       overflow-x: hidden;
     }
-    #vanta-bg {
-      position: fixed;
-      left: 0; top: 0;
-      width: 100vw; height: 100vh;
-      z-index: 0;
-      pointer-events: none;
+   
     }
     body {
       display: flex;
@@ -201,6 +196,73 @@
       left: 0; top: 0;
       pointer-events: none;
     }
+    .tech-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, #0a0f2c 0%, #17294a 100%);
+}
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.line {
+  position: absolute;
+  width: 2px;
+  height: 120vh;
+  top: -10vh;
+  background: linear-gradient(180deg, #1af1ff40 0%, #1af1ff10 100%);
+  opacity: 0.2;
+  border-radius: 2px;
+  animation: lineMove 7s linear infinite;
+}
+.line:nth-child(1) { left: 10vw; animation-delay: 0s; }
+.line:nth-child(2) { left: 25vw; animation-delay: 1.3s; }
+.line:nth-child(3) { left: 51vw; animation-delay: 3.2s; }
+.line:nth-child(4) { left: 68vw; animation-delay: 0.8s; }
+.line:nth-child(5) { left: 87vw; animation-delay: 2.1s; }
+.line:nth-child(6) { left: 40vw; animation-delay: 4.5s; }
+.line:nth-child(7) { left: 78vw; animation-delay: 2.7s; }
+@keyframes lineMove {
+  0% { top: -10vh; opacity: 0.15; }
+  5% { opacity: 0.22; }
+  50% { opacity: 0.19; }
+  95% { opacity: 0.21; }
+  100% { top: 110vh; opacity: 0.13; }
+}
+.dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.dot {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--theme-accent), var(--theme-accent-light));
+  opacity: 0.12;
+  animation: dotFade 9s linear infinite;
+}
+.dot:nth-child(1) { left: 18vw; top: 36vh; animation-delay: 0s;}
+.dot:nth-child(2) { left: 44vw; top: 62vh; animation-delay: 1.1s;}
+.dot:nth-child(3) { left: 82vw; top: 27vh; animation-delay: 2.8s;}
+.dot:nth-child(4) { left: 63vw; top: 79vh; animation-delay: 1.7s;}
+.dot:nth-child(5) { left: 29vw; top: 54vh; animation-delay: 3.4s;}
+.dot:nth-child(6) { left: 71vw; top: 17vh; animation-delay: 2.2s;}
+.dot:nth-child(7) { left: 54vw; top: 41vh; animation-delay: 4.4s;}
+@keyframes dotFade {
+  0%, 100% { opacity: 0.11; }
+  50% { opacity: 0.22; }
+}
     /* Quick Settings Gear Button */
     #quick-settings-gear-btn {
       position: fixed;
@@ -1057,4 +1119,24 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 </body>
+  <div class="tech-bg">
+  <div class="lines">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
 </html>
