@@ -37,6 +37,7 @@
       min-height: 100vh;
       position: relative;
       z-index: 1;
+      transition: padding-top 0.2s;
     }
     .container {
       max-width: 960px;
@@ -123,136 +124,224 @@
       text-shadow: 0 0 8px var(--theme-accent-light);
       border: none;
     }
-    /* Cloak UI styles */
-    .cloak-bar {
-      margin: 18px auto 34px auto;
+    .status-widget {
+      position: fixed;
+      top: 18px;
+      left: 32px;
+      transform: none;
       display: flex;
       align-items: center;
-      gap: 14px;
-      background: rgba(30,40,70,0.97);
+      gap: 16px;
+      padding: 8px 14px;
+      background: rgba(10, 15, 44, 0.92);
       border-radius: 14px;
-      padding: 12px 26px;
-      box-shadow: 0 2px 10px #0004;
-      width: fit-content;
-      min-width: 230px;
-      max-width: 95vw;
-      z-index: 5;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      font-size: 1.1rem;
+      color: var(--theme-accent-light);
+      z-index: 1000;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: none;
+      min-width: 220px;
+      justify-content: center;
     }
-    .cloak-bar select {
-      font-size: 1.08rem;
-      border-radius: 7px;
-      border: 1.5px solid #385599;
-      background: #232d48;
-      color: #d1e5ff;
-      padding: 7px 11px;
-      outline: none;
-      min-width: 140px;
-      max-width: 350px;
-      transition: border 0.13s;
-    }
-    .cloak-bar button {
-      font-size: 1.09rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 22px;
-      cursor: pointer;
-      box-shadow: 0 2px 10px var(--theme-accent-dark, #1e90ff33);
-      transition: background 0.15s, color 0.15s;
-      margin-left: 8px;
-    }
-    .cloak-bar button:hover, .cloak-bar button:focus-visible {
-      background: var(--theme-accent-dark);
-      color: #fff;
-      outline: none;
-    }
-    @media (max-width: 600px) {
-      .cloak-bar {
-        padding: 8px 2vw;
-        margin: 10px auto 16px auto;
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .cloak-bar button {
-        width: 100%;
-      }
-    }
-    /* Quick Settings styles */
-    .quick-settings {
+    .status-widget span {
       display: flex;
       align-items: center;
-      gap: 18px;
-      margin-bottom: 36px;
-      margin-top: 12px;
-      background: rgba(30,40,70,0.97);
-      border-radius: 14px;
-      padding: 12px 26px;
-      box-shadow: 0 2px 10px #0004;
-      width: fit-content;
-      min-width: 230px;
-      max-width: 99vw;
-      z-index: 5;
-      font-size: 1.03rem;
+      gap: 6px;
     }
-    .quick-settings label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-weight: 600;
-      margin-bottom: 0;
-      font-size: 1.03rem;
-    }
-    .quick-settings .switch {
-      position: relative;
+    #battery-icon svg, #wifi-icon svg {
       display: inline-block;
-      width: 44px;
-      height: 24px;
-      margin-left: 6px;
-      margin-right: 8px;
       vertical-align: middle;
+      height: 1.2em;
+      width: 1.2em;
     }
-    .quick-settings .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
+    .color-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
     }
-    .quick-settings .slider {
-      position: absolute;
+    .color-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #0003;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #c2cddf;
-      border-radius: 24px;
-      transition: .3s;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      position: relative;
+      background: #fff;
+      display: inline-block;
+      padding: 0;
     }
-    .quick-settings .slider:before {
+    .color-btn.selected, .color-btn:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .color-btn[data-hue="210"] { background: hsl(210,100%,56%); }
+    .color-btn[data-hue="0"]   { background: hsl(0,100%,56%); }
+    .color-btn[data-hue="30"]  { background: hsl(30,100%,56%); }
+    .color-btn[data-hue="50"]  { background: hsl(50,100%,56%); }
+    .color-btn[data-hue="120"] { background: hsl(120,100%,40%); }
+    .color-btn[data-hue="180"] { background: hsl(180,100%,40%); }
+    .color-btn[data-hue="270"] { background: hsl(270,100%,60%); }
+    .color-btn[data-hue="320"] { background: hsl(320,100%,60%); }
+    .color-btn[data-hue="220"] { background: hsl(220,10%,52%); }
+    .color-btn::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid #fff0;
       position: absolute;
-      content: "";
-      height: 19px;
-      width: 19px;
-      left: 2.5px; bottom: 2.5px;
-      background-color: #fff;
+      left: 0; top: 0;
+      pointer-events: none;
+    }
+    /* Quick Settings Gear Button */
+    #quick-settings-gear-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
-      transition: .3s;
-      box-shadow: 0 1px 5px #0002;
+      background: linear-gradient(135deg, var(--theme-accent), var(--theme-accent-light));
+      box-shadow: 0 4px 22px var(--theme-accent-dark, #1e90ff66);
+      border: none;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+      outline: none;
     }
-    .quick-settings input:checked + .slider {
-      background-color: var(--theme-accent);
+    #quick-settings-gear-btn:active,
+    #quick-settings-gear-btn:focus-visible {
+      background: var(--theme-accent-dark);
+      transform: scale(0.97);
     }
-    .quick-settings input:checked + .slider:before {
-      transform: translateX(20px);
+    #quick-settings-gear-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      pointer-events: none;
     }
     @media (max-width: 600px) {
-      .quick-settings {
-        padding: 8px 2vw;
-        margin: 10px auto 14px auto;
-        gap: 9px;
-        flex-direction: column;
-        align-items: stretch;
-        font-size: 0.97rem;
+      #quick-settings-gear-btn {
+        width: 44px;
+        height: 44px;
+        bottom: 14px;
+        right: 10px;
+      }
+      #quick-settings-gear-btn svg {
+        width: 22px;
+        height: 22px;
       }
     }
+    /* Quick Settings Modal */
+    #quick-settings-modal {
+      display: none;
+      position: fixed;
+      z-index: 2500;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(18,22,44,0.32);
+      justify-content: center;
+      align-items: center;
+    }
+    #quick-settings-modal.active {
+      display: flex;
+    }
+    #quick-settings-sheet {
+      background: rgba(18, 22, 44, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 2px 28px var(--theme-accent-dark, #1e90ff44);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 32px 32px 24px 32px;
+      min-width: 270px;
+      min-height: 90px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #e0e6f0;
+      transition: top 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 96vw;
+      position: relative;
+      animation: quickSettingsIn 0.19s cubic-bezier(.7,1.8,.2,1) 1;
+    }
+    @keyframes quickSettingsIn {
+      0% { opacity: 0; transform: translateY(22px) scale(0.97);}
+      100% { opacity: 1; transform: none;}
+    }
+    #quick-settings-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--theme-accent-light);
+      font-size: 1.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+      z-index: 2;
+    }
+    #quick-settings-modal-close:hover {
+      opacity: 1;
+      color: var(--theme-accent);
+    }
+    #quick-settings-sheet h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.28rem;
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+      font-size: 1.08rem;
+    }
+    .setting-label {
+      flex: 1;
+      color: var(--theme-accent-light);
+    }
+    /* Dropdown styles */
+    .dropdown {
+      position: relative;
+      min-width: 130px;
+    }
+    .dropdown select {
+      background: #232b40;
+      color: #fff;
+      border-radius: 8px;
+      border: 1.5px solid var(--theme-accent-dark);
+      font-size: 1.07rem;
+      padding: 5px 20px 5px 9px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      appearance: none;
+      outline: none;
+      transition: border 0.16s;
+      box-shadow: 0 1px 4px #0002;
+    }
+    .dropdown:after {
+      content: "▼";
+      position: absolute;
+      right: 12px; top: 8px;
+      color: var(--theme-accent-light);
+      font-size: 0.75em;
+      pointer-events: none;
+    }
+    /* End Quick Settings */
     .scroll-area {
       width: 100%;
       max-width: 900px;
@@ -397,8 +486,18 @@
         width: 32px;
         right: -36px;
       }
-      .quick-settings {
+      .status-widget {
         font-size: 0.98rem;
+        padding: 6px 10px;
+        gap: 8px;
+        min-width: 140px;
+        left: 8px;
+        top: 8px;
+      }
+      .color-btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 4px;
       }
       .navbar {
         top: 8px;
@@ -413,290 +512,549 @@
         font-size: 0.95rem;
       }
     }
+    /* Iframe full-window view for ?src=... mode */
+    #full-iframe-container {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: #181b24;
+      z-index: 10000;
+    }
+    #full-iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      background: #181b24;
+      display: block;
+    }
+    #iframe-download-btn {
+      position: fixed;
+      left: 24px;
+      top: 18px;
+      z-index: 99;
+      background: linear-gradient(90deg,var(--theme-accent),var(--theme-accent-light));
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 9px;
+      border: none;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.09rem;
+      text-decoration: none;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      cursor: pointer;
+      transition: background 0.15s;
+      outline: none;
+      display: none;
+    }
+    #iframe-download-btn:active,
+    #iframe-download-btn:focus-visible {
+      background: var(--theme-accent-dark);
+    }
+    #full-iframe-fallback {
+      color: #fff;
+      background: #181b24;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.3rem;
+      text-align: center;
+      padding: 60px 18px 40px 18px;
+      display: none;
+    }
+    #full-iframe-fallback a {
+      display: inline-block;
+      color: #5cf;
+      font-size: 1.1em;
+      text-decoration: underline;
+      margin-top: 18px;
+      word-break: break-all;
+    }
+    /* Modal styles for in-site iframe window */
+    #game-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 5000;
+      width: 100vw; height: 100vh;
+      background: rgba(14,15,34,0.93);
+      backdrop-filter: blur(1.5px);
+      justify-content: center;
+      align-items: center;
+    }
+    #game-modal .modal-inner {
+      position: relative;
+      width: 90vw;
+      max-width: 1000px;
+      height: 88vh;
+      box-shadow: 0 0 30px #000c;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #141c36;
+      display: flex;
+      flex-direction: column;
+    }
+    #game-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      padding: 7px 20px;
+      border-radius: 7px;
+      background: #232d48;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      border: none;
+      cursor: pointer;
+    }
+    #game-modal iframe {
+      border: none;
+      border-radius: 0 0 16px 16px;
+      background: #141c36;
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex: 1;
+    }
+    #iframe-fallback {
+      display: none;
+      padding: 40px 18px;
+      text-align: center;
+      color: white;
+      font-size: 1.3rem;
+      background: rgba(24,27,36,0.97);
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    #iframe-fallback a {
+      color: #5cf;
+      word-break: break-all;
+      font-size: 1.1em;
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: 18px;
+    }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.triangles.min.js"></script>
 </head>
 <body>
+  <!-- Full-window iframe for ?src=... mode -->
+  <div id="full-iframe-container">
+    <a id="iframe-download-btn" href="#" download>⬇ Download</a>
+    <iframe id="full-iframe" src="" allowtransparency="true" frameborder="0" scrolling="yes" allowfullscreen></iframe>
+    <div id="full-iframe-fallback">
+      <span id="full-iframe-fallback-msg"></span><br>
+      <a id="full-iframe-fallback-link" href="#" target="_blank">Open Game In New Tab</a>
+    </div>
+  </div>
   <div id="vanta-bg"></div>
-  <!-- Navigation Bar -->
   <nav class="navbar" id="navbar">
     <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
     <a href="index.html" tabindex="0">Home</a>
-    <a href="Games.html" tabindex="0">Games</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
     <a href="PR0XIES.html" tabindex="0">Proxies</a>
     <a href="AI.html" tabindex="0">AI</a>
     <a href="#" tabindex="0">About</a>
     <a href="#" tabindex="0">Contact</a>
+    <a href="Settings.html" tabindex="0">Settings</a>
   </nav>
-
-  <div class="container">
-    <h1>Games</h1>
-    <!-- Cloak UI -->
-    <div class="cloak-bar">
-      <label for="cloak-dropdown" style="margin-right:8px; font-weight:700;">Tab Cloak:</label>
-      <select id="cloak-dropdown">
-        <option value="">Choose...</option>
-        <option value="classroom">Google Classroom</option>
-        <option value="kahoot">Kahoot</option>
-        <option value="search">Google Search</option>
-        <option value="sheets">Google Sheets</option>
-        <option value="docs">Google Docs</option>
-        <option value="slides">Google Slides</option>
-        <option value="adobe">Adobe</option>
-        <option value="khan">Khan Academy</option>
-        <option value="powerschool">Powerschool</option>
-      </select>
-      <button id="cloak-activate-btn" title="Apply Tab Cloak">Cloak</button>
+  <div class="status-widget" id="status-widget">
+    <span id="battery-icon" title="Battery"></span>
+    <span id="wifi-icon" title="Network"></span>
+    <span id="datetime"></span>
+    <span class="color-btns" id="color-btns" title="Theme Color">
+      <button class="color-btn selected" data-hue="210" aria-label="Default Blue"></button>
+      <button class="color-btn" data-hue="0" aria-label="Red"></button>
+      <button class="color-btn" data-hue="30" aria-label="Orange"></button>
+      <button class="color-btn" data-hue="50" aria-label="Yellow"></button>
+      <button class="color-btn" data-hue="120" aria-label="Green"></button>
+      <button class="color-btn" data-hue="180" aria-label="Cyan"></button>
+      <button class="color-btn" data-hue="270" aria-label="Purple"></button>
+      <button class="color-btn" data-hue="320" aria-label="Pink"></button>
+      <button class="color-btn" data-hue="220" aria-label="Gray"></button>
+    </span>
+  </div>
+  <!-- Quick Settings Gear Button -->
+  <button id="quick-settings-gear-btn" title="Quick Settings" aria-label="Quick Settings">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-4.06l1.77-1.37a.5.5 0 0 0 .11-.66l-1.7-2.94a.5.5 0 0 0-.61-.23l-2.1.84a6.82 6.82 0 0 0-1.48-.86l-.32-2.24A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.43l-.32 2.24c-.52.2-1.01.47-1.48.86l-2.1-.84a.5.5 0 0 0-.61.23L2.7 7.41a.5.5 0 0 0 .11.66l1.77 1.37c-.05.32-.08.65-.08.99 0 .34.03.67.08.99l-1.77 1.37a.5.5 0 0 0-.11.66l1.7 2.94c.13.22.39.3.61.23l2.1-.84c.47.39.96.72 1.48.86l.32 2.24A.5.5 0 0 0 10 22h4c.26 0 .46-.18.5-.43l.32-2.24c.52-.2 1.01-.47 1.48-.86l2.1.84c.22.09.48-.01.61-.23l1.7-2.94a.5.5 0 0 0-.11-.66l-1.77-1.37c.05-.32.08-.65.08-.99 0-.34-.03-.67-.08-.99zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+    </svg>
+  </button>
+  <!-- Quick Settings Modal (dropdown for premade cloaking) -->
+  <div id="quick-settings-modal">
+    <div id="quick-settings-sheet">
+      <button id="quick-settings-modal-close" title="Close" aria-label="Close">&times;</button>
+      <h2>Quick Settings</h2>
+     <div class="setting-row">
+  <span class="setting-label">Premade Cloaking</span>
+  <span class="dropdown" style="display:flex;align-items:center;gap:8px;">
+    <select id="premade-cloak-dropdown">
+      <option value="off">Off</option>
+      <option value="classroom">Google Classroom</option>
+      <option value="sheets">Google Sheets</option>
+      <option value="slides">Google Slides</option>
+      <option value="docs">Google Docs</option>
+      <option value="gmail">Gmail</option>
+      <option value="powerschool">PowerSchool</option>
+      <option value="studysync">StudySync</option>
+      <option value="khan">Khan Academy</option>
+      <option value="adobe">Adobe</option>
+      <option value="powerpoint">PowerPoint</option>
+      <option value="word">Microsoft Word</option>
+      <option value="youtube">YouTube</option>
+    </select>
+    <button id="cloak-now-btn" type="button" style="padding:4px 15px;border-radius:6px;border:none;background:var(--theme-accent);color:#fff;font-weight:700;cursor:pointer;">Cloak Now</button>
+  </span>
+</div>
     </div>
-    <!-- QUICK SETTINGS -->
-    <div class="quick-settings" id="quick-settings">
-      <label>
-        Animated BG
-        <span class="switch">
-          <input type="checkbox" id="qset-animated-bg">
-          <span class="slider"></span>
-        </span>
-      </label>
-      <label>
-        Scroll %
-        <span class="switch">
-          <input type="checkbox" id="qset-scroll-percent">
-          <span class="slider"></span>
-        </span>
-      </label>
-      <label>
-        Particles
-        <span class="switch">
-          <input type="checkbox" id="qset-particles">
-          <span class="slider"></span>
-        </span>
-      </label>
-      <label>
-        <span id="qset-cloak-label">Cloak on Load</span>
-        <span class="switch">
-          <input type="checkbox" id="qset-cloak-onload">
-          <span class="slider"></span>
-        </span>
-      </label>
-    </div>
-    <div class="scroll-area">
-      <div class="game-grid" id="game-grid">
-        <!-- Game buttons will be injected here -->
+  </div>
+  <div class="container" id="main-container">
+    <h1>ION GAME VAULT</h1>
+    <div class="scroll-area" id="scroll-area">
+      <div class="scroll-percent" id="scroll-percent">0%</div>
+      <div class="game-grid">
+        <!-- Game Buttons Autogenerated -->
+        <a href="games.html/BobTheRobber4.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bob The Robber 4</span></a>
+        <a href="games.html/BubbleTanks2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bubble Tanks 2</span></a>
+        <a href="games.html/ChromeDino.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Chrome Dino</span></a>
+        <a href="games.html/ClusterRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cluster Rush</span></a>
+        <a href="games.html/CookieClicker.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Cookie Clicker</span></a>
+        <a href="games.html/Drift boss.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Drift Boss</span></a>
+        <a href="games.html/DriveMad.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Drive Mad</span></a>
+        <a href="games.html/GeometryDash.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Geometry Dash</span></a>
+        <a href="games.html/HelixJump.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Helix Jump</span></a>
+        <a href="games.html/LearnToFly.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Learn To Fly</span></a>
+        <a href="games.html/LearnToFly2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Learn To Fly 2</span></a>
+        <a href="games.html/Minecraft1.5.2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Minecraft 1.5.2</span></a>
+        <a href="games.html/Minecraft1.8.8.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Minecraft 1.8.8</span></a>
+        <a href="games.html/MonkeyMart.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Monkey Mart</span></a>
+        <a href="games.html/MotoX3M-Pool.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Moto X3M Pool</span></a>
+        <a href="games.html/MotoX3M-Spooky.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Moto X3M Spooky</span></a>
+        <a href="games.html/MotoX3M-Winter.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Moto X3M Winter</span></a>
+        <a href="games.html/MotoX3M.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Moto X3M</span></a>
+        <a href="games.html/Run3.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Run 3</span></a>
+        <a href="games.html/Slope.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Slope</span></a>
+        <a href="games.html/Slope2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Slope 2</span></a>
+        <a href="games.html/TunnelRush.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Tunnel Rush</span></a>
+        <a href="games.html/bobtherobber2.html" class="game-button"><canvas class="game-button-canvas"></canvas><span class="game-button-content">Bob The Robber 2</span></a>
+        <!-- End of Game Buttons Autogenerated -->
       </div>
     </div>
-    <div class="scroll-percent" id="scroll-percent" style="display:none;">0%</div>
+  </div>
+  <!-- In-site modal for iframe games -->
+  <div id="game-modal">
+    <div class="modal-inner">
+      <button id="game-modal-close">&times; Close</button>
+      <div style="position: absolute; left: 14px; top: 12px; z-index: 20;">
+        <a id="iframe-modal-download-btn" href="#" download style="background:linear-gradient(90deg,var(--theme-accent),var(--theme-accent-light));color:#fff;padding:7px 18px;border-radius:7px;border:none;font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:1.09rem;text-decoration:none;box-shadow:0 2px 16px var(--theme-accent-dark, #1e90ff33);cursor:pointer;transition:background 0.15s;">
+          ⬇ Download
+        </a>
+      </div>
+      <div id="iframe-holder" style="width:100%;height:100%;flex:1;display:flex;flex-direction:column;">
+        <iframe id="game-iframe" src="" allowtransparency="true" frameborder="0" scrolling="yes" allowfullscreen style="flex:1;"></iframe>
+        <div id="iframe-fallback">
+          <span id="iframe-fallback-msg"></span><br>
+          <a id="iframe-fallback-link" href="#" target="_blank">Open Game In New Tab</a>
+        </div>
+      </div>
+    </div>
   </div>
   <script>
-    // Vanta BG
-    let vantaEffect;
-    function setVantaBG(enabled) {
-      if (enabled) {
-        if (!vantaEffect && window.VANTA && window.VANTA.TRIANGLES) {
-          vantaEffect = VANTA.TRIANGLES({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color1: "#2196f3",
-            color2: "#0a0f2c",
-            backgroundColor: "#0a0f2c"
-          });
-        } else if (vantaEffect) {
-          document.getElementById('vanta-bg').style.display = "";
+    // --- Full-window iframe logic (iframe.html merged) ---
+    (function() {
+      function getQueryParam(name) {
+        let match = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
+        return match ? decodeURIComponent(match[1]) : '';
+      }
+      var gameSrc = getQueryParam('src');
+      if (gameSrc) {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.body.style.overflow = "hidden";
+        Array.from(document.body.children).forEach(function(child) {
+          if (child.id !== "full-iframe-container") child.style.display = "none";
+        });
+        var fc = document.getElementById('full-iframe-container');
+        fc.style.display = "block";
+        var iframe = document.getElementById('full-iframe');
+        var downloadBtn = document.getElementById('iframe-download-btn');
+        var fallback = document.getElementById('full-iframe-fallback');
+        var fallbackMsg = document.getElementById('full-iframe-fallback-msg');
+        var fallbackLink = document.getElementById('full-iframe-fallback-link');
+        iframe.src = gameSrc;
+        // Guess filename from URL for Chromebook style
+        var gameNameGuess = gameSrc.split('/').pop().replace(/\.html.*$/,"").replace(/[^a-zA-Z0-9]/g,'_');
+        var fileName = gameNameGuess + '.chronos.html';
+        downloadBtn.href = gameSrc;
+        downloadBtn.download = fileName;
+        fallbackLink.href = gameSrc;
+        // Fallback logic for full-window iframe
+        let fallbackTimeout = setTimeout(() => {
+          showFullIframeFallback(gameSrc, "This game can't be embedded due to site security. Click below to open it in a new tab.");
+        }, 3500);
+        function showFullIframeFallback(url, msg) {
+          iframe.style.display = 'none';
+          fallback.style.display = '';
+          fallbackLink.href = url;
+          fallbackMsg.textContent = msg || "This game can't be embedded. Click below to open it in a new tab.";
         }
-      } else if (vantaEffect) {
-        vantaEffect.destroy();
-        vantaEffect = null;
-        document.getElementById('vanta-bg').style.display = "none";
-      }
-    }
-
-    // --- Games.html independent Tab Cloak ---
-    const cloakOptions = {
-      classroom: {
-        title: "Classes",
-        favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
-      },
-      kahoot: {
-        title: "Kahoot!",
-        favicon: "https://assets-cdn.kahoot.it/controller/v2/favicon.ico"
-      },
-      search: {
-        title: "Google",
-        favicon: "https://www.google.com/favicon.ico"
-      },
-      sheets: {
-        title: "Google Sheets",
-        favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
-      },
-      docs: {
-        title: "Google Docs",
-        favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
-      },
-      slides: {
-        title: "Google Slides",
-        favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
-      },
-      adobe: {
-        title: "Adobe Acrobat",
-        favicon: "https://www.adobe.com/favicon.ico"
-      },
-      khan: {
-        title: "Khan Academy",
-        favicon: "https://www.khanacademy.org/favicon.ico"
-      },
-      powerschool: {
-        title: "PowerSchool",
-        favicon: "https://powerschool.com/wp-content/uploads/favicon.ico"
-      }
-    };
-
-    function setTabCloak(title, favicon) {
-      if (title) document.title = title;
-      if (favicon) {
-        let link = document.querySelector("link[rel~='icon']");
-        if(!link) {
-          link = document.createElement('link');
-          link.rel = 'icon';
-          document.head.appendChild(link);
+        function resetFullIframeFallback() {
+          iframe.style.display = '';
+          fallback.style.display = 'none';
         }
-        link.href = favicon;
+        iframe.onload = function() {
+          clearTimeout(fallbackTimeout);
+          try {
+            let test = iframe.contentWindow.location.href;
+          } catch (err) {
+            showFullIframeFallback(gameSrc, "This game can't be embedded. Click below to open it in a new tab.");
+          }
+        };
+        iframe.onerror = function() {
+          clearTimeout(fallbackTimeout);
+          showFullIframeFallback(gameSrc, "This game can't be embedded. Click below to open it in a new tab.");
+        };
       }
-    }
+    })();
 
-    // --- QUICK SETTINGS keys (totally separate from Settings.html) ---
-    const QSET_KEYS = {
-      animatedBG: "games_qset_animatedbg",
-      scrollPercent: "games_qset_scrollpercent",
-      particles: "games_qset_particles",
-      cloakOnLoad: "games_qset_cloakonload",
-      cloakChoice: "games_qset_cloakchoice"
-    };
+    // --- Modal logic for iframe games (Games.html logic) with fallback ---
+    if (!location.search.match(/[?&]src=/)) {
+      const gameUrlMap = {
+        "Bob The Robber 4": "games.html/BobTheRobber4.html",
+        "Bubble Tanks 2": "games.html/BubbleTanks2.html",
+        "Chrome Dino": "games.html/ChromeDino.html",
+        "Cluster Rush": "games.html/ClusterRush.html",
+        "Cookie Clicker": "games.html/CookieClicker.html",
+        "Drift Boss": "games.html/Drift boss.html",
+        "Drive Mad": "games.html/DriveMad.html",
+        "Geometry Dash": "games.html/GeometryDash.html",
+        "Helix Jump": "games.html/HelixJump.html",
+        "Learn To Fly": "games.html/LearnToFly.html",
+        "Learn To Fly 2": "games.html/LearnToFly2.html",
+        "Minecraft 1.5.2": "games.html/Minecraft1.5.2.html",
+        "Minecraft 1.8.8": "games.html/Minecraft1.8.8.html",
+        "Monkey Mart": "games.html/MonkeyMart.html",
+        "Moto X3M Pool": "games.html/MotoX3M-Pool.html",
+        "Moto X3M Spooky": "games.html/MotoX3M-Spooky.html",
+        "Moto X3M Winter": "games.html/MotoX3M-Winter.html",
+        "Moto X3M": "games.html/MotoX3M.html",
+        "Run 3": "games.html/Run3.html",
+        "Slope": "games.html/Slope.html",
+        "Slope 2": "games.html/Slope2.html",
+        "Tunnel Rush": "games.html/TunnelRush.html",
+        "Bob The Robber 2": "games.html/bobtherobber2.html"
+      };
 
-    function saveQSet(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-    function loadQSet(key, def) {
-      let v = localStorage.getItem(key);
-      return v === null ? def : JSON.parse(v);
-    }
-
-    // --- Quick Settings Setup ---
-    function setupQuickSettings() {
-      // Animated BG
-      const qbg = document.getElementById('qset-animated-bg');
-      qbg.checked = loadQSet(QSET_KEYS.animatedBG, true);
-      setVantaBG(qbg.checked);
-      qbg.addEventListener('change', function() {
-        saveQSet(QSET_KEYS.animatedBG, qbg.checked);
-        setVantaBG(qbg.checked);
-      });
-
-      // Scroll %
-      const qsp = document.getElementById('qset-scroll-percent');
-      qsp.checked = loadQSet(QSET_KEYS.scrollPercent, false);
-      document.getElementById('scroll-percent').style.display = qsp.checked ? "" : "none";
-      qsp.addEventListener('change', function() {
-        saveQSet(QSET_KEYS.scrollPercent, qsp.checked);
-        document.getElementById('scroll-percent').style.display = qsp.checked ? "" : "none";
-      });
-
-      // Particles (dummy, but persists)
-      const qp = document.getElementById('qset-particles');
-      qp.checked = loadQSet(QSET_KEYS.particles, false);
-      qp.addEventListener('change', function() {
-        saveQSet(QSET_KEYS.particles, qp.checked);
-        // Place effect code here if you have button particles
-      });
-
-      // Cloak on Load
-      const qcl = document.getElementById('qset-cloak-onload');
-      qcl.checked = loadQSet(QSET_KEYS.cloakOnLoad, false);
-      qcl.addEventListener('change', function() {
-        saveQSet(QSET_KEYS.cloakOnLoad, qcl.checked);
-      });
-    }
-
-    // --- Cloak UI logic ---
-    document.getElementById('cloak-activate-btn').addEventListener('click', function() {
-      const val = document.getElementById('cloak-dropdown').value;
-      if (!val || !cloakOptions[val]) return;
-      setTabCloak(cloakOptions[val].title, cloakOptions[val].favicon);
-      // Save cloak choice
-      saveQSet(QSET_KEYS.cloakChoice, val);
-    });
-
-    // On load, restore quick settings and apply cloak if enabled
-    window.addEventListener("DOMContentLoaded", function() {
-      setupQuickSettings();
-
-      // Restore cloak choice in dropdown
-      const prevCloak = loadQSet(QSET_KEYS.cloakChoice, "");
-      if (prevCloak && cloakOptions[prevCloak]) {
-        document.getElementById('cloak-dropdown').value = prevCloak;
+      function showIframeFallback(url, msg) {
+        document.getElementById('game-iframe').style.display = 'none';
+        document.getElementById('iframe-fallback').style.display = '';
+        document.getElementById('iframe-fallback-link').href = url;
+        document.getElementById('iframe-fallback-msg').textContent = msg || "This game can't be embedded. Click below to open it in a new tab.";
+      }
+      function resetIframeFallback() {
+        document.getElementById('game-iframe').style.display = '';
+        document.getElementById('iframe-fallback').style.display = 'none';
       }
 
-      // Cloak on load if enabled
-      const doCloak = loadQSet(QSET_KEYS.cloakOnLoad, false);
-      if (doCloak && prevCloak && cloakOptions[prevCloak]) {
-        setTabCloak(cloakOptions[prevCloak].title, cloakOptions[prevCloak].favicon);
-      }
+      const downloadMap = gameUrlMap; // download links match modal links
 
-      // Render games
-      renderGames();
-
-      // If Scroll % is enabled, set up scroll percentage display
-      if (document.getElementById('qset-scroll-percent').checked) {
-        setupScrollPercent();
-      }
-    });
-
-    // --- Example Games List and Rendering ---
-    const games = [
-      { name: "Slope", url: "games/slope.html" },
-      { name: "2048", url: "games/2048.html" },
-      { name: "Run 3", url: "games/run3.html" },
-      { name: "Minecraft Classic", url: "games/minecraft-classic.html" },
-      { name: "Retro Bowl", url: "games/retrobowl.html" },
-      { name: "Tetris", url: "games/tetris.html" },
-      { name: "Cookie Clicker", url: "games/cookieclicker.html" },
-      { name: "Minesweeper", url: "games/minesweeper.html" },
-      { name: "Flappy Bird", url: "games/flappybird.html" },
-      { name: "Snake", url: "games/snake.html" },
-      { name: "Super Mario Bros", url: "games/super-mario.html" },
-      { name: "Pac-Man", url: "games/pacman.html" }
-      // Add more games as you wish!
-    ];
-    function renderGames() {
-      const grid = document.getElementById('game-grid');
-      grid.innerHTML = '';
-      games.forEach(game => {
-        const a = document.createElement('a');
-        a.className = "game-button";
-        a.href = game.url;
-        a.innerHTML = `<span class="game-button-content">${game.name}</span>`;
-        grid.appendChild(a);
+      const downloadBtn = document.getElementById('iframe-modal-download-btn');
+      // When game is opened, set the download button link
+      document.querySelectorAll('.game-button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          let gameName = btn.querySelector('.game-button-content')?.innerText.trim() || btn.innerText.trim();
+          let src = downloadMap[gameName] || btn.getAttribute('href') || "";
+          downloadBtn.setAttribute('data-gamename', gameName);
+          downloadBtn.style.display = src ? "" : "none";
+          if (src) {
+            let filename = gameName.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'') + '.chronos.html';
+            downloadBtn.setAttribute('download', filename);
+            downloadBtn.setAttribute('href', src);
+          }
+        });
       });
-    }
 
-    // --- Scroll Percent Logic ---
-    function setupScrollPercent() {
-      const scrollArea = document.querySelector('.scroll-area');
-      const scrollPercent = document.getElementById('scroll-percent');
-      function updateScroll() {
-        const st = scrollArea.scrollTop, sh = scrollArea.scrollHeight - scrollArea.clientHeight;
-        let pct = sh > 0 ? Math.round((st / sh) * 100) : 0;
-        scrollPercent.textContent = pct + "%";
+      document.querySelectorAll('.game-button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          let gameName = btn.querySelector('.game-button-content')?.innerText.trim() || btn.innerText.trim();
+          let src = gameUrlMap[gameName] || btn.getAttribute('href') || "";
+          if (!src) {
+            alert("No iframe source set for this game yet!");
+            return;
+          }
+          resetIframeFallback();
+          document.getElementById('game-iframe').src = src;
+          document.getElementById('iframe-fallback-link').href = src;
+          document.getElementById('game-modal').style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+
+          // Fallback if iframe fails to load (X-Frame-Options or CSP)
+          let iframe = document.getElementById('game-iframe');
+          let fallbackTimeout = setTimeout(() => {
+            showIframeFallback(src, "This game can't be embedded due to site security. Click below to open it in a new tab.");
+          }, 3500);
+
+          iframe.onload = function() {
+            clearTimeout(fallbackTimeout);
+            try {
+              let test = iframe.contentWindow.location.href;
+            } catch (err) {
+              showIframeFallback(src, "This game can't be embedded. Click below to open it in a new tab.");
+            }
+          };
+          iframe.onerror = function() {
+            clearTimeout(fallbackTimeout);
+            showIframeFallback(src, "This game can't be embedded. Click below to open it in a new tab.");
+          };
+        });
+      });
+      document.getElementById('game-modal-close').onclick = function() {
+        document.getElementById('game-modal').style.display = 'none';
+        document.getElementById('game-iframe').src = '';
+        document.body.style.overflow = '';
+        resetIframeFallback();
+        downloadBtn.setAttribute('data-gamename', "");
+        downloadBtn.style.display = "none";
+      };
+      document.getElementById('game-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          document.getElementById('game-modal-close').click();
+        }
+      });
+
+      // ----- Enhanced settings syncing -----
+      // Uses localStorage for syncing with Settings.html. Both pages should use the same key and event.
+      const CLOAK_KEY = "ion-premade-cloak";
+      const cloakDropdown = document.getElementById('premade-cloak-dropdown');
+
+      // Initialize the dropdown based on stored value
+      function loadCloakSetting() {
+        let val = localStorage.getItem(CLOAK_KEY) || "off";
+        cloakDropdown.value = val;
       }
-      scrollArea.addEventListener("scroll", updateScroll);
-      updateScroll();
-      scrollPercent.style.display = "";
+      loadCloakSetting();
+
+      // On change, save and notify
+      cloakDropdown.addEventListener("change", function() {
+        localStorage.setItem(CLOAK_KEY, cloakDropdown.value);
+        window.dispatchEvent(new Event("ionSettingsChanged"));
+      });
+
+      // Listen for storage or custom event changes (cross-tab and cross-page)
+      window.addEventListener("storage", function(e) {
+        if (e.key === CLOAK_KEY) loadCloakSetting();
+      });
+      window.addEventListener("ionSettingsChanged", function() {
+        loadCloakSetting();
+      });
+
+      // Quick Settings Gear Button Logic
+      const gearBtn = document.getElementById('quick-settings-gear-btn');
+      const modal = document.getElementById('quick-settings-modal');
+      const closeBtn = document.getElementById('quick-settings-modal-close');
+      gearBtn.onclick = function() {
+        modal.classList.add('active');
+      };
+      closeBtn.onclick = function() {
+        modal.classList.remove('active');
+      };
+      // Close modal when clicking outside the sheet
+      modal.addEventListener('mousedown', function(e) {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+      // Escape key closes modal
+      document.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" && modal.classList.contains('active')) {
+          modal.classList.remove('active');
+        }
+      });
     }
   </script>
+  <script>
+const cloakData = {
+  off: {
+    title: "ION Game Vault",
+    favicon: "favicon.ico"
+  },
+  classroom: {
+    title: "Classes",
+    favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
+  },
+  sheets: {
+    title: "Untitled spreadsheet - Google Sheets",
+    favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
+  },
+  slides: {
+    title: "Untitled presentation - Google Slides",
+    favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
+  },
+  docs: {
+    title: "Untitled document - Google Docs",
+    favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
+  },
+  gmail: {
+    title: "Inbox (1) - user@gmail.com - Gmail",
+    favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
+  },
+  powerschool: {
+    title: "PowerSchool",
+    favicon: "https://www.powerschool.com/favicon.ico"
+  },
+  studysync: {
+    title: "StudySync",
+    favicon: "https://www.studysync.com/favicon.ico"
+  },
+  khan: {
+    title: "Dashboard | Khan Academy",
+    favicon: "https://www.khanacademy.org/favicon.ico"
+  },
+  adobe: {
+    title: "Adobe Document Cloud",
+    favicon: "https://www.adobe.com/favicon.ico"
+  },
+  powerpoint: {
+    title: "Presentation1 - PowerPoint",
+    favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png"
+  },
+  word: {
+    title: "Document1 - Word",
+    favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png"
+  },
+  youtube: {
+    title: "YouTube",
+    favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico"
+  }
+};
+
+function setCloak(cloakKey) {
+  const cloak = cloakData[cloakKey] || cloakData['off'];
+  // Set document title
+  document.title = cloak.title;
+  // Set favicon
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = cloak.favicon;
+}
+
+// Cloak Now button logic
+document.getElementById("cloak-now-btn").onclick = function() {
+  const cloakKey = document.getElementById('premade-cloak-dropdown').value;
+  setCloak(cloakKey);
+  localStorage.setItem("ion-premade-cloak", cloakKey);
+};
+
+// On page load, restore last-used cloak
+window.addEventListener("DOMContentLoaded", function() {
+  const savedCloak = localStorage.getItem("ion-premade-cloak") || "off";
+  const dropdown = document.getElementById('premade-cloak-dropdown');
+  if (dropdown) {
+    dropdown.value = savedCloak;
+    setCloak(savedCloak);
+  }
+});
+</script>
 </body>
 </html>
