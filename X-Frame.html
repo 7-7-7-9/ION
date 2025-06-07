@@ -2,11 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>X-Frame-Bypass - Sleek Black & Blue</title>
-  <!-- (Optional) Polyfill for Safari support -->
-  <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
-  <!-- x-frame-bypass module -->
-  <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
+  <title>Sharp Embedder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -16,6 +13,7 @@
       --panel: #181b23;
       --text: #e3e8ee;
       --border: #26304a;
+      --error: #ff1744;
     }
     html, body {
       height: 100%;
@@ -46,7 +44,7 @@
       border-bottom: 2px solid var(--primary);
     }
     .container {
-      margin: 2rem auto 0 auto;
+      margin: 2.5rem auto 0 auto;
       background: var(--panel);
       border-radius: 18px;
       box-shadow: 0 4px 32px #0006;
@@ -57,7 +55,7 @@
       flex-direction: column;
       align-items: center;
     }
-    label, select, input, button {
+    label, input, button {
       font-family: inherit;
       font-size: 1rem;
     }
@@ -86,7 +84,7 @@
     #url-input:focus {
       border: 1.5px solid var(--accent);
     }
-    #load-btn {
+    #embed-btn {
       background: linear-gradient(90deg, var(--primary), var(--accent));
       color: #fff;
       border: none;
@@ -97,7 +95,7 @@
       box-shadow: 0 2px 8px #0004;
       transition: background 0.2s, transform 0.1s;
     }
-    #load-btn:hover, #load-btn:focus {
+    #embed-btn:hover, #embed-btn:focus {
       background: linear-gradient(90deg, var(--accent), var(--primary));
       transform: scale(1.05);
     }
@@ -114,12 +112,22 @@
       display: flex;
       align-items: stretch;
       justify-content: center;
+      position: relative;
     }
-    iframe[is="x-frame-bypass"] {
+    iframe {
       width: 100%;
       height: 70vh;
       border: none;
       background: #15171f;
+      transition: opacity 0.2s;
+    }
+    .error-message {
+      color: var(--error);
+      font-weight: bold;
+      text-align: center;
+      margin-top: 1.5em;
+      font-size: 1.1em;
+      display: none;
     }
     @media (max-width: 700px) {
       .container {
@@ -128,29 +136,65 @@
       .iframe-wrap {
         min-height: 55vh;
       }
-      iframe[is="x-frame-bypass"] {
+      iframe {
         height: 55vh;
       }
     }
   </style>
 </head>
 <body>
-  <header>X-Frame-Bypass Proxy</header>
+  <header>Sharp Embedder</header>
   <div class="container">
-    <label for="url-input">Enter a URL to embed (bypass X-Frame-Options):</label>
-    <form class="url-bar" onsubmit="loadIframe(event)">
+    <label for="url-input">Enter a URL to embed (or open in new tab if blocked):</label>
+    <form class="url-bar" onsubmit="return tryEmbed(event)">
       <input id="url-input" type="url" placeholder="https://example.org/" required>
-      <button id="load-btn" type="submit">Load</button>
+      <button id="embed-btn" type="submit">Embed</button>
     </form>
-    <div class="iframe-wrap">
-      <iframe is="x-frame-bypass" id="bypass-frame" src="https://example.org/"></iframe>
+    <div class="iframe-wrap" id="iframe-wrap" style="display:none;">
+      <iframe id="embed-frame"></iframe>
     </div>
+    <div class="error-message" id="error-message"></div>
   </div>
   <script>
-    function loadIframe(e) {
+    function tryEmbed(e) {
       e.preventDefault();
       const url = document.getElementById('url-input').value;
-      document.getElementById('bypass-frame').setAttribute('src', url);
+      const frame = document.getElementById('embed-frame');
+      const wrap = document.getElementById('iframe-wrap');
+      const errorMsg = document.getElementById('error-message');
+      errorMsg.style.display = 'none';
+      wrap.style.display = 'block';
+      frame.style.opacity = '1';
+      frame.src = url;
+
+      // Try to detect X-Frame-Options denial after load
+      let loaded = false;
+      frame.onload = function() {
+        loaded = true;
+        try {
+          // Try to access the frame's document - will throw if cross-origin or blocked
+          let test = frame.contentDocument || frame.contentWindow.document;
+          // If accessible, show frame
+          frame.style.opacity = '1';
+        } catch (err) {
+          // If error, likely blocked by X-Frame-Options or cross-origin
+          showError();
+        }
+      };
+      // Fallback: after 2 seconds, if not loaded, assume blocked
+      setTimeout(() => {
+        if (!loaded) showError();
+      }, 2000);
+
+      function showError() {
+        wrap.style.display = 'none';
+        errorMsg.textContent = "This site blocks embedding. Opening in a new tab...";
+        errorMsg.style.display = 'block';
+        setTimeout(() => {
+          window.open(url, '_blank');
+          errorMsg.style.display = 'none';
+        }, 1200);
+      }
     }
   </script>
 </body>
