@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Launch Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Import Montserrat font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900;700;600;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+      --theme-card: rgba(20, 30, 60, 0.97);
+      --theme-border: var(--theme-accent-dark, #1e90ff44);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+    }
+    body {
+      min-height: 100vh;
+      background: var(--theme-bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ==== Custom Tech Minimalist Animated BG ==== */
+    .tech-bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg, #0a0f2c 0%, #17294a 100%);
+    }
+    .lines {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .line {
+      position: absolute;
+      width: 2px;
+      height: 120vh;
+      top: -10vh;
+      background: linear-gradient(180deg, #1af1ff40 0%, #1af1ff10 100%);
+      opacity: 0.2;
+      border-radius: 2px;
+      animation: lineMove 7s linear infinite;
+    }
+    .line:nth-child(1) { left: 10vw; animation-delay: 0s; }
+    .line:nth-child(2) { left: 25vw; animation-delay: 1.3s; }
+    .line:nth-child(3) { left: 51vw; animation-delay: 3.2s; }
+    .line:nth-child(4) { left: 68vw; animation-delay: 0.8s; }
+    .line:nth-child(5) { left: 87vw; animation-delay: 2.1s; }
+    .line:nth-child(6) { left: 40vw; animation-delay: 4.5s; }
+    .line:nth-child(7) { left: 78vw; animation-delay: 2.7s; }
+    @keyframes lineMove {
+      0% { top: -10vh; opacity: 0.15; }
+      5% { opacity: 0.22; }
+      50% { opacity: 0.19; }
+      95% { opacity: 0.21; }
+      100% { top: 110vh; opacity: 0.13; }
+    }
+    .dots {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(120deg, var(--theme-accent), var(--theme-accent-light));
+      opacity: 0.12;
+      animation: dotFade 9s linear infinite;
+    }
+    .dot:nth-child(1) { left: 18vw; top: 36vh; animation-delay: 0s;}
+    .dot:nth-child(2) { left: 44vw; top: 62vh; animation-delay: 1.1s;}
+    .dot:nth-child(3) { left: 82vw; top: 27vh; animation-delay: 2.8s;}
+    .dot:nth-child(4) { left: 63vw; top: 79vh; animation-delay: 1.7s;}
+    .dot:nth-child(5) { left: 29vw; top: 54vh; animation-delay: 3.4s;}
+    .dot:nth-child(6) { left: 71vw; top: 17vh; animation-delay: 2.2s;}
+    .dot:nth-child(7) { left: 54vw; top: 41vh; animation-delay: 4.4s;}
+    @keyframes dotFade {
+      0%, 100% { opacity: 0.11; }
+      50% { opacity: 0.22; }
+    }
+    /* =========================== */
+
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--theme-card);
+      border: 2px solid var(--theme-border);
+      box-shadow: 0 6px 24px 0 var(--theme-accent-dark);
+      padding: 48px 64px;
+      text-align: center;
+      min-width: 340px;
+      border-radius: 16px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      backdrop-filter: blur(2.5px);
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.4rem, 7vw, 2.7rem);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      letter-spacing: 0.09em;
+      margin-bottom: 10px;
+      margin-top: 0;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .small-text {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.13rem;
+      color: var(--theme-accent-light);
+      margin-bottom: 30px;
+      margin-top: -6px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      display: block;
+      white-space: normal;
+      text-shadow: none;
+    }
+    .password-label {
+      display: none;
+    }
+    .password-input {
+      width: 100%;
+      max-width: 260px;
+      padding: 11px 14px;
+      font-size: 1.06rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      border-radius: 7px;
+      border: 1.5px solid var(--theme-accent-dark);
+      background: #151b31;
+      color: #fff;
+      margin-bottom: 18px;
+      outline: none;
+      transition: border-color 0.18s;
+      letter-spacing: 0.07em;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .password-input:focus {
+      border-color: var(--theme-accent);
+    }
+    .error-message {
+      color: #ff7373;
+      background: rgba(210,30,60,0.09);
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      padding: 7px 0 4px 0;
+      min-height: 22px;
+      width: 100%;
+      max-width: 260px;
+      box-sizing: border-box;
+      display: none;
+    }
+    .launch-btn {
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 18px 48px;
+      font-size: 1.25rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      cursor: pointer;
+      box-shadow: 0 4px 18px var(--theme-accent-dark, #1e90ff33);
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+      text-transform: uppercase;
+      margin-top: 0;
+    }
+    .launch-btn:hover, .launch-btn:focus {
+      background: var(--theme-accent-dark);
+      color: #fff;
+      transform: scale(1.04);
+      box-shadow: 0 8px 32px var(--theme-accent-dark, #1e90ff99);
+      outline: none;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 22px 5vw;
+        min-width: 0;
+        border-radius: 11px;
+      }
+      h1 {
+        font-size: clamp(1.1rem, 7vw, 1.7rem);
+      }
+      .small-text {
+        font-size: 0.97rem;
+        letter-spacing: 0.035em;
+        margin-bottom: 22px;
+        margin-top: -10px;
+      }
+      .launch-btn {
+        padding: 13px 7vw;
+        font-size: 1rem;
+        border-radius: 8px;
+      }
+      .password-input {
+        font-size: 0.99rem;
+        padding: 9px 10px;
+        border-radius: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Tech Minimalist BG -->
+  <div class="tech-bg">
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+ <!-- ...rest of the file remains unchanged... -->
+<div class="container">
+  <h1>Ready to Launch?</h1>
+  <span class="small-text">Bookmark this tab so the site stays secure</span>
+  <!-- Password label removed as requested -->
+  <input class="password-input" id="password-input" type="password" autocomplete="current-password" spellcheck="false" autocapitalize="off" placeholder="Enter launch password">
+  <div class="error-message" id="error-message"></div>
+  <button class="launch-btn" id="launch-btn">
+    Launch
+  </button>
+</div>
+<!-- ...rest of the file remains unchanged... -->
+  <script>
+    // Password feature
+    function handleLaunch(e) {
+      if(e) e.preventDefault();
+      var input = document.getElementById('password-input');
+      var error = document.getElementById('error-message');
+      var password = input.value.trim();
+      if (password === "123456778") {
+        error.style.display = "none";
+        window.location.href = 'index.html'; // Launch index.html
+      } else {
+        error.style.display = "block";
+        error.textContent = "Incorrect password. Please try again.";
+        input.value = "";
+        input.focus();
+      }
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('password-input').addEventListener('keydown', function(e) {
+        if (e.key === "Enter") {
+          handleLaunch(e);
+        }
+      });
+      document.getElementById('launch-btn').addEventListener('click', handleLaunch);
+    });
+  </script>
+</body>
+</html>
