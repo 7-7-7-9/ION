@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About | ION</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    .tech-bg {
+      position: fixed;
+      inset: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, #0a0f2c 0%, #17294a 100%);
+    }
+    .lines {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .line {
+      position: absolute;
+      width: 2px;
+      height: 120vh;
+      top: -10vh;
+      background: linear-gradient(180deg, #1af1ff40 0%, #1af1ff10 100%);
+      opacity: 0.2;
+      border-radius: 2px;
+      animation: lineMove 7s linear infinite;
+    }
+    .line:nth-child(1) { left: 10vw; animation-delay: 0s; }
+    .line:nth-child(2) { left: 25vw; animation-delay: 1.3s; }
+    .line:nth-child(3) { left: 51vw; animation-delay: 3.2s; }
+    .line:nth-child(4) { left: 68vw; animation-delay: 0.8s; }
+    .line:nth-child(5) { left: 87vw; animation-delay: 2.1s; }
+    .line:nth-child(6) { left: 40vw; animation-delay: 4.5s; }
+    .line:nth-child(7) { left: 78vw; animation-delay: 2.7s; }
+    @keyframes lineMove {
+      0% { top: -10vh; opacity: 0.15; }
+      5% { opacity: 0.22; }
+      50% { opacity: 0.19; }
+      95% { opacity: 0.21; }
+      100% { top: 110vh; opacity: 0.13; }
+    }
+    .dots {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(120deg, var(--theme-accent), var(--theme-accent-light));
+      opacity: 0.12;
+      animation: dotFade 9s linear infinite;
+    }
+    .dot:nth-child(1) { left: 18vw; top: 36vh; animation-delay: 0s;}
+    .dot:nth-child(2) { left: 44vw; top: 62vh; animation-delay: 1.1s;}
+    .dot:nth-child(3) { left: 82vw; top: 27vh; animation-delay: 2.8s;}
+    .dot:nth-child(4) { left: 63vw; top: 79vh; animation-delay: 1.7s;}
+    .dot:nth-child(5) { left: 29vw; top: 54vh; animation-delay: 3.4s;}
+    .dot:nth-child(6) { left: 71vw; top: 17vh; animation-delay: 2.2s;}
+    .dot:nth-child(7) { left: 54vw; top: 41vh; animation-delay: 4.4s;}
+    @keyframes dotFade {
+      0%, 100% { opacity: 0.11; }
+      50% { opacity: 0.22; }
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      transition: padding-top 0.2s;
+    }
+    .container {
+      max-width: 880px;
+      width: 94%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 7vw, 3.6rem);
+      max-width: 100vw;
+      letter-spacing: clamp(0.03em, 3vw, 0.18em);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin: 60px 0 32px 0;
+      text-align: center;
+      user-select: none;
+      white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-shadow: none;
+      overflow-x: auto;
+    }
+    .about-content {
+      background: rgba(20,26,46,0.93);
+      border-radius: 18px;
+      box-shadow: 0 0 24px #1af1ff22;
+      padding: 38px 38px 30px 38px;
+      margin: 0 0 32px 0;
+      color: #e0e6f0;
+      font-size: 1.13em;
+      line-height: 1.75;
+      max-width: 790px;
+      width: 100%;
+      letter-spacing: 0.01em;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .about-content p {
+      margin: 0 0 18px 0;
+      font-size: 1.11em;
+      text-align: left;
+    }
+    .about-content ul {
+      margin-top: 9px;
+      margin-bottom: 18px;
+      margin-left: 28px;
+      color: var(--theme-accent-light);
+      font-size: 1.04em;
+    }
+    @media (max-width: 700px) {
+      .container { max-width: 99vw; }
+      .about-content { padding: 14px 5vw 17px 5vw; }
+      h1 { font-size: clamp(1rem, 6vw, 2.3rem); margin-bottom: 28px; white-space: normal; }
+    }
+    /* Navbar, quick settings, etc. are all copied from your other pages */
+    .navbar {
+      position: fixed;
+      top: 18px;
+      right: 32px;
+      z-index: 1002;
+      background: rgba(10, 15, 44, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 8px 20px 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      font-size: 1.09rem;
+      letter-spacing: 0.04em;
+      transition: color 0.16s, text-shadow 0.16s;
+      padding: 3px 10px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .navbar a:hover, .navbar a:focus-visible {
+      color: #fff;
+      background: var(--theme-accent);
+      text-shadow: 0 0 8px var(--theme-accent-light), 0 0 2px #fff;
+      outline: none;
+    }
+    .navbar .nav-logo {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--theme-accent);
+      background: none;
+      cursor: pointer;
+      padding: 0 10px 0 0;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 8px var(--theme-accent-light);
+      border: none;
+    }
+    .status-widget {
+      position: fixed;
+      top: 18px;
+      left: 32px;
+      transform: none;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 14px;
+      background: rgba(10, 15, 44, 0.92);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      font-size: 1.1rem;
+      color: var(--theme-accent-light);
+      z-index: 1000;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: none;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .status-widget span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .color-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+    }
+    .color-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #0003;
+      cursor: pointer;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      position: relative;
+      background: #fff;
+      display: inline-block;
+      padding: 0;
+    }
+    .color-btn.selected, .color-btn:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .color-btn[data-hue="210"] { background: hsl(210,100%,56%); }
+    .color-btn[data-hue="0"]   { background: hsl(0,100%,56%); }
+    .color-btn[data-hue="30"]  { background: hsl(30,100%,56%); }
+    .color-btn[data-hue="50"]  { background: hsl(50,100%,56%); }
+    .color-btn[data-hue="120"] { background: hsl(120,100%,40%); }
+    .color-btn[data-hue="180"] { background: hsl(180,100%,40%); }
+    .color-btn[data-hue="270"] { background: hsl(270,100%,60%); }
+    .color-btn[data-hue="320"] { background: hsl(320,100%,60%); }
+    .color-btn[data-hue="220"] { background: hsl(220,10%,52%); }
+    .color-btn::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid #fff0;
+      position: absolute;
+      left: 0; top: 0;
+      pointer-events: none;
+    }
+    #quick-settings-gear-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--theme-accent), var(--theme-accent-light));
+      box-shadow: 0 4px 22px var(--theme-accent-dark, #1e90ff66);
+      border: none;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+      outline: none;
+    }
+    #quick-settings-gear-btn:active,
+    #quick-settings-gear-btn:focus-visible {
+      background: var(--theme-accent-dark);
+      transform: scale(0.97);
+    }
+    #quick-settings-gear-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      #quick-settings-gear-btn {
+        width: 44px;
+        height: 44px;
+        bottom: 14px;
+        right: 10px;
+      }
+      #quick-settings-gear-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+    #quick-settings-modal {
+      display: none;
+      position: fixed;
+      z-index: 2500;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(18,22,44,0.32);
+      justify-content: center;
+      align-items: center;
+    }
+    #quick-settings-modal.active {
+      display: flex;
+    }
+    #quick-settings-sheet {
+      background: rgba(18, 22, 44, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 2px 28px var(--theme-accent-dark, #1e90ff44);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 32px 32px 24px 32px;
+      min-width: 270px;
+      min-height: 90px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #e0e6f0;
+      transition: top 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 96vw;
+      position: relative;
+      animation: quickSettingsIn 0.19s cubic-bezier(.7,1.8,.2,1) 1;
+    }
+    @keyframes quickSettingsIn {
+      0% { opacity: 0; transform: translateY(22px) scale(0.97);}
+      100% { opacity: 1; transform: none;}
+    }
+    #quick-settings-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--theme-accent-light);
+      font-size: 1.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+      z-index: 2;
+    }
+    #quick-settings-modal-close:hover {
+      opacity: 1;
+      color: var(--theme-accent);
+    }
+    #quick-settings-sheet h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.28rem;
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+      font-size: 1.08rem;
+    }
+    .setting-label {
+      flex: 1;
+      color: var(--theme-accent-light);
+    }
+    .dropdown {
+      position: relative;
+      min-width: 130px;
+    }
+    .dropdown select {
+      background: #232b40;
+      color: #fff;
+      border-radius: 8px;
+      border: 1.5px solid var(--theme-accent-dark);
+      font-size: 1.07rem;
+      padding: 5px 20px 5px 9px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      appearance: none;
+      outline: none;
+      transition: border 0.16s;
+      box-shadow: 0 1px 4px #0002;
+    }
+    .dropdown:after {
+      content: "▼";
+      position: absolute;
+      right: 12px; top: 8px;
+      color: var(--theme-accent-light);
+      font-size: 0.75em;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="tech-bg">
+    <div class="lines">
+      <div class="line"></div><div class="line"></div><div class="line"></div>
+      <div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div>
+    </div>
+    <div class="dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <nav class="navbar" id="navbar">
+    <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
+    <a href="index.html" tabindex="0">Home</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="PR0XIES.html" tabindex="0">Proxies</a>
+    <a href="AI.html" tabindex="0">AI</a>
+    <a href="About.html" tabindex="0">About</a>
+    <a href="Contact.html" tabindex="0">Contact</a>
+    <a href="Settings.html" tabindex="0">Settings</a>
+  </nav>
+  <div class="status-widget" id="status-widget">
+    <span id="battery-icon" title="Battery"></span>
+    <span id="wifi-icon" title="Network"></span>
+    <span id="datetime"></span>
+    <span class="color-btns" id="color-btns" title="Theme Color">
+      <button class="color-btn selected" data-hue="210" aria-label="Default Blue"></button>
+      <button class="color-btn" data-hue="0" aria-label="Red"></button>
+      <button class="color-btn" data-hue="30" aria-label="Orange"></button>
+      <button class="color-btn" data-hue="50" aria-label="Yellow"></button>
+      <button class="color-btn" data-hue="120" aria-label="Green"></button>
+      <button class="color-btn" data-hue="180" aria-label="Cyan"></button>
+      <button class="color-btn" data-hue="270" aria-label="Purple"></button>
+      <button class="color-btn" data-hue="320" aria-label="Pink"></button>
+      <button class="color-btn" data-hue="220" aria-label="Gray"></button>
+    </span>
+  </div>
+  <!-- Quick Settings Gear Button -->
+  <button id="quick-settings-gear-btn" title="Quick Settings" aria-label="Quick Settings">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-4.06l1.77-1.37a.5.5 0 0 0 .11-.66l-1.7-2.94a.5.5 0 0 0-.61-.23l-2.1.84a6.82 6.82 0 0 0-1.48-.86l-.32-2.24A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.43l-.32 2.24c-.52.2-1.01.47-1.48.86l-2.1-.84a.5.5 0 0 0-.61.23L2.7 7.41a.5.5 0 0 0 .11.66l1.77 1.37c-.05.32-.08.65-.08.99 0 .34.03.67.08.99l-1.77 1.37a.5.5 0 0 0-.11.66l1.7 2.94c.13.22.39.3.61.23l2.1-.84c.47.39.96.72 1.48.86l.32 2.24A.5.5 0 0 0 10 22h4c.26 0 .46-.18.5-.43l.32-2.24c.52-.2 1.01-.47 1.48-.86l2.1.84c.22.09.48-.01.61-.23l1.7-2.94a.5.5 0 0 0-.11-.66l-1.77-1.37c.05-.32.08-.65.08-.99 0-.34-.03-.67-.08-.99zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+    </svg>
+  </button>
+  <div id="quick-settings-modal">
+    <div id="quick-settings-sheet">
+      <button id="quick-settings-modal-close" title="Close" aria-label="Close">&times;</button>
+      <h2>Quick Settings</h2>
+      <div class="setting-row">
+        <span class="setting-label">Premade Cloaking</span>
+        <span class="dropdown" style="display:flex;align-items:center;gap:8px;">
+          <select id="premade-cloak-dropdown">
+            <option value="off">Off</option>
+            <option value="classroom">Google Classroom</option>
+            <option value="sheets">Google Sheets</option>
+            <option value="slides">Google Slides</option>
+            <option value="docs">Google Docs</option>
+            <option value="gmail">Gmail</option>
+            <option value="powerschool">PowerSchool</option>
+            <option value="studysync">StudySync</option>
+            <option value="khan">Khan Academy</option>
+            <option value="adobe">Adobe</option>
+            <option value="powerpoint">PowerPoint</option>
+            <option value="word">Microsoft Word</option>
+            <option value="youtube">YouTube</option>
+          </select>
+          <button id="cloak-now-btn" type="button" style="padding:4px 15px;border-radius:6px;border:none;background:var(--theme-accent);color:#fff;font-weight:700;cursor:pointer;">Cloak Now</button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>About ION</h1>
+    <div class="about-content">
+      <p><strong>ION</strong> is a modern, feature-rich web platform designed by <strong>7-7-7-8</strong> to provide students, developers, and enthusiasts with seamless access to a curated vault of games, AI tools, proxies, and more—all in one visually stunning and highly customizable environment. Conceived with flexibility and user experience at its core, ION empowers users to enjoy their favorite content with powerful privacy and personalization options, wrapped in a stylish, technology-inspired interface.</p>
+      <p>One of the most distinctive aspects of ION is its <strong>game vault</strong>, which allows users to launch and play a vast collection of HTML5 and web-based games directly within the browser. Leveraging iframe technology, each game opens in a sleek modal popup, enabling fullscreen, about:blank launch, and easy downloads for offline play. This approach not only maximizes compatibility and performance but also ensures that users can switch between games effortlessly without leaving the ION environment.</p>
+      <p>Beyond gaming, ION offers a diverse suite of <strong>AI tools and apps</strong>, including integrations with platforms like GitHub Copilot, Komo, Transfrly, and iAsk. These tools are presented as wide, visually appealing buttons and are loaded in secure iframes for a smooth, app-like experience. The AI section is designed to help users with coding, translation, research, and more—all while maintaining privacy and ease of access.</p>
+      <p>Recognizing the need for privacy and unrestricted browsing, ION features a robust <strong>Proxies</strong> section, where users can launch various proxy services such as DOGE, FreedomProject, Nebula, RammerHead, ShadowBrowser, and UvStaticV2. Each proxy is accessible through the same intuitive modal popup system, allowing for safe, incognito browsing within the ION interface. To enhance security, this section is password-protected and includes warnings to ensure users understand the risks and responsibilities of using proxy services.</p>
+      <p>Customization is at the heart of ION’s appeal. With a <strong>Quick Settings</strong> gear button, users can instantly access theme colors, cloaking options (to disguise the site as classroom tools or productivity apps), and other personalization settings. The status widget displays live information like battery status, network connectivity, and date/time, all styled to match the futuristic theme. These features ensure that ION feels not just like a website, but a true digital desktop.</p>
+      <p>ION also provides essential communication tools, including a modern <strong>Contact page</strong> with direct links to GitHub and email, as well as a secure Google Form for user feedback and support. The <strong>About page</strong> (this page) gives users a clear overview of ION’s capabilities and vision. All pages share a consistent style, background animation, and responsive navbar for effortless navigation across devices.</p>
+      <p>Whether you are looking to unwind with classic web games, leverage AI for productivity, browse privately, or simply enjoy a beautifully designed web experience, ION by 7-7-7-8 has you covered. The platform’s commitment to privacy, customization, and seamless user experience makes it a standout choice for anyone seeking more from the modern web.</p>
+    </div>
+  </div>
+  <script>
+    // Quick settings logic
+    const CLOAK_KEY = "ion-premade-cloak";
+    const cloakDropdown = document.getElementById('premade-cloak-dropdown');
+    function loadCloakSetting() {
+      let val = localStorage.getItem(CLOAK_KEY) || "off";
+      cloakDropdown.value = val;
+    }
+    loadCloakSetting();
+    cloakDropdown.addEventListener("change", function() {
+      localStorage.setItem(CLOAK_KEY, cloakDropdown.value);
+      window.dispatchEvent(new Event("ionSettingsChanged"));
+    });
+    window.addEventListener("storage", function(e) {
+      if (e.key === CLOAK_KEY) loadCloakSetting();
+    });
+    window.addEventListener("ionSettingsChanged", function() {
+      loadCloakSetting();
+    });
+    const gearBtn = document.getElementById('quick-settings-gear-btn');
+    const modal = document.getElementById('quick-settings-modal');
+    const closeBtn = document.getElementById('quick-settings-modal-close');
+    gearBtn.onclick = function() {
+      modal.classList.add('active');
+    };
+    closeBtn.onclick = function() {
+      modal.classList.remove('active');
+    };
+    modal.addEventListener('mousedown', function(e) {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape" && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    });
+
+    // Cloak logic
+    const cloakData = {
+      off: {
+        title: "ION Game Vault",
+        favicon: "favicon.ico"
+      },
+      classroom: {
+        title: "Classes",
+        favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
+      },
+      sheets: {
+        title: "Untitled spreadsheet - Google Sheets",
+        favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
+      },
+      slides: {
+        title: "Untitled presentation - Google Slides",
+        favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
+      },
+      docs: {
+        title: "Untitled document - Google Docs",
+        favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
+      },
+      gmail: {
+        title: "Inbox (1) - user@gmail.com - Gmail",
+        favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
+      },
+      powerschool: {
+        title: "PowerSchool",
+        favicon: "https://www.powerschool.com/favicon.ico"
+      },
+      studysync: {
+        title: "StudySync",
+        favicon: "https://www.studysync.com/favicon.ico"
+      },
+      khan: {
+        title: "Dashboard | Khan Academy",
+        favicon: "https://www.khanacademy.org/favicon.ico"
+      },
+      adobe: {
+        title: "Adobe Document Cloud",
+        favicon: "https://www.adobe.com/favicon.ico"
+      },
+      powerpoint: {
+        title: "Presentation1 - PowerPoint",
+        favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png"
+      },
+      word: {
+        title: "Document1 - Word",
+        favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png"
+      },
+      youtube: {
+        title: "YouTube",
+        favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico"
+      }
+    };
+    function setCloak(cloakKey) {
+      const cloak = cloakData[cloakKey] || cloakData['off'];
+      document.title = cloak.title;
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = cloak.favicon;
+    }
+    document.getElementById("cloak-now-btn").onclick = function() {
+      const cloakKey = document.getElementById('premade-cloak-dropdown').value;
+      setCloak(cloakKey);
+      localStorage.setItem("ion-premade-cloak", cloakKey);
+    };
+    window.addEventListener("DOMContentLoaded", function() {
+      const savedCloak = localStorage.getItem("ion-premade-cloak") || "off";
+      const dropdown = document.getElementById('premade-cloak-dropdown');
+      if (dropdown) {
+        dropdown.value = savedCloak;
+        setCloak(savedCloak);
+      }
+    });
+  </script>
+</body>
+</html>
