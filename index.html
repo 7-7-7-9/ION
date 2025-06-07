@@ -325,42 +325,6 @@
       margin-top: 0;
       line-height: 1.45;
     }
-    .phantom-interactive {
-      margin-top: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      align-items: center;
-    }
-    .phantom-btn {
-      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 34px;
-      font-size: 1.11rem;
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.11em;
-      cursor: pointer;
-      transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
-      box-shadow: 0 2px 14px var(--theme-accent-dark, #1e90ff33);
-      outline: none;
-    }
-    .phantom-btn:hover, .phantom-btn:focus {
-      background: var(--theme-accent-dark);
-      color: #fff;
-      transform: scale(1.04);
-      box-shadow: 0 6px 28px var(--theme-accent-dark, #1e90ff99);
-      outline: none;
-    }
-    .phantom-fact {
-      color: var(--theme-accent-light);
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-size: 1.08rem;
-      margin: 0;
-    }
-
     /* --- Cool Github Button --- */
     .github-btn {
       display: inline-flex;
@@ -414,7 +378,6 @@
     .github-btn:hover .glow {
       opacity: 0.23;
     }
-
     @media (max-width: 700px) {
       .main-content {
         max-width: 96vw;
@@ -520,12 +483,6 @@
         </a>
       </div>
     </div>
-    <div class="phantom-interactive">
-      <button class="phantom-btn" onclick="window.location.href='G@MES.html';">Explore Games</button>
-      <button class="phantom-btn" onclick="window.location.href='PR0XIES.html';">Browse Proxies</button>
-      <button class="phantom-btn" onclick="showFact();">Show a Phantom Fact</button>
-      <div class="phantom-fact" id="phantom-fact" style="display:none;"></div>
-    </div>
   </div>
   <script>
     // Quick Settings Modal Logic
@@ -583,21 +540,6 @@
         setCloak(savedCloak);
       }
     });
-
-    // Phantom.ION Fact Interactivity
-    const facts = [
-      "ION is in active development — new games, proxies, and AI features are added regularly.",
-      "Quick Settings let you cloak your session in one click — stay stealthy anywhere.",
-      "Built for speed, ION loads fast even on slow networks.",
-      "Made by 7-7-7-8 for seamless fun, freedom, and privacy.",
-      "The Phantom.ION project is open source — check it out on GitHub!"
-    ];
-    function showFact() {
-      const el = document.getElementById('phantom-fact');
-      const idx = Math.floor(Math.random() * facts.length);
-      el.textContent = facts[idx];
-      el.style.display = 'block';
-    }
   </script>
 </body>
 </html>
