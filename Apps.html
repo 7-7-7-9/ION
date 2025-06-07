@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ION Game Vault - Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --theme-hue: 210;
+      --theme-accent: hsl(var(--theme-hue), 100%, 56%);
+      --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
+      --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
+      --theme-bg: #0a0f2c;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--theme-bg);
+      color: #e0e6f0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    /* Cool animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 15% 25%, hsla(210,100%,58%,0.15) 0, transparent 60%),
+        radial-gradient(ellipse at 80% 60%, hsla(290,100%,60%,0.08) 0, transparent 70%),
+        radial-gradient(ellipse at 40% 80%, hsla(120,100%,35%,0.07) 0, transparent 80%),
+        linear-gradient(135deg, #12193a 0%, #151e3c 100%);
+      animation: move-bg 14s linear infinite alternate;
+    }
+    @keyframes move-bg {
+      0% {
+        background-position:
+          20% 30%,
+          80% 60%,
+          40% 80%,
+          0 0;
+      }
+      100% {
+        background-position:
+          10% 40%,
+          70% 70%,
+          60% 90%,
+          0 0;
+      }
+    }
+    #vanta-bg { display: none; } /* hide old bg */
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      transition: padding-top 0.2s;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100vw;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 7vw, 4.2rem);
+      max-width: 100vw;
+      letter-spacing: clamp(0.03em, 3vw, 0.18em);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin: 60px 0 32px 0;
+      text-align: center;
+      user-select: none;
+      white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-shadow: none;
+      overflow-x: auto;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: clamp(1rem, 6vw, 2.3rem);
+        margin-bottom: 28px;
+        white-space: normal;
+        word-break: break-word;
+        margin-top: 30px;
+      }
+    }
+    .navbar {
+      position: fixed;
+      top: 18px;
+      right: 32px;
+      z-index: 1002;
+      background: rgba(10, 15, 44, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 8px 20px 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      font-size: 1.09rem;
+      letter-spacing: 0.04em;
+      transition: color 0.16s, text-shadow 0.16s;
+      padding: 3px 10px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .navbar a:hover, .navbar a:focus-visible {
+      color: #fff;
+      background: var(--theme-accent);
+      text-shadow: 0 0 8px var(--theme-accent-light), 0 0 2px #fff;
+      outline: none;
+    }
+    .navbar .nav-logo {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--theme-accent);
+      background: none;
+      cursor: pointer;
+      padding: 0 10px 0 0;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 8px var(--theme-accent-light);
+      border: none;
+    }
+    .status-widget {
+      position: fixed;
+      top: 18px;
+      left: 32px;
+      transform: none;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 14px;
+      background: rgba(10, 15, 44, 0.92);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      font-size: 1.1rem;
+      color: var(--theme-accent-light);
+      z-index: 1000;
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      font-family: 'Montserrat', Arial, sans-serif;
+      user-select: none;
+      min-width: 220px;
+      justify-content: center;
+    }
+    .status-widget span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #battery-icon svg, #wifi-icon svg {
+      display: inline-block;
+      vertical-align: middle;
+      height: 1.2em;
+      width: 1.2em;
+    }
+    .color-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+    }
+    .color-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #0003;
+      cursor: pointer;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      position: relative;
+      background: #fff;
+      display: inline-block;
+      padding: 0;
+    }
+    .color-btn.selected, .color-btn:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .color-btn[data-hue="210"] { background: hsl(210,100%,56%); }
+    .color-btn[data-hue="0"]   { background: hsl(0,100%,56%); }
+    .color-btn[data-hue="30"]  { background: hsl(30,100%,56%); }
+    .color-btn[data-hue="50"]  { background: hsl(50,100%,56%); }
+    .color-btn[data-hue="120"] { background: hsl(120,100%,40%); }
+    .color-btn[data-hue="180"] { background: hsl(180,100%,40%); }
+    .color-btn[data-hue="270"] { background: hsl(270,100%,60%); }
+    .color-btn[data-hue="320"] { background: hsl(320,100%,60%); }
+    .color-btn[data-hue="220"] { background: hsl(220,10%,52%); }
+    .color-btn::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid #fff0;
+      position: absolute;
+      left: 0; top: 0;
+      pointer-events: none;
+    }
+    #quick-settings-gear-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--theme-accent), var(--theme-accent-light));
+      box-shadow: 0 4px 22px var(--theme-accent-dark, #1e90ff66);
+      border: none;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+      outline: none;
+    }
+    #quick-settings-gear-btn:active,
+    #quick-settings-gear-btn:focus-visible {
+      background: var(--theme-accent-dark);
+      transform: scale(0.97);
+    }
+    #quick-settings-gear-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      #quick-settings-gear-btn {
+        width: 44px;
+        height: 44px;
+        bottom: 14px;
+        right: 10px;
+      }
+      #quick-settings-gear-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+    #quick-settings-modal {
+      display: none;
+      position: fixed;
+      z-index: 2500;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(18,22,44,0.32);
+      justify-content: center;
+      align-items: center;
+    }
+    #quick-settings-modal.active {
+      display: flex;
+    }
+    #quick-settings-sheet {
+      background: rgba(18, 22, 44, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 2px 28px var(--theme-accent-dark, #1e90ff44);
+      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      padding: 32px 32px 24px 32px;
+      min-width: 270px;
+      min-height: 90px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #e0e6f0;
+      transition: top 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 96vw;
+      position: relative;
+      animation: quickSettingsIn 0.19s cubic-bezier(.7,1.8,.2,1) 1;
+    }
+    @keyframes quickSettingsIn {
+      0% { opacity: 0; transform: translateY(22px) scale(0.97);}
+      100% { opacity: 1; transform: none;}
+    }
+    #quick-settings-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--theme-accent-light);
+      font-size: 1.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+      z-index: 2;
+    }
+    #quick-settings-modal-close:hover {
+      opacity: 1;
+      color: var(--theme-accent);
+    }
+    #quick-settings-sheet h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.28rem;
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+      font-size: 1.08rem;
+    }
+    .setting-label {
+      flex: 1;
+      color: var(--theme-accent-light);
+    }
+    .dropdown {
+      position: relative;
+      min-width: 130px;
+    }
+    .dropdown select {
+      background: #232b40;
+      color: #fff;
+      border-radius: 8px;
+      border: 1.5px solid var(--theme-accent-dark);
+      font-size: 1.07rem;
+      padding: 5px 20px 5px 9px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      appearance: none;
+      outline: none;
+      transition: border 0.16s;
+      box-shadow: 0 1px 4px #0002;
+    }
+    .dropdown:after {
+      content: "▼";
+      position: absolute;
+      right: 12px; top: 8px;
+      color: var(--theme-accent-light);
+      font-size: 0.75em;
+      pointer-events: none;
+    }
+    .scroll-area {
+      width: 100%;
+      max-width: 1100px;
+      height: 700px;
+      overflow-y: auto;
+      position: relative;
+      margin-bottom: 32px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--theme-accent) var(--theme-bg);
+      padding-bottom: 40px;
+      margin-left: 0;
+      margin-right: 0;
+      background: transparent;
+      z-index: 1;
+    }
+    .scroll-area::-webkit-scrollbar {
+      width: 14px;
+      background: var(--theme-bg);
+      border-radius: 8px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--theme-accent), var(--theme-accent-light) 70%);
+      border-radius: 8px;
+      border: 3px solid var(--theme-bg);
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+    }
+    .scroll-area::-webkit-scrollbar-thumb:hover {
+      background: var(--theme-accent-light);
+    }
+    .scroll-area::-webkit-scrollbar-corner {
+      background: var(--theme-bg);
+    }
+    .scroll-percent {
+      position: absolute;
+      top: 12px;
+      right: -44px;
+      width: 40px;
+      background: rgba(10, 15, 44, 0.85);
+      color: var(--theme-accent-light);
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 8px var(--theme-accent-dark);
+      text-align: center;
+      padding: 6px 0;
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      transition: top 0.15s cubic-bezier(.4,2,.6,1);
+    }
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0 auto;
+      z-index: 2;
+    }
+    .app-button {
+      background: rgba(20, 30, 60, 0.99);
+      border: 2.5px solid var(--theme-accent);
+      border-radius: 22px;
+      height: 110px;
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      cursor: pointer;
+      transition: 
+        background 0.25s cubic-bezier(.4,2,.6,1),
+        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+        border-color 0.18s,
+        color 0.18s,
+        transform 0.18s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--theme-accent-light);
+      font-weight: 900;
+      font-size: 2.3rem;
+      letter-spacing: 0.08em;
+      user-select: none;
+      text-decoration: none;
+      box-shadow: 0 0 28px 0 var(--theme-accent-dark, #1e90ff22);
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      border-width: 3.5px;
+    }
+    .app-button:focus,
+    .app-button:hover {
+      background: #111a2e;
+      color: #fff;
+      border-color: var(--theme-accent-light);
+      box-shadow: 0 0 40px var(--theme-accent), 0 0 0 7px var(--theme-accent-dark);
+      transform: translateY(-5px) scale(1.025);
+      z-index: 2;
+    }
+    .app-button-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      padding: 0 8px;
+    }
+    @media (max-width: 1000px) {
+      .container, .scroll-area, .app-grid { max-width: 99vw; }
+      .app-grid { grid-template-columns: 1fr; }
+      .app-button { font-size: 1.5rem; height: 92px;}
+      .app-button-content { font-size: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .scroll-area {
+        height: 400px;
+        padding-bottom: 30px;
+      }
+      .app-grid { grid-template-columns: 1fr; gap: 16px; }
+      .app-button { height: 56px; font-size: 1.05rem; }
+      .app-button-content { font-size: 1.08rem; }
+    }
+    /* Modal styles */
+    #app-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 5000;
+      width: 100vw; height: 100vh;
+      background: rgba(14,15,34,0.93);
+      backdrop-filter: blur(1.5px);
+      justify-content: center;
+      align-items: center;
+    }
+    #app-modal .modal-inner {
+      position: relative;
+      width: 90vw;
+      max-width: 1000px;
+      height: 88vh;
+      box-shadow: 0 0 30px #000c;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #141c36;
+      display: flex;
+      flex-direction: column;
+    }
+    #app-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      padding: 7px 20px;
+      border-radius: 7px;
+      background: #232d48;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      border: none;
+      cursor: pointer;
+    }
+    #app-modal iframe {
+      border: none;
+      border-radius: 0 0 16px 16px;
+      background: #141c36;
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex: 1;
+    }
+    #app-iframe-fallback {
+      display: none;
+      padding: 40px 18px;
+      text-align: center;
+      color: white;
+      font-size: 1.3rem;
+      background: rgba(24,27,36,0.97);
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
+    <a href="index.html" tabindex="0">Home</a>
+    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="Apps.html" tabindex="0">Apps</a>
+    <a href="PR0XIES.html" tabindex="0">Proxies</a>
+    <a href="AI.html" tabindex="0">AI</a>
+    <a href="About.html" tabindex="0">About</a>
+    <a href="Contact.html" tabindex="0">Contact</a>
+  </nav>
+  <div class="status-widget" id="status-widget">
+    <span id="battery-icon" title="Battery"></span>
+    <span id="wifi-icon" title="Network"></span>
+    <span id="datetime"></span>
+    <span class="color-btns" id="color-btns" title="Theme Color">
+      <button class="color-btn selected" data-hue="210" aria-label="Default Blue"></button>
+      <button class="color-btn" data-hue="0" aria-label="Red"></button>
+      <button class="color-btn" data-hue="30" aria-label="Orange"></button>
+      <button class="color-btn" data-hue="50" aria-label="Yellow"></button>
+      <button class="color-btn" data-hue="120" aria-label="Green"></button>
+      <button class="color-btn" data-hue="180" aria-label="Cyan"></button>
+      <button class="color-btn" data-hue="270" aria-label="Purple"></button>
+      <button class="color-btn" data-hue="320" aria-label="Pink"></button>
+      <button class="color-btn" data-hue="220" aria-label="Gray"></button>
+    </span>
+  </div>
+  <!-- Quick Settings Gear Button -->
+  <button id="quick-settings-gear-btn" title="Quick Settings" aria-label="Quick Settings">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-4.06l1.77-1.37a.5.5 0 0 0 .11-.66l-1.7-2.94a.5.5 0 0 0-.61-.23l-2.1.84a6.82 6.82 0 0 0-1.48-.86l-.32-2.24A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.43l-.32 2.24c-.52.2-1.01.47-1.48.86l-2.1-.84a.5.5 0 0 0-.61.23L2.7 7.41a.5.5 0 0 0 .11.66l1.77 1.37c-.05.32-.08.65-.08.99 0 .34.03.67.08.99l-1.77 1.37a.5.5 0 0 0-.11.66l1.7 2.94c.13.22.39.3.61.23l2.1-.84c.47.39.96.72 1.48.86l.32 2.24A.5.5 0 0 0 10 22h4c.26 0 .46-.18.5-.43l.32-2.24c.52-.2 1.01-.47 1.48-.86l2.1.84c.22.09.48-.01.61-.23l1.7-2.94a.5.5 0 0 0-.11-.66l-1.77-1.37c.05-.32.08-.65.08-.99 0-.34-.03-.67-.08-.99zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+    </svg>
+  </button>
+  <!-- Quick Settings Modal (dropdown for premade cloaking) -->
+  <div id="quick-settings-modal">
+    <div id="quick-settings-sheet">
+      <button id="quick-settings-modal-close" title="Close" aria-label="Close">&times;</button>
+      <h2>Quick Settings</h2>
+      <div class="setting-row">
+        <span class="setting-label">Premade Cloaking</span>
+        <span class="dropdown" style="display:flex;align-items:center;gap:8px;">
+          <select id="premade-cloak-dropdown">
+            <option value="off">Off</option>
+            <option value="classroom">Google Classroom</option>
+            <option value="sheets">Google Sheets</option>
+            <option value="slides">Google Slides</option>
+            <option value="docs">Google Docs</option>
+            <option value="gmail">Gmail</option>
+            <option value="powerschool">PowerSchool</option>
+            <option value="studysync">StudySync</option>
+            <option value="khan">Khan Academy</option>
+            <option value="adobe">Adobe</option>
+            <option value="powerpoint">PowerPoint</option>
+            <option value="word">Microsoft Word</option>
+            <option value="youtube">YouTube</option>
+          </select>
+          <button id="cloak-now-btn" type="button" style="padding:4px 15px;border-radius:6px;border:none;background:var(--theme-accent);color:#fff;font-weight:700;cursor:pointer;">Cloak Now</button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="main-container">
+    <h1>APP VAULT</h1>
+    <div class="scroll-area" id="scroll-area">
+      <div class="scroll-percent" id="scroll-percent">0%</div>
+      <div class="app-grid">
+        <!-- App Buttons (no images, wide, single column) -->
+        <button class="app-button" data-url="https://www.chess.com/"><span class="app-button-content">Chess.com</span></button>
+        <button class="app-button" data-url="https://www.coolmathgames.com/"><span class="app-button-content">Cool Math Games</span></button>
+        <button class="app-button" data-url="https://www.nvidia.com/en-us/geforce-now/"><span class="app-button-content">Nvidia GeForce NOW</span></button>
+        <button class="app-button" data-url="https://youtube.com/"><span class="app-button-content">YouTube</span></button>
+        <button class="app-button" data-url="https://www.amazon.com/"><span class="app-button-content">Amazon</span></button>
+        <button class="app-button" data-url="https://www.disneyplus.com/"><span class="app-button-content">Disney Plus</span></button>
+        <button class="app-button" data-url="https://search.brave.com/"><span class="app-button-content">Brave Search</span></button>
+        <button class="app-button" data-url="https://www.google.com/"><span class="app-button-content">Google</span></button>
+        <button class="app-button" data-url="https://www.bing.com/"><span class="app-button-content">Bing</span></button>
+        <button class="app-button" data-url="https://www.yahoo.com/"><span class="app-button-content">Yahoo</span></button>
+        <button class="app-button" data-url="https://github.com/"><span class="app-button-content">GitHub</span></button>
+        <button class="app-button" data-url="https://www.crazygames.com/"><span class="app-button-content">Crazy Games</span></button>
+        <button class="app-button" data-url="https://scratch.mit.edu/"><span class="app-button-content">Scratch</span></button>
+        <button class="app-button" data-url="https://drive.google.com/"><span class="app-button-content">Google Drive</span></button>
+        <button class="app-button" data-url="https://sites.google.com/"><span class="app-button-content">Google Sites</span></button>
+      </div>
+    </div>
+  </div>
+  <!-- In-site modal for iframe apps -->
+  <div id="app-modal">
+    <div class="modal-inner">
+      <button id="app-modal-close">&times; Close</button>
+      <div style="position: absolute; left: 14px; top: 12px; z-index: 20; display: flex; gap: 12px;">
+        <button id="app-open-about-blank-btn"
+          style="background:linear-gradient(90deg,#444,#888);color:#fff;padding:7px 18px;border-radius:7px;border:none;font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:1.09rem;text-decoration:none;box-shadow:0 2px 16px #2225;cursor:pointer;transition:background 0.15s;">
+          ↗ Open in about:blank
+        </button>
+        <button id="app-fullscreen-btn"
+          style="background:linear-gradient(90deg,#222,#333);color:#fff;padding:7px 18px;border-radius:7px;border:none;font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:1.09rem;text-decoration:none;box-shadow:0 2px 16px #2225;cursor:pointer;transition:background 0.15s;">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div id="app-iframe-holder" style="width:100%;height:100%;flex:1;display:flex;flex-direction:column;">
+        <iframe id="app-iframe" src="" allowtransparency="true" frameborder="0" scrolling="yes" allowfullscreen style="flex:1;"></iframe>
+        <div id="app-iframe-fallback">
+          <span id="app-iframe-fallback-msg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Popup modal logic for app buttons
+    function showAppIframeFallback(url, msg) {
+      document.getElementById('app-iframe').style.display = 'none';
+      document.getElementById('app-iframe-fallback').style.display = '';
+      document.getElementById('app-iframe-fallback-msg').textContent = msg || "This app can't be embedded. Use the about:blank button above.";
+    }
+    function resetAppIframeFallback() {
+      document.getElementById('app-iframe').style.display = '';
+      document.getElementById('app-iframe-fallback').style.display = 'none';
+    }
+    document.querySelectorAll('.app-button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = btn.getAttribute('data-url');
+        resetAppIframeFallback();
+        document.getElementById('app-iframe').src = url;
+        document.getElementById('app-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        // Fallback if iframe fails (X-Frame-Options or CSP)
+        let iframe = document.getElementById('app-iframe');
+        let fallbackTimeout = setTimeout(() => {
+          showAppIframeFallback(url, "This app can't be embedded. Use the about:blank button above.");
+        }, 3500);
+        iframe.onload = function() {
+          clearTimeout(fallbackTimeout);
+          try {
+            let test = iframe.contentWindow.location.href;
+          } catch (err) {
+            showAppIframeFallback(url, "This app can't be embedded. Use the about:blank button above.");
+          }
+        };
+        iframe.onerror = function() {
+          clearTimeout(fallbackTimeout);
+          showAppIframeFallback(url, "This app can't be embedded. Use the about:blank button above.");
+        };
+      });
+    });
+    document.getElementById('app-modal-close').onclick = function() {
+      document.getElementById('app-modal').style.display = 'none';
+      document.getElementById('app-iframe').src = '';
+      document.body.style.overflow = '';
+      resetAppIframeFallback();
+    };
+    document.getElementById('app-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        document.getElementById('app-modal-close').click();
+      }
+    });
+    document.getElementById('app-open-about-blank-btn').onclick = function() {
+      const src = document.getElementById('app-iframe').src;
+      if (!src) return;
+      const win = window.open('about:blank', '_blank');
+      if (win) {
+        win.document.write(`
+          <title>${document.title}</title>
+          <style>
+            html,body {height:100%;margin:0;overflow:hidden;background:#181b24;}
+            iframe {border:none;width:100vw;height:100vh;display:block;}
+          </style>
+          <iframe src="${src}" allowfullscreen></iframe>
+        `);
+        win.document.close();
+      }
+    };
+    document.getElementById('app-fullscreen-btn').onclick = function() {
+      const iframe = document.getElementById('app-iframe');
+      if (iframe.requestFullscreen) iframe.requestFullscreen();
+      else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+      else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+    };
+
+    // Quick Settings Modal Logic (copied from Games.html)
+    const CLOAK_KEY = "ion-premade-cloak";
+    const cloakDropdown = document.getElementById('premade-cloak-dropdown');
+    function loadCloakSetting() {
+      let val = localStorage.getItem(CLOAK_KEY) || "off";
+      cloakDropdown.value = val;
+    }
+    loadCloakSetting();
+    cloakDropdown.addEventListener("change", function() {
+      localStorage.setItem(CLOAK_KEY, cloakDropdown.value);
+      window.dispatchEvent(new Event("ionSettingsChanged"));
+    });
+    window.addEventListener("storage", function(e) {
+      if (e.key === CLOAK_KEY) loadCloakSetting();
+    });
+    window.addEventListener("ionSettingsChanged", function() {
+      loadCloakSetting();
+    });
+    const gearBtn = document.getElementById('quick-settings-gear-btn');
+    const modal = document.getElementById('quick-settings-modal');
+    const closeBtn = document.getElementById('quick-settings-modal-close');
+    gearBtn.onclick = function() {
+      modal.classList.add('active');
+    };
+    closeBtn.onclick = function() {
+      modal.classList.remove('active');
+    };
+    modal.addEventListener('mousedown', function(e) {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape" && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    });
+  </script>
+  <script>
+const cloakData = {
+  off: {
+    title: "ION Game Vault - Apps",
+    favicon: "favicon.ico"
+  },
+  classroom: {
+    title: "Classes",
+    favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
+  },
+  sheets: {
+    title: "Untitled spreadsheet - Google Sheets",
+    favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
+  },
+  slides: {
+    title: "Untitled presentation - Google Slides",
+    favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
+  },
+  docs: {
+    title: "Untitled document - Google Docs",
+    favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico"
+  },
+  gmail: {
+    title: "Inbox (1) - user@gmail.com - Gmail",
+    favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
+  },
+  powerschool: {
+    title: "PowerSchool",
+    favicon: "https://www.powerschool.com/favicon.ico"
+  },
+  studysync: {
+    title: "StudySync",
+    favicon: "https://www.studysync.com/favicon.ico"
+  },
+  khan: {
+    title: "Dashboard | Khan Academy",
+    favicon: "https://www.khanacademy.org/favicon.ico"
+  },
+  adobe: {
+    title: "Adobe Document Cloud",
+    favicon: "https://www.adobe.com/favicon.ico"
+  },
+  powerpoint: {
+    title: "Presentation1 - PowerPoint",
+    favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png"
+  },
+  word: {
+    title: "Document1 - Word",
+    favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png"
+  },
+  youtube: {
+    title: "YouTube",
+    favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico"
+  }
+};
+function setCloak(cloakKey) {
+  const cloak = cloakData[cloakKey] || cloakData['off'];
+  document.title = cloak.title;
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = cloak.favicon;
+}
+document.getElementById("cloak-now-btn").onclick = function() {
+  const cloakKey = document.getElementById('premade-cloak-dropdown').value;
+  setCloak(cloakKey);
+  localStorage.setItem("ion-premade-cloak", cloakKey);
+};
+window.addEventListener("DOMContentLoaded", function() {
+  const savedCloak = localStorage.getItem("ion-premade-cloak") || "off";
+  const dropdown = document.getElementById('premade-cloak-dropdown');
+  if (dropdown) {
+    dropdown.value = savedCloak;
+    setCloak(savedCloak);
+  }
+});
+</script>
+</body>
+</html>
