@@ -788,6 +788,186 @@
   </div>
   <script>
     // --- Full-window iframe logic (iframe.html merged) ---
+    const cloakData = {
+  off: { title: "ION Game Vault - Settings", favicon: "favicon.ico" },
+  classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
+  sheets: { title: "Untitled spreadsheet - Google Sheets", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
+  slides: { title: "Untitled presentation - Google Slides", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
+  docs: { title: "Untitled document - Google Docs", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
+  gmail: { title: "Inbox (1) - user@gmail.com - Gmail", favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" },
+  powerschool: { title: "PowerSchool", favicon: "https://www.powerschool.com/favicon.ico" },
+  studysync: { title: "StudySync", favicon: "https://www.studysync.com/favicon.ico" },
+  khan: { title: "Dashboard | Khan Academy", favicon: "https://www.khanacademy.org/favicon.ico" },
+  adobe: { title: "Adobe Document Cloud", favicon: "https://www.adobe.com/favicon.ico" },
+  powerpoint: { title: "Presentation1 - PowerPoint", favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png" },
+  word: { title: "Document1 - Word", favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png" },
+  youtube: { title: "YouTube", favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico" }
+};
+const CLOAK_KEY = "ion-premade-cloak";
+const PANIC_KEY = "ion-panic-key";
+const PANIC_URL = "ion-panic-url";
+const FAKE_PANIC_KEY = "ion-fake-panic-key";
+const CLICKOFF_CLOAK_KEY = "ion-clickoff-cloak";
+const THEME_HUE_KEY = "ion-theme-hue";
+
+function setCloak(cloakKey) {
+  const cloak = cloakData[cloakKey] || cloakData['off'];
+  document.title = cloak.title;
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = cloak.favicon;
+}
+function loadCloakSetting() {
+  let val = localStorage.getItem(CLOAK_KEY) || "off";
+  document.getElementById('premade-cloak-dropdown').value = val;
+  setCloak(val);
+}
+document.getElementById("cloak-now-btn").onclick = function() {
+  const cloakKey = document.getElementById('premade-cloak-dropdown').value;
+  setCloak(cloakKey);
+  localStorage.setItem(CLOAK_KEY, cloakKey);
+  window.dispatchEvent(new Event("ionSettingsChanged"));
+};
+document.getElementById('premade-cloak-dropdown').addEventListener("change", function() {
+  localStorage.setItem(CLOAK_KEY, this.value);
+  setCloak(this.value);
+  window.dispatchEvent(new Event("ionSettingsChanged"));
+});
+window.addEventListener("DOMContentLoaded", loadCloakSetting);
+
+// Click-off cloaking, inactivity, tab switch, hotkey
+let clickoffEnabled = false;
+let autoCloakTimeout = null;
+
+function triggerCloak() {
+  document.querySelector('.navbar').classList.add('stealth');
+  if (document.getElementById('cloak-fake').checked) {
+    document.getElementById('cloak-fake-overlay').style.display = "flex";
+    document.getElementById('cloak-fake-message').innerText =
+      Math.random() > 0.5 ? "Loading..." : "Access Denied";
+  } else {
+    document.getElementById('cloak-fake-overlay').style.display = "none";
+  }
+  const customTitle = localStorage.getItem("customCloakTitle");
+  const customFavicon = localStorage.getItem("customCloakFavicon");
+  if (customTitle && customFavicon) {
+    document.title = customTitle;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = customFavicon;
+  } else {
+    setCloak(localStorage.getItem(CLOAK_KEY) || "off");
+  }
+  localStorage.setItem("lastCloak", JSON.stringify({
+    title: document.title,
+    favicon: document.querySelector("link[rel~='icon']").href
+  }));
+}
+function restoreLastCloak() {
+  const last = localStorage.getItem("lastCloak");
+  if (last) {
+    const data = JSON.parse(last);
+    document.title = data.title;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = data.favicon;
+  }
+}
+function uncloak() {
+  document.getElementById('cloak-fake-overlay').style.display = "none";
+  document.querySelector('.navbar').classList.remove('stealth');
+  setCloak(localStorage.getItem(CLOAK_KEY) || "off");
+}
+const clickoffInput = document.getElementById('clickoff-cloak');
+clickoffInput.addEventListener('change', function() {
+  clickoffEnabled = this.checked;
+  localStorage.setItem(CLICKOFF_CLOAK_KEY, clickoffEnabled ? "1" : "0");
+});
+if (localStorage.getItem(CLICKOFF_CLOAK_KEY) === "1") {
+  clickoffInput.checked = true;
+  clickoffEnabled = true;
+}
+function resetInactivityTimer() {
+  if (autoCloakTimeout) clearTimeout(autoCloakTimeout);
+  const min = parseInt(localStorage.getItem("cloak-inactive-min")||"0");
+  if (clickoffEnabled && min > 0) {
+    autoCloakTimeout = setTimeout(triggerCloak, min*60*1000);
+  }
+}
+['mousemove','keydown','mousedown','touchstart'].forEach(evt =>
+  document.addEventListener(evt, resetInactivityTimer, true)
+);
+document.addEventListener("visibilitychange", function() {
+  if (document.hidden && clickoffEnabled) triggerCloak();
+});
+window.addEventListener('blur', function() {
+  if (clickoffEnabled) triggerCloak();
+});
+document.getElementById('cloak-hotkey').addEventListener('input', function() {
+  localStorage.setItem("cloak-hotkey", this.value);
+});
+document.addEventListener('keydown', function(e) {
+  const hotkey = localStorage.getItem("cloak-hotkey");
+  if (hotkey && e.key && e.key.toLowerCase() === hotkey.toLowerCase()) {
+    triggerCloak();
+  }
+});
+document.getElementById('cloak-inactive').addEventListener('input', function() {
+  localStorage.setItem("cloak-inactive-min", this.value);
+  resetInactivityTimer();
+});
+document.getElementById('cloak-inactive').value = localStorage.getItem("cloak-inactive-min") || "";
+document.getElementById('custom-cloak-save').onclick = function() {
+  localStorage.setItem("customCloakTitle", document.getElementById('custom-cloak-title').value);
+  localStorage.setItem("customCloakFavicon", document.getElementById('custom-cloak-favicon').value);
+  alert("Custom cloak settings saved.");
+}
+document.getElementById('cloak-fake').addEventListener('change', function() {
+  localStorage.setItem("cloak-fake", this.checked ? "1" : "0");
+});
+document.getElementById('cloak-fake').checked = localStorage.getItem("cloak-fake") === "1";
+document.getElementById('cloak-fake-overlay').onclick = uncloak;
+
+// ========== PANIC KEY & FAKE PANIC KEY ==========
+
+document.getElementById('panic-key').addEventListener('input', function() {
+  localStorage.setItem("ion-panic-key", this.value);
+});
+document.getElementById('panic-url').addEventListener('input', function() {
+  localStorage.setItem("ion-panic-url", this.value);
+});
+document.getElementById('fake-panic-key').addEventListener('input', function() {
+  localStorage.setItem("ion-fake-panic-key", this.value);
+});
+document.getElementById('panic-key').value = localStorage.getItem("ion-panic-key") || '';
+document.getElementById('panic-url').value = localStorage.getItem("ion-panic-url") || '';
+document.getElementById('fake-panic-key').value = localStorage.getItem("ion-fake-panic-key") || '';
+document.addEventListener('keydown', function(e) {
+  const panicKey = localStorage.getItem("ion-panic-key");
+  const panicUrl = localStorage.getItem("ion-panic-url");
+  if (panicKey && panicUrl && e.key && e.key.toLowerCase() === panicKey.toLowerCase()) {
+    window.location.href = panicUrl;
+  }
+  const fakeKey = localStorage.getItem("ion-fake-panic-key");
+  if (fakeKey && e.key && e.key.toLowerCase() === fakeKey.toLowerCase() && document.getElementById('cloak-fake').checked) {
+    document.getElementById('cloak-fake-overlay').style.display = "flex";
+    document.getElementById('cloak-fake-message').innerText =
+      Math.random() > 0.5 ? "Loading..." : "Access Denied";
+    document.querySelector('.navbar').classList.add('stealth');
+  }
+});
     (function() {
       function getQueryParam(name) {
         let match = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
