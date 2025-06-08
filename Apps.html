@@ -53,7 +53,6 @@
       }
     }
     #vanta-bg { display: none; }
-
     body {
       display: flex;
       justify-content: center;
@@ -674,11 +673,7 @@
         }, 3500);
         iframe.onload = function() {
           clearTimeout(fallbackTimeout);
-          try {
-            let test = iframe.contentWindow.location.href;
-          } catch (err) {
-            showAppIframeFallback(url, "This app can't be embedded. Use the about:blank button above.");
-          }
+          // DO NOT try to access iframe.contentWindow.location.href here!
         };
         iframe.onerror = function() {
           clearTimeout(fallbackTimeout);
@@ -692,7 +687,7 @@
       document.body.style.overflow = '';
       resetAppIframeFallback();
     };
-    // FIX: Only close modal if mousedown is on the overlay
+    // Only close modal if mousedown is on the overlay, not inside modal or iframe
     document.getElementById('app-modal').addEventListener('mousedown', function(e) {
       if (e.target === this) {
         document.getElementById('app-modal-close').click();
@@ -716,7 +711,6 @@
     };
     document.getElementById('app-fullscreen-btn').onclick = function() {
       const iframe = document.getElementById('app-iframe');
-      // Try all methods, fallback to modal-inner if iframe fails
       if (iframe.requestFullscreen) {
         iframe.requestFullscreen().catch(() => {
           const modal = document.querySelector('#app-modal .modal-inner');
