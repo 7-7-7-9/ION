@@ -651,6 +651,17 @@
     </div>
   </div>
   <script>
+
+    (function(){
+      alert("Passord!");
+      let pass;
+      while(true){
+        pass = prompt("Enter password to access this page:");
+        if(pass === null) { window.location = "about:blank"; return; }
+        if(pass === "ION77") break;
+        alert("Incorrect password. Try again.");
+      }
+    })();
     function showAppIframeFallback(url, msg) {
       document.getElementById('app-iframe').style.display = 'none';
       document.getElementById('app-iframe-fallback').style.display = '';
