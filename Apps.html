@@ -22,7 +22,6 @@
       width: 100vw;
       overflow-x: hidden;
     }
-    /* Cool animated background */
     body::before {
       content: '';
       position: fixed;
@@ -53,7 +52,7 @@
           0 0;
       }
     }
-    #vanta-bg { display: none; } /* hide old bg */
+    #vanta-bg { display: none; }
 
     body {
       display: flex;
@@ -489,7 +488,6 @@
       .app-button { height: 56px; font-size: 1.05rem; }
       .app-button-content { font-size: 1.08rem; }
     }
-    /* Modal styles */
     #app-modal {
       display: none;
       position: fixed;
@@ -551,7 +549,7 @@
   <nav class="navbar" id="navbar">
     <span class="nav-logo" tabindex="0" title="ION Game Vault Home">ION</span>
     <a href="index.html" tabindex="0">Home</a>
-    <a href="G@MES.html" tabindex="0">Games</a>
+    <a href="Games.html" tabindex="0">Games</a>
     <a href="Apps.html" tabindex="0">Apps</a>
     <a href="PR0XIES.html" tabindex="0">Proxies</a>
     <a href="AI.html" tabindex="0">AI</a>
@@ -574,13 +572,11 @@
       <button class="color-btn" data-hue="220" aria-label="Gray"></button>
     </span>
   </div>
-  <!-- Quick Settings Gear Button -->
   <button id="quick-settings-gear-btn" title="Quick Settings" aria-label="Quick Settings">
     <svg viewBox="0 0 24 24">
       <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-4.06l1.77-1.37a.5.5 0 0 0 .11-.66l-1.7-2.94a.5.5 0 0 0-.61-.23l-2.1.84a6.82 6.82 0 0 0-1.48-.86l-.32-2.24A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.43l-.32 2.24c-.52.2-1.01.47-1.48.86l-2.1-.84a.5.5 0 0 0-.61.23L2.7 7.41a.5.5 0 0 0 .11.66l1.77 1.37c-.05.32-.08.65-.08.99 0 .34.03.67.08.99l-1.77 1.37a.5.5 0 0 0-.11.66l1.7 2.94c.13.22.39.3.61.23l2.1-.84c.47.39.96.72 1.48.86l.32 2.24A.5.5 0 0 0 10 22h4c.26 0 .46-.18.5-.43l.32-2.24c.52-.2 1.01-.47 1.48-.86l2.1.84c.22.09.48-.01.61-.23l1.7-2.94a.5.5 0 0 0-.11-.66l-1.77-1.37c.05-.32.08-.65.08-.99 0-.34-.03-.67-.08-.99zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
     </svg>
   </button>
-  <!-- Quick Settings Modal (dropdown for premade cloaking) -->
   <div id="quick-settings-modal">
     <div id="quick-settings-sheet">
       <button id="quick-settings-modal-close" title="Close" aria-label="Close">&times;</button>
@@ -613,7 +609,6 @@
     <div class="scroll-area" id="scroll-area">
       <div class="scroll-percent" id="scroll-percent">0%</div>
       <div class="app-grid">
-        <!-- App Buttons (no images, wide, single column) -->
         <button class="app-button" data-url="https://embeddr.rhw.one/embed#https://chess.com"><span class="app-button-content">Chess.com</span></button>
         <button class="app-button" data-url="https://embeddr.rhw.one/embed#https://www.coolmathgames.com/"><span class="app-button-content">Cool Math Games</span></button>
         <button class="app-button" data-url="https://embeddr.rhw.one/embed#https://www.nvidia.com/en-us/geforce-now/"><span class="app-button-content">Nvidia GeForce NOW</span></button>
@@ -633,7 +628,6 @@
       </div>
     </div>
   </div>
-  <!-- In-site modal for iframe apps -->
   <div id="app-modal">
     <div class="modal-inner">
       <button id="app-modal-close">&times; Close</button>
@@ -657,7 +651,6 @@
     </div>
   </div>
   <script>
-    // Popup modal logic for app buttons
     function showAppIframeFallback(url, msg) {
       document.getElementById('app-iframe').style.display = 'none';
       document.getElementById('app-iframe-fallback').style.display = '';
@@ -675,7 +668,6 @@
         document.getElementById('app-iframe').src = url;
         document.getElementById('app-modal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        // Fallback if iframe fails (X-Frame-Options or CSP)
         let iframe = document.getElementById('app-iframe');
         let fallbackTimeout = setTimeout(() => {
           showAppIframeFallback(url, "This app can't be embedded. Use the about:blank button above.");
@@ -700,7 +692,8 @@
       document.body.style.overflow = '';
       resetAppIframeFallback();
     };
-    document.getElementById('app-modal').addEventListener('click', function(e) {
+    // FIX: Only close modal if mousedown is on the overlay
+    document.getElementById('app-modal').addEventListener('mousedown', function(e) {
       if (e.target === this) {
         document.getElementById('app-modal-close').click();
       }
@@ -739,7 +732,7 @@
       }
     };
 
-    // Quick Settings Modal Logic (copied from Games.html)
+    // Quick Settings Modal Logic
     const CLOAK_KEY = "ion-premade-cloak";
     const cloakDropdown = document.getElementById('premade-cloak-dropdown');
     function loadCloakSetting() {
