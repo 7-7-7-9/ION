@@ -5,6 +5,7 @@
   <title>ION Game Vault - Settings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+
   <!-- VANTA.js and three.js CDN (for animated backgrounds) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.triangles.min.js"></script>
@@ -31,12 +32,22 @@
       --theme-accent-light: hsl(var(--theme-hue), 100%, 72%);
       --theme-accent-dark: hsl(var(--theme-hue), 72%, 36%);
       --theme-bg: #0a0f2c;
+      --blue-btn: #2294f2;
+      --blue-btn-hover: #0e7acf;
+      --input-bg: #161c2c;
+      --input-border: #2294f2;
+      --input-focus: #3db2ff;
+      --input-text: #e0e6f0;
+      --switch-off: #20293a;
+      --switch-on: #2294f2;
+      --switch-bg: #141929;
     }
     html, body {
       margin: 0; padding: 0; height: 100%;
       background: var(--theme-bg);
       color: #e0e6f0;
       font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1rem;
       min-height: 100vh;
       width: 100vw;
       overflow-x: hidden;
@@ -53,216 +64,6 @@
     body.vanta-bg-active #vanta-bg { display: block !important; }
     body.vanta-bg-active { background: #12193a !important; }
     body.vanta-bg-active::before { display: none !important; }
-    .bg-thumbs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 11px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-    }
-    .bg-thumb {
-      width: 120px;
-      height: 60px;
-      border-radius: 8px;
-      border: 2.5px solid #fff;
-      outline: none;
-      cursor: pointer;
-      background: #181b24;
-      transition: border 0.16s, box-shadow 0.16s;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.97rem;
-      color: #9ecbff;
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 700;
-      text-align: center;
-      user-select: none;
-    }
-    .bg-thumb.selected, .bg-thumb:focus-visible {
-      border: 2.5px solid var(--theme-accent);
-      box-shadow: 0 0 0 2px var(--theme-accent-light);
-      z-index: 2;
-      background: #203c61;
-      color: #fff;
-    }
-    .reset-btn, .save-btn, .set-bg-btn {
-      padding: 6px 18px;
-      border-radius: 7px;
-      border: none;
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 1.09rem;
-      color: #fff;
-      background: var(--theme-accent);
-      cursor: pointer;
-      margin-top: 10px;
-      margin-bottom: 7px;
-      transition: background 0.18s, box-shadow 0.18s;
-      box-shadow: 0 2px 8px #1e90ff55;
-    }
-    .save-btn {
-      background: var(--theme-accent-dark);
-      margin-left: 10px;
-    }
-    .set-bg-btn {
-      margin-bottom: 0;
-      margin-top: 6px;
-      float: right;
-      background: var(--theme-accent-dark);
-    }
-    .container {
-      max-width: 900px;
-      width: 99vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-      margin: 0 auto;
-      margin-top: 110px;
-    }
-    h1 {
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 900;
-      font-size: clamp(1.3rem, 7vw, 3.2rem);
-      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-fill-color: transparent;
-      margin-bottom: 38px;
-      text-align: center;
-      user-select: none;
-      white-space: nowrap;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      text-shadow: none;
-      overflow-x: auto;
-    }
-    @media (max-width: 600px) {
-      h1 {
-        font-size: clamp(1rem, 6vw, 2.3rem);
-        margin-bottom: 28px;
-        white-space: normal;
-        word-break: break-word;
-      }
-    }
-    .settings-section {
-      background: rgba(18,22,44,0.98);
-      border-radius: 18px;
-      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
-      border: 1.5px solid var(--theme-accent-dark, #1e90ff44);
-      margin-bottom: 30px;
-      padding: 28px 28px 20px 28px;
-      width: 100%;
-      max-width: 620px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .settings-section h2 {
-      margin-top: 0;
-      color: var(--theme-accent-light);
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 12px;
-    }
-    .setting-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 8px;
-      font-size: 1.08rem;
-    }
-    .setting-row label, .setting-label {
-      flex: 1;
-      color: var(--theme-accent-light);
-    }
-    .dropdown, .input-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .dropdown select, .input-group input[type="text"], .input-group input[type="file"] {
-      background: #232b40;
-      color: #fff;
-      border-radius: 8px;
-      border: 1.5px solid var(--theme-accent-dark);
-      font-size: 1.07rem;
-      padding: 5px 20px 5px 9px;
-      font-family: 'Montserrat', Arial, sans-serif;
-      appearance: none;
-      outline: none;
-      transition: border 0.16s;
-      box-shadow: 0 1px 4px #0002;
-    }
-    .color-swatches {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-    .color-swatch {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      border: 2.5px solid #fff;
-      cursor: pointer;
-      transition: border 0.16s, box-shadow 0.16s;
-      background: #fff;
-      margin-right: 2px;
-      margin-bottom: 2px;
-      box-shadow: 0 0 2px #0003;
-    }
-    .color-swatch.selected, .color-swatch:focus-visible {
-      border: 2.5px solid var(--theme-accent);
-      box-shadow: 0 0 0 2px var(--theme-accent-light);
-      z-index: 2;
-    }
-    .row-note, .setting-note {
-      font-size: 0.97rem;
-      color: #bbc4e4;
-      margin-top: 2px;
-      margin-bottom: 7px;
-    }
-    .vanta-color-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-    .vanta-color-row label {
-      color: var(--theme-accent-light);
-      font-weight: 600;
-      font-size: 1.07rem;
-    }
-    #vanta-color-slider {
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border: none;
-      background: none;
-      border-radius: 6px;
-      box-shadow: 0 1px 4px #0003;
-    }
-    #reset-vanta-color {
-      border-radius: 6px;
-      border: none;
-      background: #222;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 6px 15px;
-      font-size: 1.01rem;
-      transition: background .15s;
-    }
-    #reset-vanta-color:active {
-      background: #111;
-    }
-    /* --- NAVBAR FIX --- */
     .navbar {
       position: fixed;
       top: 0;
@@ -279,6 +80,11 @@
       gap: 18px;
       font-family: 'Montserrat', Arial, sans-serif;
       height: 60px;
+      transition: opacity 0.3s;
+    }
+    .navbar.stealth {
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
     .navbar .nav-logo {
       font-size: 1.45em;
@@ -343,6 +149,319 @@
       .navbar .nav-logo { padding-right: 0; }
       .navbar a { width: 100%; }
     }
+    .container {
+      max-width: 100vw;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      margin: 0 auto;
+      margin-top: 110px;
+      padding: 0;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 7vw, 3.2rem);
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin-bottom: 38px;
+      text-align: center;
+      user-select: none;
+      white-space: nowrap;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-shadow: none;
+      overflow-x: auto;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: clamp(1rem, 6vw, 2.3rem);
+        margin-bottom: 28px;
+        white-space: normal;
+        word-break: break-word;
+      }
+    }
+    .settings-section {
+      background: rgba(18,22,44,0.98);
+      border-radius: 0;
+      box-shadow: 0 2px 16px var(--theme-accent-dark, #1e90ff33);
+      border-top: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      border-bottom: 1.5px solid var(--theme-accent-dark, #1e90ff44);
+      margin-bottom: 0;
+      margin-top: 0;
+      padding: 28px 0 20px 0;
+      width: 100vw;
+      max-width: 100vw;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .settings-section h2 {
+      margin-top: 0;
+      color: var(--theme-accent-light);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      padding-left: 34px;
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+      padding-left: 34px;
+      padding-right: 34px;
+    }
+    .setting-row label, .setting-label {
+      flex: 1;
+      color: var(--theme-accent-light);
+    }
+    .dropdown, .input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dropdown select, .input-group input[type="text"], .input-group input[type="file"], .input-group input[type="url"], .input-group input[type="number"], .input-custom {
+      background: var(--input-bg);
+      color: var(--input-text);
+      border-radius: 8px;
+      border: 1.5px solid var(--input-border);
+      font-size: 1.07rem;
+      padding: 8px 20px 8px 9px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      appearance: none;
+      outline: none;
+      transition: border 0.16s, box-shadow 0.16s;
+      box-shadow: 0 1px 4px #0002;
+      min-width: 80px;
+    }
+    .dropdown select:focus, .input-group input:focus, .input-custom:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 4px var(--theme-accent);
+    }
+    .color-swatches {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding-left: 34px;
+    }
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 2.5px solid #fff;
+      cursor: pointer;
+      transition: border 0.16s, box-shadow 0.16s;
+      background: #fff;
+      margin-right: 2px;
+      margin-bottom: 2px;
+      box-shadow: 0 0 2px #0003;
+    }
+    .color-swatch.selected, .color-swatch:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+    }
+    .row-note, .setting-note {
+      font-size: 0.97rem;
+      color: #bbc4e4;
+      margin-top: 2px;
+      margin-bottom: 7px;
+      padding-left: 34px;
+      padding-right: 34px;
+    }
+    .vanta-color-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+      padding-left: 34px;
+      padding-right: 34px;
+    }
+    .vanta-color-row label {
+      color: var(--theme-accent-light);
+      font-weight: 600;
+      font-size: 1.07rem;
+    }
+    #vanta-color-slider {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: none;
+      background: var(--input-bg);
+      border-radius: 6px;
+      box-shadow: 0 1px 4px #0003;
+      border: 2px solid var(--input-border);
+      transition: border 0.16s;
+    }
+    #vanta-color-slider:focus {
+      border: 2px solid var(--input-focus);
+    }
+    #reset-vanta-color, .save-btn, .set-bg-btn, .reset-btn {
+      border-radius: 7px;
+      border: none;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.09rem;
+      color: #fff;
+      background: var(--blue-btn);
+      cursor: pointer;
+      padding: 7px 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      transition: background 0.16s, box-shadow 0.16s;
+      box-shadow: 0 2px 8px #1e90ff33;
+    }
+    #reset-vanta-color:hover, .save-btn:hover, .set-bg-btn:hover, .reset-btn:hover {
+      background: var(--blue-btn-hover);
+    }
+    #reset-vanta-color:active, .save-btn:active, .set-bg-btn:active, .reset-btn:active {
+      background: #103d6f;
+    }
+    .bg-thumb {
+      width: 120px;
+      height: 60px;
+      border-radius: 8px;
+      border: 2.5px solid #fff;
+      outline: none;
+      cursor: pointer;
+      background: #181b24;
+      transition: border 0.16s, box-shadow 0.16s;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.97rem;
+      color: #9ecbff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+    }
+    .bg-thumb.selected, .bg-thumb:focus-visible {
+      border: 2.5px solid var(--theme-accent);
+      box-shadow: 0 0 0 2px var(--theme-accent-light);
+      z-index: 2;
+      background: #203c61;
+      color: #fff;
+    }
+    #cloak-fake-overlay {
+      display: none;
+      position: fixed;
+      z-index: 20000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #181b24f5;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.18s;
+    }
+    #cloak-fake-overlay .content {
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-top: 25vh;
+      background: rgba(15,32,54,0.98);
+      border-radius: 22px;
+      padding: 48px 28px;
+      box-shadow: 0 4px 32px #2294f277;
+      border: 2px solid #2294f2;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      user-select: none;
+    }
+    #cloak-fake-overlay .content .hint {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #9ecbff;
+      margin-top: 30px;
+      opacity: 0.6;
+      letter-spacing: 0.03em;
+    }
+    /* Toggle Switches */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      margin-right: 12px;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+    .switch input[type="checkbox"] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--switch-off);
+      transition: .3s;
+      border-radius: 26px;
+      box-shadow: 0 0 2px #0003;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #fff;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 0 4px #0004;
+    }
+    .switch input:checked + .slider {
+      background-color: var(--switch-on);
+    }
+    .switch input:focus + .slider {
+      box-shadow: 0 0 2px var(--theme-accent);
+    }
+    .switch input:checked + .slider:before {
+      transform: translateX(22px);
+      background: #e3f3ff;
+    }
+    .switch input:disabled + .slider {
+      background: #222;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    /* Responsive for full-width sections */
+    @media (max-width: 900px) {
+      .settings-section, .container {
+        max-width: 100vw !important;
+        width: 100vw !important;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .setting-row, .vanta-color-row, .color-swatches, .row-note, .setting-note {
+        padding-left: 10vw;
+        padding-right: 10vw;
+      }
+    }
+    @media (max-width: 600px) {
+      .setting-row, .vanta-color-row, .color-swatches, .row-note, .setting-note {
+        padding-left: 4vw;
+        padding-right: 4vw;
+      }
+    }
   </style>
 </head>
 <body>
@@ -365,7 +484,7 @@
       <div class="setting-row">
         <span class="setting-label">Premade Cloak</span>
         <span class="dropdown">
-          <select id="premade-cloak-dropdown">
+          <select id="premade-cloak-dropdown" class="input-custom">
             <option value="off">Off</option>
             <option value="classroom">Google Classroom</option>
             <option value="sheets">Google Sheets</option>
@@ -388,22 +507,46 @@
       </div>
       <div class="setting-row">
         <label for="clickoff-cloak" class="setting-label">Click-Off Cloaking</label>
-        <input type="checkbox" id="clickoff-cloak" />
-        <span class="setting-note">When enabled, clicking outside the page will auto-apply your selected cloak.</span>
+        <label class="switch">
+          <input type="checkbox" id="clickoff-cloak">
+          <span class="slider"></span>
+        </label>
+        <span class="setting-note">When enabled, clicking outside, tab switching, or inactivity will cloak.</span>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Custom Cloak</label>
+        <input type="text" id="custom-cloak-title" class="input-custom" placeholder="Custom Title" style="flex:2;">
+        <input type="url" id="custom-cloak-favicon" class="input-custom" placeholder="Favicon URL" style="flex:2;">
+        <button id="custom-cloak-save" class="save-btn">Save</button>
+      </div>
+      <div class="setting-row">
+        <label for="cloak-hotkey" class="setting-label">Quick Cloak Hotkey</label>
+        <input type="text" id="cloak-hotkey" maxlength="1" class="input-custom" placeholder="Key">
+      </div>
+      <div class="setting-row">
+        <label for="cloak-inactive" class="setting-label">Auto-Cloak on Inactivity (min)</label>
+        <input type="number" min="0" max="120" id="cloak-inactive" style="width:60px;" class="input-custom" />
       </div>
     </section>
     <section class="settings-section" id="panic-section">
       <h2>Panic Key</h2>
       <div class="setting-row input-group">
-        <label for="panic-key" class="setting-label">Set Panic Key:</label>
-        <input type="text" id="panic-key" maxlength="1" placeholder="Key" />
+        <label for="panic-key" class="setting-label">Panic Key (Redirect):</label>
+        <input type="text" id="panic-key" maxlength="1" class="input-custom" placeholder="Key" />
+        <label for="panic-url" class="setting-label" style="margin-left:10px;">URL:</label>
+        <input type="text" id="panic-url" class="input-custom" placeholder="https://example.com" />
       </div>
       <div class="setting-row input-group">
-        <label for="panic-url" class="setting-label">Redirect to URL:</label>
-        <input type="text" id="panic-url" placeholder="https://example.com" />
+        <label for="fake-panic-key" class="setting-label">Fake Overlay Panic Key:</label>
+        <input type="text" id="fake-panic-key" maxlength="1" class="input-custom" placeholder="Key" />
+        <label class="switch">
+          <input type="checkbox" id="cloak-fake" />
+          <span class="slider"></span>
+        </label>
+        <span class="setting-note">Show a "Loading" or "Access Denied" overlay when fake panic key is pressed.</span>
       </div>
       <div class="setting-note">
-        Press the panic key anytime to instantly redirect. Leave blank to disable.
+        Use separate keys for redirect and fake overlay. Leave blank to disable.
       </div>
     </section>
     <section class="settings-section" id="color-section">
@@ -432,288 +575,401 @@
       <button class="set-bg-btn" id="set-bg-btn">Set Selected Background</button>
       <button class="reset-btn" id="reset-bg-btn">Reset to Default</button>
     </section>
+    <section class="settings-section" id="reset-section">
+      <h2>Reset All Settings</h2>
+      <button id="reset-all-btn" class="reset-btn">Reset Everything</button>
+    </section>
+    <div id="cloak-fake-overlay">
+      <div class="content">
+        <span id="cloak-fake-message">Loading...</span>
+        <div class="hint">(Click anywhere to uncloak)</div>
+      </div>
+    </div>
   </div>
   <script>
-    // --- Cloaking ---
-    const cloakData = {
-      off: { title: "ION Game Vault - Settings", favicon: "favicon.ico" },
-      classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
-      sheets: { title: "Untitled spreadsheet - Google Sheets", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
-      slides: { title: "Untitled presentation - Google Slides", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
-      docs: { title: "Untitled document - Google Docs", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
-      gmail: { title: "Inbox (1) - user@gmail.com - Gmail", favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" },
-      powerschool: { title: "PowerSchool", favicon: "https://www.powerschool.com/favicon.ico" },
-      studysync: { title: "StudySync", favicon: "https://www.studysync.com/favicon.ico" },
-      khan: { title: "Dashboard | Khan Academy", favicon: "https://www.khanacademy.org/favicon.ico" },
-      adobe: { title: "Adobe Document Cloud", favicon: "https://www.adobe.com/favicon.ico" },
-      powerpoint: { title: "Presentation1 - PowerPoint", favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png" },
-      word: { title: "Document1 - Word", favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png" },
-      youtube: { title: "YouTube", favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico" }
-    };
-    const CLOAK_KEY = "ion-premade-cloak";
-    const PANIC_KEY = "ion-panic-key";
-    const PANIC_URL = "ion-panic-url";
-    const CLICKOFF_CLOAK_KEY = "ion-clickoff-cloak";
-    const THEME_HUE_KEY = "ion-theme-hue";
-    function setCloak(cloakKey) {
-      const cloak = cloakData[cloakKey] || cloakData['off'];
-      document.title = cloak.title;
-      let link = document.querySelector("link[rel~='icon']");
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-      }
-      link.href = cloak.favicon;
-    }
-    function loadCloakSetting() {
-      let val = localStorage.getItem(CLOAK_KEY) || "off";
-      document.getElementById('premade-cloak-dropdown').value = val;
-      setCloak(val);
-    }
-    document.getElementById("cloak-now-btn").onclick = function() {
-      const cloakKey = document.getElementById('premade-cloak-dropdown').value;
-      setCloak(cloakKey);
-      localStorage.setItem(CLOAK_KEY, cloakKey);
-      window.dispatchEvent(new Event("ionSettingsChanged"));
-    };
-    document.getElementById('premade-cloak-dropdown').addEventListener("change", function() {
-      localStorage.setItem(CLOAK_KEY, this.value);
-      setCloak(this.value);
-      window.dispatchEvent(new Event("ionSettingsChanged"));
-    });
-    window.addEventListener("DOMContentLoaded", loadCloakSetting);
+    <script>
+// ========== CLOAKING LOGIC ==========
 
-    let clickoffEnabled = false;
-    function handleClickoff(e) {
-      if (!document.hasFocus() && clickoffEnabled) {
-        const cloakKey = localStorage.getItem(CLOAK_KEY) || "off";
-        setCloak(cloakKey);
-      }
-    }
-    document.getElementById('clickoff-cloak').addEventListener('change', function() {
-      clickoffEnabled = this.checked;
-      localStorage.setItem(CLICKOFF_CLOAK_KEY, clickoffEnabled ? "1" : "0");
-    });
-    if (localStorage.getItem(CLICKOFF_CLOAK_KEY) === "1") {
-      document.getElementById('clickoff-cloak').checked = true;
-      clickoffEnabled = true;
-    }
-    window.addEventListener('blur', handleClickoff);
+const cloakData = {
+  off: { title: "ION Game Vault - Settings", favicon: "favicon.ico" },
+  classroom: { title: "Classes", favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png" },
+  sheets: { title: "Untitled spreadsheet - Google Sheets", favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" },
+  slides: { title: "Untitled presentation - Google Slides", favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico" },
+  docs: { title: "Untitled document - Google Docs", favicon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" },
+  gmail: { title: "Inbox (1) - user@gmail.com - Gmail", favicon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" },
+  powerschool: { title: "PowerSchool", favicon: "https://www.powerschool.com/favicon.ico" },
+  studysync: { title: "StudySync", favicon: "https://www.studysync.com/favicon.ico" },
+  khan: { title: "Dashboard | Khan Academy", favicon: "https://www.khanacademy.org/favicon.ico" },
+  adobe: { title: "Adobe Document Cloud", favicon: "https://www.adobe.com/favicon.ico" },
+  powerpoint: { title: "Presentation1 - PowerPoint", favicon: "https://static-00.iconduck.com/assets.00/microsoft-powerpoint-icon-512x512-zik0v4o4.png" },
+  word: { title: "Document1 - Word", favicon: "https://static-00.iconduck.com/assets.00/microsoft-word-icon-512x512-zfhk9u2d.png" },
+  youtube: { title: "YouTube", favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico" }
+};
+const CLOAK_KEY = "ion-premade-cloak";
+const PANIC_KEY = "ion-panic-key";
+const PANIC_URL = "ion-panic-url";
+const FAKE_PANIC_KEY = "ion-fake-panic-key";
+const CLICKOFF_CLOAK_KEY = "ion-clickoff-cloak";
+const THEME_HUE_KEY = "ion-theme-hue";
 
-    // --- Panic Key ---
-    function applyPanicKey(e) {
-      if (!e.ctrlKey && !e.altKey && !e.metaKey) {
-        const panicKey = localStorage.getItem(PANIC_KEY);
-        const panicUrl = localStorage.getItem(PANIC_URL);
-        if (panicKey && panicUrl && e.key && e.key.toLowerCase() === panicKey.toLowerCase()) {
-          window.location.href = panicUrl;
-        }
-      }
-    }
-    document.getElementById('panic-key').addEventListener('input', function() {
-      localStorage.setItem(PANIC_KEY, this.value);
-    });
-    document.getElementById('panic-url').addEventListener('input', function() {
-      localStorage.setItem(PANIC_URL, this.value);
-    });
-    document.getElementById('panic-key').value = localStorage.getItem(PANIC_KEY) || '';
-    document.getElementById('panic-url').value = localStorage.getItem(PANIC_URL) || '';
-    document.addEventListener('keydown', applyPanicKey);
+function setCloak(cloakKey) {
+  const cloak = cloakData[cloakKey] || cloakData['off'];
+  document.title = cloak.title;
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = cloak.favicon;
+}
+function loadCloakSetting() {
+  let val = localStorage.getItem(CLOAK_KEY) || "off";
+  document.getElementById('premade-cloak-dropdown').value = val;
+  setCloak(val);
+}
+document.getElementById("cloak-now-btn").onclick = function() {
+  const cloakKey = document.getElementById('premade-cloak-dropdown').value;
+  setCloak(cloakKey);
+  localStorage.setItem(CLOAK_KEY, cloakKey);
+  window.dispatchEvent(new Event("ionSettingsChanged"));
+};
+document.getElementById('premade-cloak-dropdown').addEventListener("change", function() {
+  localStorage.setItem(CLOAK_KEY, this.value);
+  setCloak(this.value);
+  window.dispatchEvent(new Event("ionSettingsChanged"));
+});
+window.addEventListener("DOMContentLoaded", loadCloakSetting);
 
-    // --- Theme Color ---
-    function hslToHex(h, s, l) {
-      l /= 100;
-      const a = s * Math.min(l, 1 - l) / 100;
-      const f = n => {
-        const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * color).toString(16).padStart(2, '0');
-      };
-      return `#${f(0)}${f(8)}${f(4)}`;
-    }
-    function getThemeColorHex() {
-      const hue = parseInt(localStorage.getItem(THEME_HUE_KEY) || "210");
-      return hslToHex(hue, 100, 56);
-    }
-    const swatches = document.querySelectorAll('.color-swatch');
-    function selectSwatch(hue) {
-      swatches.forEach(sw => sw.classList.toggle('selected', sw.dataset.hue === hue));
-      localStorage.setItem(THEME_HUE_KEY, hue);
-      if (!localStorage.getItem("ion-vanta-color")) {
-        vantaColorSlider.value = getThemeColorHex();
-        updateVantaBackground();
-      }
-      window.dispatchEvent(new Event("ionSettingsChanged"));
-    }
-    swatches.forEach(sw => {
-      sw.addEventListener('click', function() {
-        selectSwatch(this.dataset.hue);
-      });
-    });
-    const savedHue = localStorage.getItem(THEME_HUE_KEY) || "210";
-    selectSwatch(savedHue);
+// Click-off cloaking, inactivity, tab switch, hotkey
+let clickoffEnabled = false;
+let autoCloakTimeout = null;
 
-    // --- VANTA BACKGROUNDS + COLOR PICKER ---
-    const vantaBackgrounds = [
-      { name: "Net", key: "NET" },
-      { name: "Triangles", key: "TRIANGLES" },
-      { name: "Waves", key: "WAVES" },
-      { name: "Fog", key: "FOG" },
-      { name: "Cells", key: "CELLS" },
-      { name: "Rings", key: "RINGS" },
-      { name: "Clouds", key: "CLOUDS" },
-      { name: "Halo", key: "HALO" },
-      { name: "Topology", key: "TOPOLOGY" },
-      { name: "Birds", key: "BIRDS" },
-      { name: "Globe", key: "GLOBE" },
-      { name: "Dots", key: "DOTS" },
-      { name: "Clouds2", key: "CLOUDS2" },
-      { name: "Blox", key: "BLOX" },
-      { name: "Fox", key: "FOX" },
-      { name: "Trunk", key: "TRUNK" },
-      { name: "Hills", key: "HILLS" }
-    ];
-    const VANTA_BG_KEY = "ion-vanta-bg";
-    const VANTA_COLOR_KEY = "ion-vanta-color";
-    let tempSelectedVantaIdx = null;
-    function renderVantaThumbs() {
-      const bgDiv = document.getElementById('bg-thumbs');
-      bgDiv.innerHTML = '';
-      vantaBackgrounds.forEach((bg, idx) => {
-        const div = document.createElement('div');
-        div.className = 'bg-thumb vanta';
-        div.innerText = bg.name;
-        div.setAttribute('data-vantaidx', idx);
-        div.title = bg.name;
-        div.onclick = function() {
-          document.querySelectorAll('.bg-thumb').forEach(thumb => thumb.classList.remove('selected'));
-          div.classList.add('selected');
-          tempSelectedVantaIdx = idx;
-        };
-        bgDiv.appendChild(div);
-      });
-      highlightSavedVanta();
+function triggerCloak() {
+  document.querySelector('.navbar').classList.add('stealth');
+  if (document.getElementById('cloak-fake').checked) {
+    document.getElementById('cloak-fake-overlay').style.display = "flex";
+    document.getElementById('cloak-fake-message').innerText =
+      Math.random() > 0.5 ? "Loading..." : "Access Denied";
+  } else {
+    document.getElementById('cloak-fake-overlay').style.display = "none";
+  }
+  const customTitle = localStorage.getItem("customCloakTitle");
+  const customFavicon = localStorage.getItem("customCloakFavicon");
+  if (customTitle && customFavicon) {
+    document.title = customTitle;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
     }
-    function highlightSavedVanta() {
-      const vantaIdx = parseInt(localStorage.getItem(VANTA_BG_KEY));
-      document.querySelectorAll('.bg-thumb').forEach((img, i) => {
-        img.classList.toggle('selected', i === vantaIdx && !isNaN(vantaIdx));
-      });
-      tempSelectedVantaIdx = null;
+    link.href = customFavicon;
+  } else {
+    setCloak(localStorage.getItem(CLOAK_KEY) || "off");
+  }
+  localStorage.setItem("lastCloak", JSON.stringify({
+    title: document.title,
+    favicon: document.querySelector("link[rel~='icon']").href
+  }));
+}
+function restoreLastCloak() {
+  const last = localStorage.getItem("lastCloak");
+  if (last) {
+    const data = JSON.parse(last);
+    document.title = data.title;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
     }
-    document.getElementById('set-bg-btn').onclick = function() {
-      if(tempSelectedVantaIdx !== null) {
-        localStorage.setItem(VANTA_BG_KEY, tempSelectedVantaIdx);
-      }
-      highlightSavedVanta();
-      updateVantaBackground();
+    link.href = data.favicon;
+  }
+}
+function uncloak() {
+  document.getElementById('cloak-fake-overlay').style.display = "none";
+  document.querySelector('.navbar').classList.remove('stealth');
+  setCloak(localStorage.getItem(CLOAK_KEY) || "off");
+}
+const clickoffInput = document.getElementById('clickoff-cloak');
+clickoffInput.addEventListener('change', function() {
+  clickoffEnabled = this.checked;
+  localStorage.setItem(CLICKOFF_CLOAK_KEY, clickoffEnabled ? "1" : "0");
+});
+if (localStorage.getItem(CLICKOFF_CLOAK_KEY) === "1") {
+  clickoffInput.checked = true;
+  clickoffEnabled = true;
+}
+function resetInactivityTimer() {
+  if (autoCloakTimeout) clearTimeout(autoCloakTimeout);
+  const min = parseInt(localStorage.getItem("cloak-inactive-min")||"0");
+  if (clickoffEnabled && min > 0) {
+    autoCloakTimeout = setTimeout(triggerCloak, min*60*1000);
+  }
+}
+['mousemove','keydown','mousedown','touchstart'].forEach(evt =>
+  document.addEventListener(evt, resetInactivityTimer, true)
+);
+document.addEventListener("visibilitychange", function() {
+  if (document.hidden && clickoffEnabled) triggerCloak();
+});
+window.addEventListener('blur', function() {
+  if (clickoffEnabled) triggerCloak();
+});
+document.getElementById('cloak-hotkey').addEventListener('input', function() {
+  localStorage.setItem("cloak-hotkey", this.value);
+});
+document.addEventListener('keydown', function(e) {
+  const hotkey = localStorage.getItem("cloak-hotkey");
+  if (hotkey && e.key && e.key.toLowerCase() === hotkey.toLowerCase()) {
+    triggerCloak();
+  }
+});
+document.getElementById('cloak-inactive').addEventListener('input', function() {
+  localStorage.setItem("cloak-inactive-min", this.value);
+  resetInactivityTimer();
+});
+document.getElementById('cloak-inactive').value = localStorage.getItem("cloak-inactive-min") || "";
+document.getElementById('custom-cloak-save').onclick = function() {
+  localStorage.setItem("customCloakTitle", document.getElementById('custom-cloak-title').value);
+  localStorage.setItem("customCloakFavicon", document.getElementById('custom-cloak-favicon').value);
+  alert("Custom cloak settings saved.");
+}
+document.getElementById('cloak-fake').addEventListener('change', function() {
+  localStorage.setItem("cloak-fake", this.checked ? "1" : "0");
+});
+document.getElementById('cloak-fake').checked = localStorage.getItem("cloak-fake") === "1";
+document.getElementById('cloak-fake-overlay').onclick = uncloak;
+
+// ========== PANIC KEY & FAKE PANIC KEY ==========
+
+document.getElementById('panic-key').addEventListener('input', function() {
+  localStorage.setItem("ion-panic-key", this.value);
+});
+document.getElementById('panic-url').addEventListener('input', function() {
+  localStorage.setItem("ion-panic-url", this.value);
+});
+document.getElementById('fake-panic-key').addEventListener('input', function() {
+  localStorage.setItem("ion-fake-panic-key", this.value);
+});
+document.getElementById('panic-key').value = localStorage.getItem("ion-panic-key") || '';
+document.getElementById('panic-url').value = localStorage.getItem("ion-panic-url") || '';
+document.getElementById('fake-panic-key').value = localStorage.getItem("ion-fake-panic-key") || '';
+document.addEventListener('keydown', function(e) {
+  const panicKey = localStorage.getItem("ion-panic-key");
+  const panicUrl = localStorage.getItem("ion-panic-url");
+  if (panicKey && panicUrl && e.key && e.key.toLowerCase() === panicKey.toLowerCase()) {
+    window.location.href = panicUrl;
+  }
+  const fakeKey = localStorage.getItem("ion-fake-panic-key");
+  if (fakeKey && e.key && e.key.toLowerCase() === fakeKey.toLowerCase() && document.getElementById('cloak-fake').checked) {
+    document.getElementById('cloak-fake-overlay').style.display = "flex";
+    document.getElementById('cloak-fake-message').innerText =
+      Math.random() > 0.5 ? "Loading..." : "Access Denied";
+    document.querySelector('.navbar').classList.add('stealth');
+  }
+});
+
+// ========== THEME COLOR ==========
+
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+function getThemeColorHex() {
+  const hue = parseInt(localStorage.getItem("ion-theme-hue") || "210");
+  return hslToHex(hue, 100, 56);
+}
+const swatches = document.querySelectorAll('.color-swatch');
+function selectSwatch(hue) {
+  swatches.forEach(sw => sw.classList.toggle('selected', sw.dataset.hue === hue));
+  localStorage.setItem("ion-theme-hue", hue);
+  if (!localStorage.getItem("ion-vanta-color")) {
+    vantaColorSlider.value = getThemeColorHex();
+    updateVantaBackground();
+  }
+  window.dispatchEvent(new Event("ionSettingsChanged"));
+}
+swatches.forEach(sw => {
+  sw.addEventListener('click', function() {
+    selectSwatch(this.dataset.hue);
+  });
+});
+const savedHue = localStorage.getItem("ion-theme-hue") || "210";
+selectSwatch(savedHue);
+
+// ========== VANTA BACKGROUNDS & COLOR PICKER ==========
+
+const vantaBackgrounds = [
+  { name: "Net", key: "NET" }, { name: "Triangles", key: "TRIANGLES" }, { name: "Waves", key: "WAVES" }, { name: "Fog", key: "FOG" },
+  { name: "Cells", key: "CELLS" }, { name: "Rings", key: "RINGS" }, { name: "Clouds", key: "CLOUDS" }, { name: "Halo", key: "HALO" },
+  { name: "Topology", key: "TOPOLOGY" }, { name: "Birds", key: "BIRDS" }, { name: "Globe", key: "GLOBE" }, { name: "Dots", key: "DOTS" },
+  { name: "Clouds2", key: "CLOUDS2" }, { name: "Blox", key: "BLOX" }, { name: "Fox", key: "FOX" }, { name: "Trunk", key: "TRUNK" },
+  { name: "Hills", key: "HILLS" }
+];
+const VANTA_BG_KEY = "ion-vanta-bg";
+const VANTA_COLOR_KEY = "ion-vanta-color";
+let tempSelectedVantaIdx = null;
+function renderVantaThumbs() {
+  const bgDiv = document.getElementById('bg-thumbs');
+  bgDiv.innerHTML = '';
+  vantaBackgrounds.forEach((bg, idx) => {
+    const div = document.createElement('div');
+    div.className = 'bg-thumb vanta';
+    div.innerText = bg.name;
+    div.setAttribute('data-vantaidx', idx);
+    div.title = bg.name;
+    div.onclick = function() {
+      document.querySelectorAll('.bg-thumb').forEach(thumb => thumb.classList.remove('selected'));
+      div.classList.add('selected');
+      tempSelectedVantaIdx = idx;
     };
-    document.getElementById('reset-bg-btn').onclick = function() {
-      localStorage.removeItem(VANTA_BG_KEY);
-      updateVantaBackground();
-      highlightSavedVanta();
-    };
-    // VANTA color slider logic
-    const vantaColorSlider = document.getElementById('vanta-color-slider');
-    const resetVantaColorBtn = document.getElementById('reset-vanta-color');
-    function getSavedVantaColor() {
-      return localStorage.getItem(VANTA_COLOR_KEY) || getThemeColorHex();
-    }
-    function setVantaColor(hex) {
-      localStorage.setItem(VANTA_COLOR_KEY, hex);
-      vantaColorSlider.value = hex;
-      updateVantaBackground();
-    }
-    function resetVantaColor() {
-      localStorage.removeItem(VANTA_COLOR_KEY);
+    bgDiv.appendChild(div);
+  });
+  highlightSavedVanta();
+}
+function highlightSavedVanta() {
+  const vantaIdx = parseInt(localStorage.getItem(VANTA_BG_KEY));
+  document.querySelectorAll('.bg-thumb').forEach((img, i) => {
+    img.classList.toggle('selected', i === vantaIdx && !isNaN(vantaIdx));
+  });
+  tempSelectedVantaIdx = null;
+}
+document.getElementById('set-bg-btn').onclick = function() {
+  if(tempSelectedVantaIdx !== null) {
+    localStorage.setItem(VANTA_BG_KEY, tempSelectedVantaIdx);
+  }
+  highlightSavedVanta();
+  updateVantaBackground();
+};
+document.getElementById('reset-bg-btn').onclick = function() {
+  localStorage.removeItem(VANTA_BG_KEY);
+  updateVantaBackground();
+  highlightSavedVanta();
+};
+// VANTA color slider logic
+const vantaColorSlider = document.getElementById('vanta-color-slider');
+const resetVantaColorBtn = document.getElementById('reset-vanta-color');
+function getSavedVantaColor() {
+  return localStorage.getItem(VANTA_COLOR_KEY) || getThemeColorHex();
+}
+function setVantaColor(hex) {
+  localStorage.setItem(VANTA_COLOR_KEY, hex);
+  vantaColorSlider.value = hex;
+  updateVantaBackground();
+}
+function resetVantaColor() {
+  localStorage.removeItem(VANTA_COLOR_KEY);
+  vantaColorSlider.value = getThemeColorHex();
+  updateVantaBackground();
+}
+vantaColorSlider.addEventListener('input', function() {
+  setVantaColor(this.value);
+});
+resetVantaColorBtn.addEventListener('click', function() {
+  resetVantaColor();
+});
+window.addEventListener("storage", function(e) {
+  if (e.key === "ion-theme-hue") {
+    if (!localStorage.getItem(VANTA_COLOR_KEY)) {
       vantaColorSlider.value = getThemeColorHex();
       updateVantaBackground();
     }
-    vantaColorSlider.addEventListener('input', function() {
-      setVantaColor(this.value);
-    });
-    resetVantaColorBtn.addEventListener('click', function() {
-      resetVantaColor();
-    });
-    // On theme color change, update Vanta color if not overridden
-    window.addEventListener("storage", function(e) {
-      if (e.key === THEME_HUE_KEY) {
-        if (!localStorage.getItem(VANTA_COLOR_KEY)) {
-          vantaColorSlider.value = getThemeColorHex();
-          updateVantaBackground();
-        }
-      }
-      if (e.key === VANTA_BG_KEY) updateVantaBackground();
-    });
-    // VANTA loader
-    function hexToVanta(hex) {
-      return parseInt(hex.replace(/^#/, ''), 16);
-    }
-    function vantaCommonOptions() {
-      let colorHex = getSavedVantaColor();
-      let colorInt = hexToVanta(colorHex);
-      return {
-        color: colorInt, color1: colorInt, color2: colorInt,
-        backgroundColor: 0x12193a,
-        shininess: 50,
-        waveHeight: 10,
-        mouseControls: true,
-        touchControls: true,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.0,
-        scaleMobile: 1.0
-      };
-    }
-    let vantaEffect = null;
-    function destroyVanta() {
-      if (window.vantaEffect && typeof window.vantaEffect.destroy === "function") {
-        window.vantaEffect.destroy();
-        window.vantaEffect = null;
-      }
-    }
-    function updateVantaBackground() {
-      document.body.classList.add('vanta-bg-active');
-      destroyVanta();
-      const idx = parseInt(localStorage.getItem(VANTA_BG_KEY));
-      if (isNaN(idx) || !vantaBackgrounds[idx]) {
-        document.body.classList.remove('vanta-bg-active');
-        document.getElementById('vanta-bg').style.display = "none";
-        return;
-      }
-      const bgDef = vantaBackgrounds[idx];
-      const vantaDiv = document.getElementById('vanta-bg');
-      vantaDiv.style.display = "block";
-      const options = vantaCommonOptions();
-      switch (bgDef.key) {
-        case "TRIANGLES": window.vantaEffect = window.VANTA.TRIANGLES({...options, el: vantaDiv}); break;
-        case "NET": window.vantaEffect = window.VANTA.NET({...options, el: vantaDiv}); break;
-        case "WAVES": window.vantaEffect = window.VANTA.WAVES({...options, el: vantaDiv}); break;
-        case "FOG": window.vantaEffect = window.VANTA.FOG({...options, el: vantaDiv, highlightColor: hexToVanta(getSavedVantaColor()), midtoneColor: hexToVanta(getSavedVantaColor()), lowlightColor: hexToVanta(getSavedVantaColor())}); break;
-        case "CELLS": window.vantaEffect = window.VANTA.CELLS({...options, el: vantaDiv}); break;
-        case "RINGS": window.vantaEffect = window.VANTA.RINGS({...options, el: vantaDiv}); break;
-        case "CLOUDS": window.vantaEffect = window.VANTA.CLOUDS({...options, el: vantaDiv}); break;
-        case "HALO": window.vantaEffect = window.VANTA.HALO({...options, el: vantaDiv}); break;
-        case "TOPOLOGY": window.vantaEffect = window.VANTA.TOPOLOGY({...options, el: vantaDiv}); break;
-        case "BIRDS": window.vantaEffect = window.VANTA.BIRDS({...options, el: vantaDiv, colorMode: "variance"}); break;
-        case "GLOBE": window.vantaEffect = window.VANTA.GLOBE({...options, el: vantaDiv}); break;
-        case "DOTS": window.vantaEffect = window.VANTA.DOTS({...options, el: vantaDiv}); break;
-        case "CLOUDS2": window.vantaEffect = window.VANTA.CLOUDS2({...options, el: vantaDiv}); break;
-        case "BLOX": window.vantaEffect = window.VANTA.BLOX({...options, el: vantaDiv}); break;
-        case "FOX": window.vantaEffect = window.VANTA.FOX({...options, el: vantaDiv}); break;
-        case "TRUNK": window.vantaEffect = window.VANTA.TRUNK({...options, el: vantaDiv}); break;
-        case "HILLS": window.vantaEffect = window.VANTA.HILLS({...options, el: vantaDiv}); break;
-      }
-    }
+  }
+  if (e.key === VANTA_BG_KEY) updateVantaBackground();
+});
+function hexToVanta(hex) {
+  return parseInt(hex.replace(/^#/, ''), 16);
+}
+function vantaCommonOptions() {
+  let colorHex = getSavedVantaColor();
+  let colorInt = hexToVanta(colorHex);
+  return {
+    color: colorInt, color1: colorInt, color2: colorInt,
+    backgroundColor: 0x12193a,
+    shininess: 50,
+    waveHeight: 10,
+    mouseControls: true,
+    touchControls: true,
+    minHeight: 200.00,
+    minWidth: 200.00,
+    scale: 1.0,
+    scaleMobile: 1.0
+  };
+}
+let vantaEffect = null;
+function destroyVanta() {
+  if (window.vantaEffect && typeof window.vantaEffect.destroy === "function") {
+    window.vantaEffect.destroy();
+    window.vantaEffect = null;
+  }
+}
+function updateVantaBackground() {
+  document.body.classList.add('vanta-bg-active');
+  destroyVanta();
+  const idx = parseInt(localStorage.getItem(VANTA_BG_KEY));
+  if (isNaN(idx) || !vantaBackgrounds[idx]) {
+    document.body.classList.remove('vanta-bg-active');
+    document.getElementById('vanta-bg').style.display = "none";
+    return;
+  }
+  const bgDef = vantaBackgrounds[idx];
+  const vantaDiv = document.getElementById('vanta-bg');
+  vantaDiv.style.display = "block";
+  const options = vantaCommonOptions();
+  switch (bgDef.key) {
+    case "TRIANGLES": window.vantaEffect = window.VANTA.TRIANGLES({...options, el: vantaDiv}); break;
+    case "NET": window.vantaEffect = window.VANTA.NET({...options, el: vantaDiv}); break;
+    case "WAVES": window.vantaEffect = window.VANTA.WAVES({...options, el: vantaDiv}); break;
+    case "FOG": window.vantaEffect = window.VANTA.FOG({...options, el: vantaDiv, highlightColor: hexToVanta(getSavedVantaColor()), midtoneColor: hexToVanta(getSavedVantaColor()), lowlightColor: hexToVanta(getSavedVantaColor())}); break;
+    case "CELLS": window.vantaEffect = window.VANTA.CELLS({...options, el: vantaDiv}); break;
+    case "RINGS": window.vantaEffect = window.VANTA.RINGS({...options, el: vantaDiv}); break;
+    case "CLOUDS": window.vantaEffect = window.VANTA.CLOUDS({...options, el: vantaDiv}); break;
+    case "HALO": window.vantaEffect = window.VANTA.HALO({...options, el: vantaDiv}); break;
+    case "TOPOLOGY": window.vantaEffect = window.VANTA.TOPOLOGY({...options, el: vantaDiv}); break;
+    case "BIRDS": window.vantaEffect = window.VANTA.BIRDS({...options, el: vantaDiv, colorMode: "variance"}); break;
+    case "GLOBE": window.vantaEffect = window.VANTA.GLOBE({...options, el: vantaDiv}); break;
+    case "DOTS": window.vantaEffect = window.VANTA.DOTS({...options, el: vantaDiv}); break;
+    case "CLOUDS2": window.vantaEffect = window.VANTA.CLOUDS2({...options, el: vantaDiv}); break;
+    case "BLOX": window.vantaEffect = window.VANTA.BLOX({...options, el: vantaDiv}); break;
+    case "FOX": window.vantaEffect = window.VANTA.FOX({...options, el: vantaDiv}); break;
+    case "TRUNK": window.vantaEffect = window.VANTA.TRUNK({...options, el: vantaDiv}); break;
+    case "HILLS": window.vantaEffect = window.VANTA.HILLS({...options, el: vantaDiv}); break;
+  }
+}
+function setupVantaColorSlider() {
+  vantaColorSlider.value = getSavedVantaColor();
+}
+renderVantaThumbs();
+setupVantaColorSlider();
+updateVantaBackground();
+resetInactivityTimer();
+restoreLastCloak();
 
-    // Setup color slider default and listeners
-    function setupVantaColorSlider() {
-      vantaColorSlider.value = getSavedVantaColor();
-    }
-    renderVantaThumbs();
-    setupVantaColorSlider();
-    updateVantaBackground();
+document.getElementById('reset-all-btn').onclick = function() {
+  localStorage.clear();
+  location.reload();
+};
+</script>
+  // -- All JS unchanged from previous version, except for toggles --
+    // Replace all references like document.getElementById('cloak-fake').checked
+    // with the new input (toggle) logic. JS not shown for brevity, see previous full file.
+
+    // Ensure toggle switches work as checkboxes in JS
+    // For example:
+    // document.getElementById('cloak-fake').checked
+    // and
+    // document.getElementById('clickoff-cloak').checked
+    // The rest of the code remains the same as in your previous working solution.
+
+    // ... (Paste your full JS logic here, as in the prior working answer) ...
   </script>
 </body>
 </html>
