@@ -26,6 +26,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.trunk.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.hills.min.js"></script>
   <style>
+    /* --- CSS unchanged, as in your original file --- */
     :root {
       --theme-hue: 210;
       --theme-accent: hsl(var(--theme-hue), 100%, 56%);
@@ -587,7 +588,8 @@
     </div>
   </div>
   <script>
-    
+document.addEventListener("DOMContentLoaded", function() {
+
 // ========== CLOAKING LOGIC ==========
 
 const cloakData = {
@@ -606,11 +608,7 @@ const cloakData = {
   youtube: { title: "YouTube", favicon: "https://www.youtube.com/s/desktop/6f3f9f34/img/favicon.ico" }
 };
 const CLOAK_KEY = "ion-premade-cloak";
-const PANIC_KEY = "ion-panic-key";
-const PANIC_URL = "ion-panic-url";
-const FAKE_PANIC_KEY = "ion-fake-panic-key";
 const CLICKOFF_CLOAK_KEY = "ion-clickoff-cloak";
-const THEME_HUE_KEY = "ion-theme-hue";
 
 function setCloak(cloakKey) {
   const cloak = cloakData[cloakKey] || cloakData['off'];
@@ -639,10 +637,10 @@ document.getElementById('premade-cloak-dropdown').addEventListener("change", fun
   setCloak(this.value);
   window.dispatchEvent(new Event("ionSettingsChanged"));
 });
-window.addEventListener("DOMContentLoaded", loadCloakSetting);
+loadCloakSetting();
 
 // Click-off cloaking, inactivity, tab switch, hotkey
-let clickoffEnabled = false;
+let clickoffEnabled = localStorage.getItem(CLICKOFF_CLOAK_KEY) === "1";
 let autoCloakTimeout = null;
 
 function triggerCloak() {
@@ -696,11 +694,10 @@ const clickoffInput = document.getElementById('clickoff-cloak');
 clickoffInput.addEventListener('change', function() {
   clickoffEnabled = this.checked;
   localStorage.setItem(CLICKOFF_CLOAK_KEY, clickoffEnabled ? "1" : "0");
+  resetInactivityTimer();
 });
-if (localStorage.getItem(CLICKOFF_CLOAK_KEY) === "1") {
-  clickoffInput.checked = true;
-  clickoffEnabled = true;
-}
+clickoffInput.checked = clickoffEnabled;
+
 function resetInactivityTimer() {
   if (autoCloakTimeout) clearTimeout(autoCloakTimeout);
   const min = parseInt(localStorage.getItem("cloak-inactive-min")||"0");
@@ -947,6 +944,7 @@ function updateVantaBackground() {
 function setupVantaColorSlider() {
   vantaColorSlider.value = getSavedVantaColor();
 }
+// Make sure everything runs after DOM is loaded
 renderVantaThumbs();
 setupVantaColorSlider();
 updateVantaBackground();
@@ -958,18 +956,7 @@ document.getElementById('reset-all-btn').onclick = function() {
   location.reload();
 };
 
-  // -- All JS unchanged from previous version, except for toggles --
-    // Replace all references like document.getElementById('cloak-fake').checked
-    // with the new input (toggle) logic. JS not shown for brevity, see previous full file.
-
-    // Ensure toggle switches work as checkboxes in JS
-    // For example:
-    // document.getElementById('cloak-fake').checked
-    // and
-    // document.getElementById('clickoff-cloak').checked
-    // The rest of the code remains the same as in your previous working solution.
-
-    // ... (Paste your full JS logic here, as in the prior working answer) ...
+});
   </script>
 </body>
 </html>
