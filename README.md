@@ -10,7 +10,7 @@
 
 One of the most distinctive aspects of ION is its **game vault**, which allows users to launch and play a vast collection of HTML5 and web-based games directly within the browser. Leveraging iframe technology, each game opens in a sleek modal popup, enabling fullscreen, about:blank launch, and easy downloads for offline play. This approach not only maximizes compatibility and performance but also ensures that users can switch between games effortlessly without leaving the ION environment.
 
-<img src="https://user-images.githubusercontent.com/7-7-7-8/ion-games.png" alt="ION Games Screenshot" width="700"/>
+<img src="https://user-images.githubusercontent.com/7-7-7-8/ion-games.png.png" alt="ION Games Screenshot" width="700"/>
 
 ---
 
