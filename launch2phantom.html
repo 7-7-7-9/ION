@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phantom.ION Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #161b22;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Cool animated background */
+    .bg-anim {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .login-container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid #3ad7ff55;
+      border-radius: 1.2rem;
+      box-shadow: 0 8px 32px #1b263b55, 0 0 24px 4px #30cfff33;
+      padding: 2.5rem 2rem;
+      max-width: 350px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      backdrop-filter: blur(8px);
+    }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      background: linear-gradient(90deg, #fff 0%, #30cfff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    label {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      color: #bfe9ff;
+      letter-spacing: 0.5px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 0.5rem;
+      border: 1.5px solid #30cfff88;
+      background: #1b263b;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 8px 0 #30cfff22;
+    }
+    input[type="text"]:focus {
+      border: 1.5px solid #30cfff;
+      box-shadow: 0 0 12px 2px #30cfff66;
+    }
+    .login-btn {
+      background: linear-gradient(90deg, #30cfff 0%, #e6f6ff 100%);
+      color: #161b22;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 16px 0 #30cfff55;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 0.5rem;
+    }
+    .login-btn:hover {
+      background: linear-gradient(90deg, #e6f6ff 0%, #30cfff 100%);
+      color: #111;
+    }
+    .error-message {
+      color: #ff6b6b;
+      background: #1b263b;
+      border-radius: 0.4rem;
+      padding: 0.5rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      display: none;
+    }
+    @media (max-width: 400px) {
+      .login-container {
+        padding: 1.5rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated background -->
+  <canvas class="bg-anim"></canvas>
+  <div class="login-container">
+    <h2>Phantom.ION Login</h2>
+    <form id="loginForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+
+      <label for="password">Password</label>
+      <input type="text" id="password" name="password" placeholder="Enter password" required>
+
+      <label for="vipcode">VIP Access Code</label>
+      <input type="text" id="vipcode" name="vipcode" placeholder="Enter VIP code" required>
+
+      <div class="error-message" id="errorMsg"></div>
+
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+  </div>
+  <script>
+    // Phantom.ION: Three valid VIP codes and their access levels
+    const ACCESS_CODES = {
+      "standard2025": "standard",
+      "pro2025": "pro",
+      "shadow2025": "shadow"
+    };
+    // Password for all access levels (change as needed)
+    const CORRECT_PASSWORD = "phantom2025";
+    // URL to redirect to on success
+    const REDIRECT_URL = "dashboard.html"; // Change this to your real destination
+
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const password = document.getElementById('password').value.trim();
+      const vipcode = document.getElementById('vipcode').value.trim().toLowerCase();
+
+      if (password !== CORRECT_PASSWORD) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Incorrect password.';
+        return;
+      }
+      if (!(vipcode in ACCESS_CODES)) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Invalid VIP access code.';
+        return;
+      }
+      // Save access level to localStorage
+      localStorage.setItem('accessLevel', ACCESS_CODES[vipcode]);
+      errorMsg.style.display = 'none';
+      // Redirect to dashboard
+      window.location.href = REDIRECT_URL;
+    });
+
+    // --- Cool animated background (lines & dots) ---
+    // Simple, lightweight, and customizable
+    const canvas = document.querySelector('.bg-anim');
+    const ctx = canvas.getContext('2d');
+    let w, h, lines, dots;
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function initAnim() {
+      // Lines
+      lines = [];
+      for (let i = 0; i < 16; i++) {
+        lines.push({
+          x: Math.random() * w,
+          speed: 0.3 + Math.random() * 0.5,
+          alpha: 0.05 + Math.random() * 0.15
+        });
+      }
+      // Dots
+      dots = [];
+      for (let i = 0; i < 40; i++) {
+        dots.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 1.5 + Math.random() * 2.5,
+          dx: -0.2 + Math.random() * 0.4,
+          dy: -0.2 + Math.random() * 0.4,
+          alpha: 0.12 + Math.random() * 0.18
+        });
+      }
+    }
+    initAnim();
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+
+      // Draw lines
+      for (let l of lines) {
+        ctx.save();
+        ctx.globalAlpha = l.alpha;
+        ctx.strokeStyle = "#30cfff";
+        ctx.beginPath();
+        ctx.moveTo(l.x, 0);
+        ctx.lineTo(l.x, h);
+        ctx.lineWidth = 1.2;
+        ctx.shadowColor = "#30cfff";
+        ctx.shadowBlur = 8;
+        ctx.stroke();
+        ctx.restore();
+        l.x += l.speed;
+        if (l.x > w) l.x = 0;
+      }
+      // Draw dots
+      for (let d of dots) {
+        ctx.save();
+        ctx.globalAlpha = d.alpha;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#30cfff";
+        ctx.shadowColor = "#30cfff";
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.restore();
+        d.x += d.dx;
+        d.y += d.dy;
+        if (d.x < 0) d.x = w;
+        if (d.x > w) d.x = 0;
+        if (d.y < 0) d.y = h;
+        if (d.y > h) d.y = 0;
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
