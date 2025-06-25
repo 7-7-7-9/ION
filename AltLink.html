@@ -17,7 +17,6 @@
       background: #0e1833;
       overflow-x: hidden;
     }
-    /* Animated background */
     .bg-animate {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -44,17 +43,28 @@
       letter-spacing: 2px;
       text-align: center;
       margin-bottom: 24px;
-      background: linear-gradient(90deg, #3a77ff, #0e1833 70%);
+      background: linear-gradient(90deg, #fff, #3a77ff 70%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 800;
-      text-shadow: 0 2px 16px #223c6b33;
+      font-weight: 900;
+      text-shadow: 0 2px 24px #ffffffbb, 0 2px 16px #3a77ff99;
+    }
+    .cloak-section {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .cloak-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #c6e2ff;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 8px #223c6b66;
     }
     .quick-settings {
       display: flex;
       justify-content: center;
       gap: 16px;
-      margin-bottom: 32px;
     }
     .cloak-btn {
       background: #223c6b;
@@ -147,19 +157,22 @@
   <button class="toggle-mode" title="Toggle Dark/Light Mode">🌙</button>
   <div class="container">
     <h1>ION AltLink Hub</h1>
-    <div class="quick-settings">
-      <button class="cloak-btn" onclick="cloak('classroom')">Classroom</button>
-      <button class="cloak-btn" onclick="cloak('docs')">Docs</button>
-      <button class="cloak-btn" onclick="cloak('slides')">Slides</button>
+    <div class="cloak-section">
+      <div class="cloak-title">Cloaking: Disguise this page as Google Classroom, Docs, or Slides for stealth browsing.</div>
+      <div class="quick-settings">
+        <button class="cloak-btn" onclick="cloak('classroom')">Classroom</button>
+        <button class="cloak-btn" onclick="cloak('docs')">Docs</button>
+        <button class="cloak-btn" onclick="cloak('slides')">Slides</button>
+      </div>
     </div>
     <div class="links-list">
       <div class="link-item">
-        <button class="link-btn" onclick="openLink('https://site1.com', this)">Open</button>
+        <button class="link-btn" onclick="openLink('https://7-7-7-8.github.io/ION/', this)">Open</button>
         <select class="open-mode">
           <option value="aboutblank">Open in about:blank (iframe)</option>
           <option value="direct">Open direct</option>
         </select>
-        <span class="desc">Site 1 – A fast, minimalist proxy for unblocked browsing.</span>
+        <span class="desc">Phantom.ION – Where Unblocked meets Unlimited.</span>
       </div>
       <div class="link-item">
         <button class="link-btn" onclick="openLink('https://site2.com', this)">Open</button>
