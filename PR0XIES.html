@@ -646,10 +646,10 @@
   <script>
     // -- Password and warning logic --
     (function(){
-      alert("Use at your own risk!");
+      alert("By using these Apps YOU agree to our policy (See Contact page)");
       let pass;
       while(true){
-        pass = prompt("Enter password to access this page:");
+        pass = prompt("Enter password:");
         if(pass === null) { window.location = "about:blank"; return; }
         if(pass === "ION77") break;
         alert("Incorrect password. Try again.");
