@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ION AltLink Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(120deg, #232526, #414345, #232526);
+      min-height: 100vh;
+      color: #fff;
+      transition: background 0.6s;
+    }
+    .gradient-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 30%, #2c5364 0%, #232526 100%);
+      animation: moveBg 10s infinite alternate;
+    }
+    @keyframes moveBg {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 32px;
+      background: rgba(30, 30, 40, 0.85);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 24px;
+      background: linear-gradient(90deg, #00c3ff, #ffff1c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: titleFade 3s infinite alternate;
+    }
+    @keyframes titleFade {
+      0% { opacity: 1; }
+      100% { opacity: 0.85; }
+    }
+    .quick-settings {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .cloak-btn {
+      background: #313866;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    .cloak-btn:hover {
+      background: #504099;
+    }
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .link-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 12px 16px;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .link-btn {
+      background: #00c3ff;
+      color: #232526;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-right: 12px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .link-btn:hover {
+      background: #ffff1c;
+      color: #313866;
+    }
+    .open-mode {
+      margin-right: 18px;
+      border-radius: 6px;
+      border: 1px solid #313866;
+      background: #232526;
+      color: #fff;
+      padding: 6px 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .open-mode:focus {
+      border: 1.5px solid #00c3ff;
+    }
+    .desc {
+      font-size: 1rem;
+      color: #e0e0e0;
+      flex: 1;
+    }
+    .toggle-mode {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      background: #232526;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      transition: background 0.2s;
+    }
+    .toggle-mode:hover {
+      background: #414345;
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-bg"></div>
+  <button class="toggle-mode" title="Toggle Dark/Light Mode">🌙</button>
+  <div class="container">
+    <h1>ION AltLink Hub</h1>
+    <div class="quick-settings">
+      <button class="cloak-btn" onclick="cloak('classroom')">Classroom</button>
+      <button class="cloak-btn" onclick="cloak('docs')">Docs</button>
+      <button class="cloak-btn" onclick="cloak('slides')">Slides</button>
+    </div>
+    <div class="links-list">
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site1.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 1 – A fast, minimalist proxy for unblocked browsing.</span>
+      </div>
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site2.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 2 – Play games with zero lag and stealth mode.</span>
+      </div>
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site3.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 3 – Access educational resources anonymously.</span>
+      </div>
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site4.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 4 – Secure chat and collaboration platform.</span>
+      </div>
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site5.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 5 – Stream videos with privacy and speed.</span>
+      </div>
+      <div class="link-item">
+        <button class="link-btn" onclick="openLink('https://site6.com', this)">Open</button>
+        <select class="open-mode">
+          <option value="_blank">New Tab</option>
+          <option value="_self">This Tab</option>
+        </select>
+        <span class="desc">Site 6 – Explore coding tools and sandboxes freely.</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Dark/Light mode toggle
+    const toggleBtn = document.querySelector('.toggle-mode');
+    let darkMode = true;
+    toggleBtn.addEventListener('click', () => {
+      darkMode = !darkMode;
+      document.body.style.background = darkMode
+        ? 'linear-gradient(120deg, #232526, #414345, #232526)'
+        : 'linear-gradient(120deg, #f8fafc, #e0e7ef, #f8fafc)';
+      document.body.style.color = darkMode ? '#fff' : '#232526';
+      toggleBtn.textContent = darkMode ? '🌙' : '☀️';
+    });
+
+    // Cloaking functionality (demo)
+    function cloak(type) {
+      let favicon, title;
+      if(type === 'classroom') {
+        favicon = 'https://ssl.gstatic.com/classroom/ic_product_classroom_32.png';
+        title = 'Classes';
+      } else if(type === 'docs') {
+        favicon = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
+        title = 'Untitled document - Google Docs';
+      } else if(type === 'slides') {
+        favicon = 'https://ssl.gstatic.com/docs/presentations/images/favicon5.ico';
+        title = 'Untitled presentation - Google Slides';
+      }
+      // Change favicon
+      let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = favicon;
+      document.getElementsByTagName('head')[0].appendChild(link);
+      // Change title
+      document.title = title;
+    }
+
+    // Open link according to dropdown selection
+    function openLink(url, btn) {
+      const select = btn.parentElement.querySelector('.open-mode');
+      const target = select.value;
+      window.open(url, target);
+    }
+  </script>
+</body>
+</html>
