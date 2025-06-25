@@ -649,7 +649,14 @@
   </div>
   <script>
 
-    (function(){
+    (function()
+     {alert("By using these Apps YOU agree to our policy (See Contact page)");
+      let pass;
+      while(true){
+        pass = prompt("Password:Phantom2025");
+        if(pass === null) { window.location = "about:blank"; return; }
+        if(pass === "Phantom2025") break;
+        alert("Incorrect password. Try again.");
      
       }
     })();
