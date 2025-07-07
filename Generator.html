@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Password Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    #password { font-size: 1.2em; font-weight: bold; color: #2c3e50; }
+    button { margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Today's Password</h1>
+  <p id="password"></p>
+  <button onclick="generateAndStorePassword()">Regenerate Password</button>
+  <script>
+    // Deterministic daily password generator (same for all users each day)
+    function getDailyPassword() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+      // Simple hash: sum char codes and base64 encode
+      let hash = 0;
+      for (let i = 0; i < dateStr.length; i++) {
+        hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+        hash |= 0;
+      }
+      return btoa(dateStr + hash).replace(/=/g, '').substr(0, 12);
+    }
+
+    function generateAndStorePassword() {
+      const password = getDailyPassword();
+      localStorage.setItem('dailyPassword', password);
+      localStorage.setItem('dailyPasswordDate', new Date().toISOString().slice(0,10));
+      document.getElementById('password').textContent = password;
+    }
+
+    // On page load: check if today's password is in localStorage, else generate it
+    window.onload = function() {
+      const today = new Date().toISOString().slice(0,10);
+      const storedDate = localStorage.getItem('dailyPasswordDate');
+      if (storedDate === today && localStorage.getItem('dailyPassword')) {
+        document.getElementById('password').textContent = localStorage.getItem('dailyPassword');
+      } else {
+        generateAndStorePassword();
+      }
+    }
+  </script>
+</body>
+</html>
