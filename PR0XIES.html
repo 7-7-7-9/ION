@@ -645,17 +645,42 @@
   </div>
   <script>
     // -- Password and warning logic --
-    (function(){
-      alert("By using these Apps YOU agree to our policy (See Contact page)");
-      let pass;
-      while(true){
-        pass = prompt("Enter password:");
-        if(pass === null) { window.location = "about:blank"; return; }
-        if(pass === "ION77") break;
-        alert("Incorrect password. Try again.");
-      }
-    })();
+   (function() {
+  // Wait until the DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the password from localStorage
+    var correctPassword = localStorage.getItem('dailyPassword');
+    if (!correctPassword) {
+      alert("No password found in localStorage. Please generate today's password first.");
+      window.location.reload();
+      return;
+    }
 
+    // Show prompt until correct password is entered or user cancels
+    var attempts = 0;
+    while (true) {
+      var userInput = prompt("Enter today's ION password:");
+      if (userInput === null) {
+        // User pressed cancel
+        document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
+        break;
+      }
+      if (userInput === correctPassword) {
+        // Correct password
+        break;
+      } else {
+        attempts++;
+        if (attempts >= 3) {
+          alert("Too many incorrect attempts. Reloading page.");
+          window.location.reload();
+          break;
+        } else {
+          alert("Incorrect password. Try again.");
+        }
+      }
+    }
+  });
+})();
     // Proxy apps from your repo Proxies folder
     const proxyApps = [
       { name: "ParadiseOS", file: "Proxies/ParadiseOS.html" },
