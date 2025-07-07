@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>ION | Daily Password Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --ion-blue: #3fa7ff;
@@ -19,20 +19,16 @@
       color: #eaf6ff;
       font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
       min-height: 100vh;
-    }
-    body {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
     }
     .container {
       background: var(--ion-light);
       border-radius: 18px;
       box-shadow: 0 6px 32px 0 rgba(0,0,0,0.45);
       padding: 2.5em 2em 2em 2em;
-      max-width: 350px;
+      max-width: 380px;
       width: 100%;
       text-align: center;
     }
@@ -62,6 +58,11 @@
       letter-spacing: 2px;
       user-select: all;
       transition: background 0.2s;
+      min-height: 1.5em;
+      display: none;
+    }
+    #password.visible {
+      display: block;
     }
     button {
       background: linear-gradient(90deg, var(--ion-blue), var(--ion-accent));
@@ -98,10 +99,24 @@
   <div class="container">
     <span class="ion-logo">ION</span>
     <h1>Today's Password</h1>
-    <div id="password">Loading...</div>
-    <button onclick="generateAndStorePassword()">Regenerate Password</button>
+    <div id="password"></div>
+    <button onclick="generateAndShowPassword()">Generate Password</button>
   </div>
   <script>
+    // Word list: gaming-themed + cool words (~200+)
+    const words = [
+      "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
+      "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno", "Jinx",
+      "Knight", "Maverick", "Nemesis", "Oracle", "Pulse", "Quake", "Ranger", "Saber", "Tempest",
+      "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Banshee", "Clutch", "Dagger", "Echo",
+      "Fang", "Grim", "Hawk", "Ion", "Jade", "Karma", "Lancer", "Mantis", "Nexus", "Onyx",
+      "Pyro", "Rift", "Scorch", "Talon", "Ultron", "Valkyrie", "Wolf", "Xenon", "Yukon", "Zenith",
+      "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
+      "Jolt", "Kraken", "Loom", "Mythic", "Nova", "Obsidian", "Phantom", "Quiver", "Rogue",
+      "Surge", "Terror", "Umbra", "Vortex", "Warp", "Xcalibur", "Yield", "Zephyr",
+      // Add more words to reach 200+ as needed
+    ];
+
     function getDailyPassword() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -113,24 +128,24 @@
         hash = (hash << 5) - hash + dateStr.charCodeAt(i);
         hash |= 0;
       }
-      return btoa(dateStr + hash).replace(/=/g, '').substr(0, 12);
+      const wordIndex = Math.abs(hash) % words.length;
+      const number = Math.abs(hash * 7) % 900 + 100;
+      return words[wordIndex] + number;
     }
 
-    function generateAndStorePassword() {
+    function generateAndShowPassword() {
       const password = getDailyPassword();
       localStorage.setItem('dailyPassword', password);
       localStorage.setItem('dailyPasswordDate', new Date().toISOString().slice(0,10));
-      document.getElementById('password').textContent = password;
+      const pwElem = document.getElementById('password');
+      pwElem.textContent = password;
+      pwElem.classList.add('visible');
     }
 
+    // On load, do NOT show the password
     window.onload = function() {
-      const today = new Date().toISOString().slice(0,10);
-      const storedDate = localStorage.getItem('dailyPasswordDate');
-      if (storedDate === today && localStorage.getItem('dailyPassword')) {
-        document.getElementById('password').textContent = localStorage.getItem('dailyPassword');
-      } else {
-        generateAndStorePassword();
-      }
+      document.getElementById('password').textContent = '';
+      document.getElementById('password').classList.remove('visible');
     }
   </script>
 </body>
