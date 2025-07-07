@@ -645,43 +645,49 @@
   </div>
   <script>
     // -- Password and warning logic --
-   (function() {
-  // Wait until the DOM is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get the password from localStorage
-    var correctPassword = localStorage.getItem('dailyPassword');
-    if (!correctPassword) {
-      alert("No password found in localStorage. Please generate today's password first.");
-      window.location.reload();
-      return;
-  
-    }
 
-    // Show prompt until correct password is entered or user cancels
-    var attempts = 0;
-    while (true) {
-      var userInput = prompt("Enter today's ION password:");
-      if (userInput === null) {
-        // User pressed cancel
-        document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
-        break;
-      }
-      if (userInput === correctPassword) {
-        // Correct password
-        break;
-      } else {
-        attempts++;
-        if (attempts >= 3) {
-          alert("Too many incorrect attempts. Reloading page.");
-          window.location.reload();
-          break;
-        } else {
-          alert("Incorrect password. Try again.");
-        }
-      }
+(function() {
+  // Same word list as your generator
+  const words = [
+    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
+    "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno", "Jinx",
+    "Knight", "Maverick", "Nemesis", "Oracle", "Pulse", "Quake", "Ranger", "Saber", "Tempest",
+    "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Banshee", "Clutch", "Dagger", "Echo",
+    "Fang", "Grim", "Hawk", "Ion", "Jade", "Karma", "Lancer", "Mantis", "Nexus", "Onyx",
+    "Pyro", "Rift", "Scorch", "Talon", "Ultron", "Valkyrie", "Wolf", "Xenon", "Yukon", "Zenith",
+    "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
+    "Jolt", "Kraken", "Loom", "Mythic", "Nova", "Obsidian", "Phantom", "Quiver", "Rogue",
+    "Surge", "Terror", "Umbra", "Vortex", "Warp", "Xcalibur", "Yield", "Zephyr"
+    // ...add more words as needed
+  ];
+
+  function getDailyPassword() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+    let hash = 0;
+    for (let i = 0; i < dateStr.length; i++) {
+      hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+      hash |= 0;
     }
-  });
+    const wordIndex = Math.abs(hash) % words.length;
+    const number = Math.abs(hash * 7) % 900 + 100;
+    return words[wordIndex] + number;
+  }
+
+  var stored = localStorage.getItem('dailyPassword');
+  var correct = getDailyPassword();
+
+  if (!stored || stored !== correct) {
+    // Wrong or missing password, redirect
+    window.location.replace('about:blank');
+  }
+  // If correct, do nothing (user stays on page)
 })();
+
+
     // Proxy apps from your repo Proxies folder
     const proxyApps = [
       { name: "ParadiseOS", file: "Proxies/ParadiseOS.html" },
