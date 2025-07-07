@@ -81,6 +81,21 @@
       background: linear-gradient(90deg, var(--ion-accent), var(--ion-blue));
       transform: translateY(-2px) scale(1.04);
     }
+    #vip-code {
+      margin-top: 1em;
+      padding: 0.6em 1em;
+      border-radius: 8px;
+      border: 1px solid #333;
+      font-size: 1em;
+      background: #161a23;
+      color: #eaf6ff;
+      width: 80%;
+      outline: none;
+      transition: border 0.2s;
+    }
+    #vip-code:focus {
+      border: 1.5px solid var(--ion-accent);
+    }
     @media (max-width: 500px) {
       .container {
         padding: 1.5em 0.7em;
@@ -99,6 +114,7 @@
   <div class="container">
     <span class="ion-logo">ION</span>
     <h1>Today's Password</h1>
+    <input id="vip-code" type="text" placeholder="Enter VIP code (optional)">
     <div id="password"></div>
     <button onclick="generateAndShowPassword()">Generate Password</button>
   </div>
@@ -117,6 +133,7 @@
       // Add more words to reach 200+ as needed
     ];
 
+    // Standard daily password logic (unchanged)
     function getDailyPassword() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -133,11 +150,37 @@
       return words[wordIndex] + number;
     }
 
+    // VIP password logic (different password for VIP)
+    function getVIPPassword() {
+      // Example: VIP password uses a different word and number pattern
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}-VIP`;
+      let hash = 0;
+      for (let i = 0; i < dateStr.length; i++) {
+        hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+        hash |= 0;
+      }
+      const wordIndex = Math.abs(hash) % words.length;
+      const number = Math.abs(hash * 13) % 900 + 100;
+      return "VIP-" + words[wordIndex] + number;
+    }
+
     function generateAndShowPassword() {
-      const password = getDailyPassword();
-      localStorage.setItem('dailyPassword', password);
-      localStorage.setItem('dailyPasswordDate', new Date().toISOString().slice(0,10));
+      const vipInput = document.getElementById('vip-code').value.trim();
       const pwElem = document.getElementById('password');
+      let password = "";
+      if (vipInput === "ION77") {
+        password = getVIPPassword();
+        localStorage.setItem('vipPassword', password);
+        localStorage.setItem('vipPasswordDate', new Date().toISOString().slice(0,10));
+      } else {
+        password = getDailyPassword();
+        localStorage.setItem('dailyPassword', password);
+        localStorage.setItem('dailyPasswordDate', new Date().toISOString().slice(0,10));
+      }
       pwElem.textContent = password;
       pwElem.classList.add('visible');
     }
@@ -146,6 +189,7 @@
     window.onload = function() {
       document.getElementById('password').textContent = '';
       document.getElementById('password').classList.remove('visible');
+      document.getElementById('vip-code').value = '';
     }
   </script>
 </body>
