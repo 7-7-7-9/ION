@@ -2,26 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Daily Password Generator</title>
+  <title>ION | Daily Password Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    #password { font-size: 1.2em; font-weight: bold; color: #2c3e50; }
-    button { margin-top: 1em; }
+    :root {
+      --ion-blue: #3fa7ff;
+      --ion-dark: #10131a;
+      --ion-light: #1a1e28;
+      --ion-accent: #00e0ff;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--ion-dark);
+      color: #eaf6ff;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: var(--ion-light);
+      border-radius: 18px;
+      box-shadow: 0 6px 32px 0 rgba(0,0,0,0.45);
+      padding: 2.5em 2em 2em 2em;
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      color: var(--ion-blue);
+      font-size: 2.1em;
+      letter-spacing: 2px;
+      margin-bottom: 0.2em;
+      font-weight: 700;
+    }
+    .ion-logo {
+      font-size: 1.1em;
+      font-weight: 800;
+      color: var(--ion-accent);
+      letter-spacing: 3px;
+      margin-bottom: 1.2em;
+      display: block;
+    }
+    #password {
+      background: #181c27;
+      color: var(--ion-blue);
+      font-size: 1.3em;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.7em 0;
+      margin: 1.1em 0 1.5em 0;
+      letter-spacing: 2px;
+      user-select: all;
+      transition: background 0.2s;
+    }
+    button {
+      background: linear-gradient(90deg, var(--ion-blue), var(--ion-accent));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8em 2em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 12px 0 rgba(0,0,0,0.23);
+      transition: background 0.2s, transform 0.1s;
+      outline: none;
+    }
+    button:hover {
+      background: linear-gradient(90deg, var(--ion-accent), var(--ion-blue));
+      transform: translateY(-2px) scale(1.04);
+    }
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.5em 0.7em;
+        max-width: 98vw;
+      }
+      h1 {
+        font-size: 1.3em;
+      }
+      #password {
+        font-size: 1em;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Today's Password</h1>
-  <p id="password"></p>
-  <button onclick="generateAndStorePassword()">Regenerate Password</button>
+  <div class="container">
+    <span class="ion-logo">ION</span>
+    <h1>Today's Password</h1>
+    <div id="password">Loading...</div>
+    <button onclick="generateAndStorePassword()">Regenerate Password</button>
+  </div>
   <script>
-    // Deterministic daily password generator (same for all users each day)
     function getDailyPassword() {
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       const dd = String(today.getDate()).padStart(2, '0');
       const dateStr = `${yyyy}-${mm}-${dd}`;
-      // Simple hash: sum char codes and base64 encode
       let hash = 0;
       for (let i = 0; i < dateStr.length; i++) {
         hash = (hash << 5) - hash + dateStr.charCodeAt(i);
@@ -37,7 +123,6 @@
       document.getElementById('password').textContent = password;
     }
 
-    // On page load: check if today's password is in localStorage, else generate it
     window.onload = function() {
       const today = new Date().toISOString().slice(0,10);
       const storedDate = localStorage.getItem('dailyPasswordDate');
