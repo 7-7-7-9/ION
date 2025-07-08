@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <title>ION | Daily Password Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts for cool password display -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --ion-blue: #3fa7ff;
@@ -34,111 +36,88 @@
       position: relative;
       z-index: 1;
       background: var(--ion-light);
-      border-radius: 18px;
-      box-shadow: 0 6px 32px 0 rgba(0,0,0,0.45);
-      padding: 2.5em 2em 2em 2em;
-      max-width: 380px;
+      border-radius: 24px;
+      box-shadow: 0 12px 48px 0 rgba(0,0,0,0.45);
+      padding: 3.5em 2.5em 3em 2.5em;
+      max-width: 520px;
       width: 100%;
       text-align: center;
+      min-height: 420px;
+      transition: max-width 0.3s, padding 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     h1 {
       color: var(--ion-blue);
-      font-size: 2.1em;
+      font-size: 2.5em;
       letter-spacing: 2px;
       margin-bottom: 0.2em;
       font-weight: 700;
     }
     .ion-logo {
-      font-size: 1.1em;
+      font-size: 1.3em;
       font-weight: 800;
       color: var(--ion-accent);
       letter-spacing: 3px;
-      margin-bottom: 1.2em;
+      margin-bottom: 1.5em;
       display: block;
     }
     #password {
       background: #181c27;
-      color: var(--ion-blue);
-      font-size: 1.3em;
-      font-weight: 600;
-      border-radius: 8px;
-      padding: 0.7em 0;
-      margin: 1.1em 0 1.5em 0;
-      letter-spacing: 2px;
+      color: var(--ion-accent);
+      font-family: 'Orbitron', 'Share Tech Mono', 'Segoe UI', Arial, sans-serif;
+      font-size: 2.6em;
+      font-weight: 700;
+      border-radius: 16px;
+      padding: 0.7em 0.4em;
+      margin: 2.1em 0 2.5em 0;
+      letter-spacing: 0.18em;
       user-select: all;
-      transition: background 0.2s;
       min-height: 1.5em;
-      display: none;
+      box-shadow: 0 2px 18px 0 rgba(0,224,255,0.10);
+      text-shadow: 0 2px 8px #00e0ff44, 0 1px 0 #10131a;
+      border: 2px solid var(--ion-accent);
+      display: inline-block;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      word-break: break-word;
     }
-    #password.visible {
-      display: block;
-    }
-    button {
-      background: linear-gradient(90deg, var(--ion-blue), var(--ion-accent));
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 0.8em 2em;
-      font-size: 1em;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 3px 12px 0 rgba(0,0,0,0.23);
-      transition: background 0.2s, transform 0.1s;
-      outline: none;
-      margin-bottom: 0.7em;
-      margin-top: 0.3em;
-      display: block;
-      width: 100%;
-    }
-    button:hover {
-      background: linear-gradient(90deg, var(--ion-accent), var(--ion-blue));
-      transform: translateY(-2px) scale(1.04);
-    }
+    /* Outlined Launch Button */
     #launch-btn {
-      margin-top: 1.1em;
-      font-size: 1.25em;
+      margin-top: 1.3em;
+      font-size: 1.3em;
       padding: 1.1em 2.5em;
-      background: linear-gradient(90deg, var(--ion-accent) 50%, var(--ion-blue) 100%);
-      color: #fff;
+      background: transparent;
+      color: var(--ion-accent);
       font-weight: 800;
       letter-spacing: 2px;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 6px 24px 0 rgba(0,224,255,0.22), 0 3px 12px 0 rgba(0,0,0,0.23);
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-      width: 105%;
+      border: 2.5px solid var(--ion-accent);
+      border-radius: 14px;
+      box-shadow: 0 6px 24px 0 rgba(0,224,255,0.13), 0 3px 12px 0 rgba(0,0,0,0.13);
+      transition: background 0.2s, color 0.2s, border 0.2s, transform 0.1s, box-shadow 0.2s;
+      width: 110%;
       outline: none;
+      cursor: pointer;
     }
     #launch-btn:hover {
-      background: linear-gradient(90deg, var(--ion-blue) 40%, var(--ion-accent) 100%);
+      background: var(--ion-accent);
+      color: #10131a;
+      border: 2.5px solid var(--ion-blue);
       transform: translateY(-4px) scale(1.06);
-      box-shadow: 0 12px 32px 0 rgba(0,224,255,0.32), 0 3px 12px 0 rgba(0,0,0,0.23);
+      box-shadow: 0 12px 32px 0 rgba(0,224,255,0.22), 0 3px 12px 0 rgba(0,0,0,0.23);
     }
-    #vip-code {
-      margin-top: 1em;
-      padding: 0.6em 1em;
-      border-radius: 8px;
-      border: 1px solid #333;
-      font-size: 1em;
-      background: #161a23;
-      color: #eaf6ff;
-      width: 80%;
-      outline: none;
-      transition: border 0.2s;
-    }
-    #vip-code:focus {
-      border: 1.5px solid var(--ion-accent);
-    }
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
       .container {
-        padding: 1.5em 0.7em;
-        max-width: 98vw;
+        padding: 2em 0.8em;
+        max-width: 99vw;
+        min-height: 280px;
       }
       h1 {
-        font-size: 1.3em;
+        font-size: 1.5em;
       }
       #password {
-        font-size: 1em;
+        font-size: 1.3em;
       }
       #launch-btn {
         font-size: 1.1em;
@@ -153,9 +132,7 @@
   <div class="container">
     <span class="ion-logo">ION</span>
     <h1>Today's Password</h1>
-    <input id="vip-code" type="text" placeholder="Enter VIP code (optional)">
     <div id="password"></div>
-    <button onclick="generateAndShowPassword()">Generate Password</button>
     <button onclick="launchION()" id="launch-btn">Launch ION</button>
   </div>
   <script>
@@ -178,7 +155,6 @@
       // Add more words to reach 200+ as needed
     ];
 
-    // Standard daily password logic (unchanged)
     function getDailyPassword() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -195,50 +171,15 @@
       return words[wordIndex] + number;
     }
 
-    // VIP password logic (different password for VIP)
-    function getVIPPassword() {
-      // Example: VIP password uses a different word and number pattern
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const dateStr = `${yyyy}-${mm}-${dd}-VIP`;
-      let hash = 0;
-      for (let i = 0; i < dateStr.length; i++) {
-        hash = (hash << 5) - hash + dateStr.charCodeAt(i);
-        hash |= 0;
-      }
-      const wordIndex = Math.abs(hash) % words.length;
-      const number = Math.abs(hash * 13) % 900 + 100;
-      return "VIP-" + words[wordIndex] + number;
-    }
-
-    function generateAndShowPassword() {
-      const vipInput = document.getElementById('vip-code').value.trim();
-      const pwElem = document.getElementById('password');
-      let password = "";
-      if (vipInput === "ION77") {
-        password = getVIPPassword();
-        localStorage.setItem('vipPassword', password);
-        localStorage.setItem('vipPasswordDate', new Date().toISOString().slice(0,10));
-      } else {
-        password = getDailyPassword();
-        localStorage.setItem('dailyPassword', password);
-        localStorage.setItem('dailyPasswordDate', new Date().toISOString().slice(0,10));
-      }
-      pwElem.textContent = password;
-      pwElem.classList.add('visible');
-    }
-
     function launchION() {
       window.open("https://7-7-7-8.github.io/ION", "_blank");
     }
 
-    // On load, do NOT show the password
+    // On load, show the password in the cool font
     window.onload = function() {
-      document.getElementById('password').textContent = '';
-      document.getElementById('password').classList.remove('visible');
-      document.getElementById('vip-code').value = '';
+      const pwElem = document.getElementById('password');
+      pwElem.textContent = getDailyPassword();
+      pwElem.classList.add('visible');
       resizeBg();
       animateBg();
     }
