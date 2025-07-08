@@ -803,18 +803,22 @@
 
   // Include the same getDailyPassword() function as in your generator page
 
+
 function getDailyPassword() {
   const words = [
-    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
+    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", 
+  "Blaze", "Fury",
     "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
     "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
     "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
     "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
     "Pyro", "Rift", "Scorch", "Talon",  
-    "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
+    "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch",
+  "Helix", "Ignite",
     "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
     "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
-    "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk", "Ember", "Enigma",
+    "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk",
+  "Ember", "Enigma",
     "Frostbite", "Glacier",  "Iron", "Freedom",
     "Mirage", "Nebula", "Nightfall", "Obsidian", 
     "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
@@ -838,16 +842,28 @@ function getDailyPassword() {
 document.addEventListener('DOMContentLoaded', function() {
   var correctPassword = getDailyPassword();
   var storedPassword = localStorage.getItem('dailyPassword');
-  var attempts = 0;
 
-  // First, check if localStorage contains the correct password
+  // Debug output to console
+  console.log("=== ION Password Debug ===");
+  console.log("Today's date:", new Date());
+  console.log("Correct password (generated):", correctPassword);
+  console.log("Stored password (localStorage):", storedPassword);
+  console.log("Are they equal?", storedPassword === correctPassword);
+
+  // If localStorage doesn't have the correct password, alert with details
   if (storedPassword !== correctPassword) {
-    alert("Local storage does not have today's correct password. Please generate and store today's password first.");
-    window.location.reload();
+    alert(
+      "Local storage does not have today's correct password.\n" +
+      "What is currently stored under 'dailyPassword':\n\n" +
+      (storedPassword === null ? "(nothing stored)" : "'" + storedPassword + "'") +
+      "\n\nToday's correct password should be:\n'" + correctPassword + "'\n\n" +
+      "Please generate and store today's password first."
+    );
     return;
   }
 
   // Prompt user for password input
+  var attempts = 0;
   while (true) {
     var userInput = prompt("Enter today's ION password:");
     if (userInput === null) {
@@ -870,6 +886,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
+
+
 
 
 
