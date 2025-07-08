@@ -672,6 +672,7 @@
   <span class="dropdown" style="display:flex;align-items:center;gap:8px;">
     <select id="premade-cloak-dropdown">
       <option value="off">Off</option>
+     <option value="blank">Blank (pin tab)</option>
       <option value="classroom">Google Classroom</option>
       <option value="sheets">Google Sheets</option>
       <option value="slides">Google Slides</option>
@@ -1178,8 +1179,12 @@ document.getElementById('fullscreen-btn').onclick = function() {
   <script>
 const cloakData = {
   off: {
-    title: "ION Game Vault",
-    favicon: "favicon.ico"
+    title: "ION",
+    favicon: "https://7-7-7-8.github.io/ION/assets/IONfavicon.png"
+  },
+   classroom: {
+    title: "",
+    favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
   },
   classroom: {
     title: "Classes",
