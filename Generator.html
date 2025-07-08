@@ -4,28 +4,24 @@
   <meta charset="UTF-8" />
   <title>ION | Daily Password Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Montserrat ExtraBold for banner/password, Montserrat for body -->
+  <!-- Montserrat ExtraBold for all text -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
   <style>
     :root {
+      --ion-bg: #0a101a;
       --ion-blue: #4bb6ff;
       --ion-blue-light: #7fd0ff;
-      --ion-dark: #0d1421;
-      --ion-darker: #080e17;
-      --ion-accent: #4bb6ff;
-      --ion-border: #1c2638;
+      --ion-text: #eaf6ff;
     }
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background: var(--ion-darker);
-      color: #eaf6ff;
+      background: var(--ion-bg);
+      color: var(--ion-text);
       font-family: 'Montserrat', Arial, sans-serif;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100vw;
       overflow: hidden;
     }
     #ion-bg {
@@ -34,117 +30,103 @@
       z-index: 0;
       pointer-events: none;
     }
-    .container {
-      position: relative;
-      z-index: 1;
-      background: var(--ion-dark);
-      border-radius: 24px;
-      box-shadow: 0 12px 48px 0 rgba(0,0,0,0.45);
-      padding: 3.5em 2.5em 3em 2.5em;
-      max-width: 540px;
-      width: 100%;
-      text-align: center;
-      min-height: 420px;
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      max-width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 3px solid var(--ion-border);
+      z-index: 1;
+      /* No background, no border, no box */
     }
     .ion-logo {
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 900;
-      font-size: 2.1em;
+      font-size: 2.2em;
       color: var(--ion-blue);
-      letter-spacing: 0.15em;
-      background: var(--ion-darker);
-      padding: 0.15em 0.4em;
-      border-radius: 6px;
-      margin-bottom: 1.3em;
-      display: block;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5em;
       text-transform: uppercase;
-      box-shadow: 0 2px 18px 0 #0008;
+      background: none;
+      box-shadow: none;
+      padding: 0;
     }
     h1 {
       font-family: 'Montserrat', Arial, sans-serif;
       color: var(--ion-blue-light);
-      font-size: 1.6em;
-      letter-spacing: 0.14em;
-      margin-bottom: 0.5em;
+      font-size: 1.15em;
+      letter-spacing: 0.11em;
+      margin-bottom: 2.4em;
       font-weight: 700;
       text-transform: uppercase;
+      background: none;
+      box-shadow: none;
+      padding: 0;
     }
     #password {
-      background: var(--ion-darker);
       color: var(--ion-blue);
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 900;
-      font-size: 2.6em;
-      letter-spacing: 0.16em;
+      font-size: 3.1em;
+      letter-spacing: 0.17em;
       text-transform: uppercase;
-      border-radius: 10px;
-      padding: 0.65em 0.4em;
-      margin: 2.1em 0 2.5em 0;
       user-select: all;
-      min-height: 1.5em;
-      box-shadow: 0 2px 18px 0 #4bb6ff22;
-      border: 2.5px solid var(--ion-blue);
-      display: inline-block;
-      word-break: break-word;
-      text-shadow: 0 2px 8px #4bb6ff44, 0 1px 0 #0d1421;
-      transition: background 0.2s, color 0.2s, border 0.2s;
+      margin-bottom: 2.8em;
+      background: none;
+      border: none;
+      box-shadow: none;
+      text-shadow: 0 2px 18px #4bb6ff33, 0 1px 0 #0a101a;
+      transition: color 0.2s;
+      display: block;
+      padding: 0;
     }
     #launch-btn {
-      margin-top: 1.3em;
-      font-size: 1.3em;
-      padding: 1.1em 2.5em;
+      font-size: 1.1em;
+      padding: 0.9em 2.4em;
       background: transparent;
       color: var(--ion-blue);
       font-family: 'Montserrat', Arial, sans-serif;
-      font-weight: 800;
-      letter-spacing: 2px;
-      border: 2.5px solid var(--ion-blue);
-      border-radius: 14px;
-      box-shadow: 0 6px 24px 0 #4bb6ff22, 0 3px 12px 0 rgba(0,0,0,0.13);
-      transition: background 0.2s, color 0.2s, border 0.2s, transform 0.1s, box-shadow 0.2s;
-      width: 110%;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      border: 2px solid var(--ion-blue);
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s, border 0.2s, transform 0.1s;
       outline: none;
       cursor: pointer;
       text-transform: uppercase;
+      box-shadow: none;
     }
-    #launch-btn:hover {
+    #launch-btn:hover, #launch-btn:focus {
       background: var(--ion-blue);
-      color: var(--ion-dark);
-      border: 2.5px solid var(--ion-blue-light);
-      transform: translateY(-4px) scale(1.06);
-      box-shadow: 0 12px 32px 0 #4bb6ff44, 0 3px 12px 0 rgba(0,0,0,0.23);
+      color: var(--ion-bg);
+      border: 2px solid var(--ion-blue-light);
+      transform: translateY(-2px) scale(1.04);
     }
     @media (max-width: 700px) {
-      .container {
-        padding: 2em 0.8em;
-        max-width: 99vw;
-        min-height: 280px;
-      }
       .ion-logo {
-        font-size: 1.1em;
-      }
-      h1 {
-        font-size: 1em;
-      }
-      #password {
         font-size: 1.2em;
       }
+      h1 {
+        font-size: 0.9em;
+      }
+      #password {
+        font-size: 1.5em;
+      }
       #launch-btn {
-        font-size: 1.1em;
-        padding: 0.9em 1.2em;
-        width: 100%;
+        font-size: 1em;
+        padding: 0.7em 1.1em;
       }
     }
   </style>
 </head>
 <body>
   <canvas id="ion-bg"></canvas>
-  <div class="container">
+  <div class="center-content">
     <span class="ion-logo">ION GAME VAULT</span>
     <h1>Today's Password</h1>
     <div id="password"></div>
@@ -199,11 +181,11 @@
       animateBg();
     }
 
-    // --- Minimalistic moving background ---
+    // --- Minimalistic moving background (subtle dots) ---
     const canvas = document.getElementById('ion-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const colors = ['#4bb6ff', '#7fd0ff', '#0d1421', '#080e17'];
+    const colors = ['#4bb6ff', '#7fd0ff'];
     function resizeBg() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -212,14 +194,14 @@
 
     function createParticles() {
       particles = [];
-      for (let i = 0; i < 32; i++) {
+      for (let i = 0; i < 28; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          r: Math.random() * 2.5 + 1.5,
-          dx: (Math.random() - 0.5) * 0.7,
-          dy: (Math.random() - 0.5) * 0.7,
-          c: colors[Math.floor(Math.random() * 2)]
+          r: Math.random() * 2.2 + 0.8,
+          dx: (Math.random() - 0.5) * 0.35,
+          dy: (Math.random() - 0.5) * 0.35,
+          c: colors[Math.floor(Math.random() * colors.length)]
         });
       }
     }
@@ -232,12 +214,9 @@
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
           ctx.fillStyle = p.c;
-          ctx.globalAlpha = 0.18;
-          ctx.shadowColor = p.c;
-          ctx.shadowBlur = 8;
+          ctx.globalAlpha = 0.13;
           ctx.fill();
           ctx.globalAlpha = 1;
-          ctx.shadowBlur = 0;
           p.x += p.dx;
           p.y += p.dy;
           if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
