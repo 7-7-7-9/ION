@@ -613,6 +613,7 @@
         <select id="premade-cloak-dropdown">
           <option value="off">Off</option>
            <option value="blank">Blank (Pin tab)</option>
+            <option value="blocked">Fake Blocked Tab</option>
           <option value="classroom">Google Classroom</option>
           <option value="sheets">Google Sheets</option>
           <option value="slides">Google Slides</option>
@@ -845,13 +846,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cloak logic
     const cloakData = {
       off: {
-        title: "ION Game Vault",
+        title: "Games-ION",
         favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
           },
       blank: {
         title: "-",
         favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
       
+      },
+       blocked: {
+        title: "Blocked",
+        favicon: ""
       },
       classroom: {
         title: "Classes",
