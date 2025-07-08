@@ -26,7 +26,6 @@
       overflow: hidden;
       position: relative;
     }
-    /* Animated glow background */
     #ion-bg-anim {
       position: fixed;
       z-index: 0;
@@ -192,18 +191,18 @@
     // Word list: gaming-themed + cool words (~200+)
     const words = [
       "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue",
-    "Blaze", "Fury",
+      "Blaze", "Fury",
       "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
       "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
       "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
       "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
       "Pyro", "Rift", "Scorch", "Talon",  
       "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch",
-     "Helix", "Ignite",
+      "Helix", "Ignite",
       "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
       "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
       "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk", 
-    "Ember", "Enigma",
+      "Ember", "Enigma",
       "Frostbite", "Glacier",  "Iron", "Freedom",
       "Mirage", "Nebula", "Nightfall", "Obsidian", 
       "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
@@ -244,10 +243,12 @@
     }
     document.getElementById('copy-btn').onclick = copyPassword;
 
-    // On load, show the password in the cool font
+    // On load, show the password and store it in localStorage
     window.onload = function() {
       const pwElem = document.getElementById('password');
-      pwElem.textContent = getDailyPassword();
+      const pw = getDailyPassword();
+      pwElem.textContent = pw;
+      localStorage.setItem('dailyPassword', pw); // <-- Store today's password in localStorage
     }
   </script>
 </body>
