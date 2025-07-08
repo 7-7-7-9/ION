@@ -800,24 +800,57 @@
   </div>
   <script>
     // --- Full-window iframe logic (iframe.html merged) ---
-    (function() {
-  // Wait until the DOM is ready
+
+  // Include the same getDailyPassword() function as in your generator page
+  function getDailyPassword() {
+    const words = [
+      "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
+      "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
+      "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
+      "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
+      "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
+      "Pyro", "Rift", "Scorch", "Talon",  
+      "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
+      "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
+      "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
+      "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk", "Ember", "Enigma",
+      "Frostbite", "Glacier",  "Iron", "Freedom",
+      "Mirage", "Nebula", "Nightfall", "Obsidian", 
+      "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
+      "Savage", "Scythe", "Shard",  "Thunder"
+    ];
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+    let hash = 0;
+    for (let i = 0; i < dateStr.length; i++) {
+      hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+      hash |= 0;
+    }
+    const wordIndex = Math.abs(hash) % words.length;
+    const number = Math.abs(hash * 7) % 900 + 100;
+    return words[wordIndex] + number;
+  }
+
+  // Validation script
   document.addEventListener('DOMContentLoaded', function() {
-    // Get the password from localStorage
-    var correctPassword = localStorage.getItem('dailyPassword');
-    if (!correctPassword) {
-      alert("No password found in localStorage. Please generate today's password first.");
+    var storedPassword = localStorage.getItem('dailyPassword');
+    var correctPassword = getDailyPassword();
+
+    // Check if the stored password matches today's password
+    if (!storedPassword || storedPassword !== correctPassword) {
+      alert("The stored password is missing or not today's password. Please generate today's password first.");
       window.location.reload();
       return;
-  
     }
 
-    // Show prompt until correct password is entered or user cancels
+    // Prompt logic
     var attempts = 0;
     while (true) {
       var userInput = prompt("Enter today's ION password:");
       if (userInput === null) {
-        // User pressed cancel
         document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
         break;
       }
@@ -836,7 +869,7 @@
       }
     }
   });
-})();
+
     (function() {
       function getQueryParam(name) {
         let match = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
