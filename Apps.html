@@ -550,7 +550,7 @@
     <a href="index.html" tabindex="0">Home</a>
     <a href="Games.html" tabindex="0">Games</a>
      <a href="Apps.html" tabindex="0">Apps</a>
-      <a href="AI.html" tabindex="0">AI</a>
+      <a href="AI.html" tabindex="0">AI/Chat</a>
     <a href="About.html" tabindex="0">About</a>
      <a href="Contact.html" tabindex="0">Contact</a>
      <a href="AltLink.html" tabindex="0">Alt Links</a>
@@ -585,6 +585,8 @@
         <span class="dropdown" style="display:flex;align-items:center;gap:8px;">
           <select id="premade-cloak-dropdown">
             <option value="off">Off</option>
+             <option value="blank">Blank (Pin Tab)</option>
+             <option value="blocked">Fake Blocked Tab</option>
             <option value="classroom">Google Classroom</option>
             <option value="sheets">Google Sheets</option>
             <option value="slides">Google Slides</option>
@@ -649,17 +651,93 @@
   </div>
   <script>
 
-    (function()
-     {alert("By using these Apps YOU agree to our policy (See Contact page)");
-      let pass;
-      while(true){
-        pass = prompt("Password:Phantom2025");
-        if(pass === null) { window.location = "about:blank"; return; }
-        if(pass === "Phantom2025") break;
-        alert("Incorrect password. Try again.");
+  
      
+      function getDailyPassword() {
+  const words = [
+    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", 
+    "Blaze", "Fury",
+    "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
+    "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
+    "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
+    "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
+    "Pyro", "Rift", "Scorch", "Talon",  
+    "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch",
+    "Helix", "Ignite",
+    "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
+    "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
+    "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk",
+    "Ember", "Enigma",
+    "Frostbite", "Glacier",  "Iron", "Freedom",
+    "Mirage", "Nebula", "Nightfall", "Obsidian", 
+    "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
+    "Savage", "Scythe", "Shard",  "Thunder"
+  ];
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const dateStr = `${yyyy}-${mm}-${dd}`;
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+    hash |= 0;
+  }
+  const wordIndex = Math.abs(hash) % words.length;
+  const number = Math.abs(hash * 7) % 900 + 100;
+  return words[wordIndex] + number;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var correctPassword = getDailyPassword();
+  var storedPassword = localStorage.getItem('dailyPassword');
+
+  // Debug output to console
+  console.log("=== ION Password Debug ===");
+  console.log("Today's date:", new Date());
+  console.log("Correct password (generated):", correctPassword);
+  console.log("Stored password (localStorage):", storedPassword);
+  console.log("Are they equal?", storedPassword === correctPassword);
+
+  // If localStorage doesn't have the correct password, alert with details
+  if (storedPassword !== correctPassword) {
+    alert(
+      "Local storage does not have today's correct password.\n" +
+      "What is currently stored under 'dailyPassword':\n\n" +
+      (storedPassword === null ? "(nothing stored)" : "'" + storedPassword + "'") +
+      "\n\nToday's correct password should be:\n'" + correctPassword + "'\n\n" +
+      "Please generate and store today's password first."
+    );
+    return;
+  } else {
+    // If localStorage is correct, show success alert
+    alert("Correct LocalStorage Data Found!");
+  }
+
+  // Prompt user for password input
+  var attempts = 0;
+  while (true) {
+    var userInput = prompt("Enter today's ION password:");
+    if (userInput === null) {
+      document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
+      break;
+    }
+    if (userInput === correctPassword) {
+      alert("Access granted!");
+      // You could redirect or show content here
+      break;
+    } else {
+      attempts++;
+      if (attempts >= 3) {
+        alert("Too many incorrect attempts. Reloading page.");
+        window.location.reload();
+        break;
+      } else {
+        alert("Incorrect password. Try again.");
       }
-    })();
+    }
+  }
+});
     function showAppIframeFallback(url, msg) {
       document.getElementById('app-iframe').style.display = 'none';
       document.getElementById('app-iframe-fallback').style.display = '';
@@ -775,8 +853,16 @@
   <script>
 const cloakData = {
   off: {
-    title: "ION Game Vault - Apps",
-    favicon: "favicon.ico"
+    title: "Apps-ION",
+    favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
+  },
+   blank: {
+    title: "-",
+    favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
+  },
+   blocked: {
+    title: "Blocked",
+    favicon: ""
   },
   classroom: {
     title: "Classes",
