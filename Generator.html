@@ -4,33 +4,45 @@
   <meta charset="UTF-8" />
   <title>ION | Daily Password Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Montserrat ExtraBold for all text -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --ion-bg: #0a101a;
-      --ion-blue: #4bb6ff;
-      --ion-blue-light: #7fd0ff;
+      --ion-bg1: #12203a;
+      --ion-bg2: #1a2960;
+      --ion-accent: #4bb6ff;
+      --ion-accent-light: #7fd0ff;
       --ion-text: #eaf6ff;
-      --glow-bg: linear-gradient(90deg, #eaf6ff 50%, #c8e8ff 100%);
       --success: #22c55e;
     }
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background: var(--ion-bg);
+      background: linear-gradient(120deg, var(--ion-bg1) 0%, var(--ion-bg2) 100%);
       color: var(--ion-text);
       font-family: 'Montserrat', Arial, sans-serif;
       min-height: 100vh;
       width: 100vw;
       overflow: hidden;
+      position: relative;
     }
-    #ion-bg {
+    /* Animated glow background */
+    #ion-bg-anim {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
       z-index: 0;
+      top: 0; left: 0; width: 100vw; height: 100vh;
       pointer-events: none;
+      background: radial-gradient(circle at 60% 40%, #4bb6ff44 0%, transparent 60%),
+                  radial-gradient(circle at 20% 70%, #7fd0ff33 0%, transparent 70%);
+      animation: bgmove 10s infinite alternate;
+    }
+    @keyframes bgmove {
+      0% {
+        background-position: 60% 40%, 20% 70%;
+      }
+      100% {
+        background-position: 65% 45%, 15% 65%;
+      }
     }
     .center-content {
       position: absolute;
@@ -49,109 +61,99 @@
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 900;
       font-size: 2.2em;
-      color: var(--ion-blue);
+      color: var(--ion-accent);
       letter-spacing: 0.12em;
       margin-bottom: 0.5em;
       text-transform: uppercase;
+      text-align: center;
+      filter: drop-shadow(0 0 10px #4bb6ff77);
     }
     h1 {
       font-family: 'Montserrat', Arial, sans-serif;
-      color: var(--ion-blue-light);
+      color: var(--ion-accent-light);
       font-size: 1.15em;
       letter-spacing: 0.11em;
       margin-bottom: 2.4em;
       font-weight: 700;
       text-transform: uppercase;
+      text-align: center;
     }
     .password-row {
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 2.8em;
-      gap: 0.4em;
+      gap: 1.2em;
+      width: 100%;
     }
     #password {
-      color: var(--ion-blue);
+      color: var(--ion-accent);
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 900;
-      font-size: 3.1em;
+      font-size: 3em;
       letter-spacing: 0.17em;
       text-transform: uppercase;
       user-select: all;
-      background: var(--glow-bg);
-      border-radius: 1em;
-      box-shadow: 0 0 24px 0 #4bb6ff66, 0 2px 32px #4bb6ff33;
-      padding: 0.15em 0.8em 0.15em 0.8em;
-      display: inline-block;
       text-align: center;
-      transition: box-shadow 0.2s;
+      display: block;
+      padding: 0;
+      margin: 0;
+      background: none;
+      border: none;
+      box-shadow: none;
+      filter: drop-shadow(0 0 18px #4bb6ff99);
+      transition: color 0.2s, filter 0.2s;
+      min-width: 2em;
     }
     .copy-btn {
       background: none;
       border: none;
-      outline: none;
+      color: var(--ion-accent);
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.1em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       cursor: pointer;
-      padding: 0.5em;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 0.4em;
-      width: 2.4em;
-      height: 2.4em;
-      transition: background 0.15s, box-shadow 0.3s, transform 0.15s;
+      outline: none;
+      padding: 0.3em 1em;
+      border-radius: 7px;
+      transition: background 0.13s, color 0.13s;
+      box-shadow: none;
+      position: relative;
+      z-index: 2;
     }
-    .copy-btn:hover {
-      background: #4bb6ff33;
-      box-shadow: 0 0 8px 2px #4bb6ff88;
-      transform: scale(1.14);
+    .copy-btn:hover, .copy-btn:focus {
+      background: #4bb6ff22;
+      color: var(--ion-accent-light);
     }
-    .copy-btn:active {
-      background: #4bb6ff55;
-    }
-    .copy-icon {
-      width: 1.8em;
-      height: 1.8em;
-      display: block;
-      stroke: var(--ion-blue);
-      stroke-width: 2.2;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-      fill: none;
-      filter: drop-shadow(0 0 1px #4bb6ffcc);
-      transition: stroke 0.2s, fill 0.2s;
-    }
-    .copy-btn.copied .copy-icon {
-      stroke: var(--success);
-      fill: none;
-      filter: drop-shadow(0 0 3px #22c55eaa);
-    }
-    .copy-btn.copied .checkmark {
-      stroke: var(--success);
-      stroke-width: 2.5;
-      fill: none;
-      filter: drop-shadow(0 0 4px #22c55e99);
+    .copy-btn.copied {
+      color: var(--success);
+      background: #22c55e22;
+      pointer-events: none;
+      transition: color 0.2s, background 0.2s;
     }
     #launch-btn {
       font-size: 1.1em;
       padding: 0.9em 2.4em;
       background: transparent;
-      color: var(--ion-blue);
+      color: var(--ion-accent);
       font-family: 'Montserrat', Arial, sans-serif;
       font-weight: 700;
       letter-spacing: 0.12em;
-      border: 2px solid var(--ion-blue);
+      border: 2px solid var(--ion-accent);
       border-radius: 12px;
       transition: background 0.2s, color 0.2s, border 0.2s, transform 0.1s;
       outline: none;
       cursor: pointer;
       text-transform: uppercase;
-      box-shadow: none;
+      box-shadow: 0 0 16px 0 #4bb6ff33;
+      margin-top: 0.5em;
     }
     #launch-btn:hover, #launch-btn:focus {
-      background: var(--ion-blue);
-      color: var(--ion-bg);
-      border: 2px solid var(--ion-blue-light);
+      background: var(--ion-accent);
+      color: var(--ion-bg2);
+      border: 2px solid var(--ion-accent-light);
       transform: translateY(-2px) scale(1.04);
     }
     @media (max-width: 700px) {
@@ -168,31 +170,21 @@
         font-size: 1em;
         padding: 0.7em 1.1em;
       }
-      .copy-icon {
-        width: 1.2em;
-        height: 1.2em;
-      }
       .copy-btn {
-        width: 1.6em;
-        height: 1.6em;
+        font-size: 1em;
+        padding: 0.2em 0.7em;
       }
     }
   </style>
 </head>
 <body>
-  <canvas id="ion-bg"></canvas>
+  <div id="ion-bg-anim"></div>
   <div class="center-content">
     <span class="ion-logo">ION GAME VAULT</span>
     <h1>Today's Password</h1>
     <div class="password-row">
       <span id="password"></span>
-      <button class="copy-btn" id="copy-btn" title="Copy password" aria-label="Copy password">
-        <svg class="copy-icon" viewBox="0 0 24 24">
-          <!-- Clipboard icon -->
-          <rect x="7" y="4" width="10" height="16" rx="2" />
-          <path d="M9 2h6a2 2 0 0 1 2 2v2" />
-        </svg>
-      </button>
+      <button class="copy-btn" id="copy-btn" title="Copy password" aria-label="Copy password">Copy</button>
     </div>
     <button onclick="launchION()" id="launch-btn">Launch ION</button>
   </div>
@@ -235,20 +227,16 @@
       window.open("https://7-7-7-8.github.io/ION", "_blank");
     }
 
-    // Copy password logic with better icon feedback
+    // Copy password logic with feedback
     function copyPassword() {
       const pw = document.getElementById('password').textContent;
       navigator.clipboard.writeText(pw);
       const btn = document.getElementById('copy-btn');
-      const svg = btn.querySelector('.copy-icon');
       btn.classList.add('copied');
-      // Replace clipboard with checkmark
-      svg.innerHTML = '<polyline class="checkmark" points="6 12 11 17 18 8" />';
+      btn.textContent = 'Copied!';
       setTimeout(() => {
         btn.classList.remove('copied');
-        svg.innerHTML =
-          '<rect x="7" y="4" width="10" height="16" rx="2" />' +
-          '<path d="M9 2h6a2 2 0 0 1 2 2v2" />';
+        btn.textContent = 'Copy';
       }, 1200);
     }
     document.getElementById('copy-btn').onclick = copyPassword;
@@ -257,54 +245,6 @@
     window.onload = function() {
       const pwElem = document.getElementById('password');
       pwElem.textContent = getDailyPassword();
-      resizeBg();
-      animateBg();
-    }
-
-    // --- Minimalistic moving background (subtle dots) ---
-    const canvas = document.getElementById('ion-bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const colors = ['#4bb6ff', '#7fd0ff'];
-    function resizeBg() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeBg);
-
-    function createParticles() {
-      particles = [];
-      for (let i = 0; i < 28; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 2.2 + 0.8,
-          dx: (Math.random() - 0.5) * 0.35,
-          dy: (Math.random() - 0.5) * 0.35,
-          c: colors[Math.floor(Math.random() * colors.length)]
-        });
-      }
-    }
-    function animateBg() {
-      resizeBg();
-      createParticles();
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let p of particles) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-          ctx.fillStyle = p.c;
-          ctx.globalAlpha = 0.13;
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          p.x += p.dx;
-          p.y += p.dy;
-          if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-        }
-        requestAnimationFrame(draw);
-      }
-      draw();
     }
   </script>
 </body>
