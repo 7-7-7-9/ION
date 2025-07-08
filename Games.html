@@ -801,6 +801,43 @@
   <script>
     // --- Full-window iframe logic (iframe.html merged) ---
     (function() {
+  // Wait until the DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the password from localStorage
+    var correctPassword = localStorage.getItem('dailyPassword');
+    if (!correctPassword) {
+      alert("No password found in localStorage. Please generate today's password first.");
+      window.location.reload();
+      return;
+  
+    }
+
+    // Show prompt until correct password is entered or user cancels
+    var attempts = 0;
+    while (true) {
+      var userInput = prompt("Enter today's ION password:");
+      if (userInput === null) {
+        // User pressed cancel
+        document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
+        break;
+      }
+      if (userInput === correctPassword) {
+        // Correct password
+        break;
+      } else {
+        attempts++;
+        if (attempts >= 3) {
+          alert("Too many incorrect attempts. Reloading page.");
+          window.location.reload();
+          break;
+        } else {
+          alert("Incorrect password. Try again.");
+        }
+      }
+    }
+  });
+})();
+    (function() {
       function getQueryParam(name) {
         let match = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
         return match ? decodeURIComponent(match[1]) : '';
