@@ -673,6 +673,7 @@
     <select id="premade-cloak-dropdown">
       <option value="off">Off</option>
      <option value="blank">Blank (pin tab)</option>
+     <option value="blocked">Fake Blocked Tab</option>
       <option value="classroom">Google Classroom</option>
       <option value="sheets">Google Sheets</option>
       <option value="slides">Google Slides</option>
@@ -1182,23 +1183,27 @@ document.getElementById('fullscreen-btn').onclick = function() {
   <script>
 const cloakData = {
   off: {
-    title: "ION",
+    title: "Games-ION",
     favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
   },
    blank: {
-    title: "",
+    title: "-",
     favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
+  },
+   blocked: {
+    title: "Blocked",
+    favicon: ""
   },
   classroom: {
     title: "Classes",
     favicon: "https://ssl.gstatic.com/classroom/ic_product_classroom_32.png"
   },
   sheets: {
-    title: "Untitled spreadsheet - Google Sheets",
+    title: "Untitled spreadsheet",
     favicon: "https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico"
   },
   slides: {
-    title: "Untitled presentation - Google Slides",
+    title: "Untitled presentation ",
     favicon: "https://ssl.gstatic.com/docs/presentations/images/favicon5.ico"
   },
   docs: {
@@ -1226,11 +1231,11 @@ const cloakData = {
     favicon: "https://www.adobe.com/favicon.ico"
   },
   powerpoint: {
-    title: "Presentation1 - PowerPoint",
+    title: "PowerPoint",
     favicon: "https://s3-us-west-2.amazonaws.com/courses-images/wp-content/uploads/sites/5348/2020/08/01054405/powerpoint.png"
   },
   word: {
-    title: "Document1 - Word",
+    title: "Word",
     favicon: "https://logodownload.org/wp-content/uploads/2018/10/word-logo-8.png"
   },
   youtube: {
