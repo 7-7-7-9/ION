@@ -581,7 +581,7 @@
       <a href="index.html" tabindex="0">Home</a>
     <a href="Games.html" tabindex="0">Games</a>
      <a href="Apps.html" tabindex="0">Apps</a>
-      <a href="AI.html" tabindex="0">AI</a>
+      <a href="AI.html" tabindex="0">AI/Chat</a>
     <a href="About.html" tabindex="0">About</a>
      <a href="Contact.html" tabindex="0">Contact</a>
      <a href="AltLink.html" tabindex="0">Alt Links</a>
@@ -654,11 +654,49 @@
   </div>
   <script>
     // AI apps from your repo AI folder
+        (function() {
+  // Wait until the DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the password from localStorage
+    var correctPassword = localStorage.getItem('dailyPassword');
+    if (!correctPassword) {
+      alert("No password found in localStorage. Please generate today's password first.");
+      window.location.reload();
+      return;
+  
+    }
+
+    // Show prompt until correct password is entered or user cancels
+    var attempts = 0;
+    while (true) {
+      var userInput = prompt("Enter today's ION password:");
+      if (userInput === null) {
+        // User pressed cancel
+        document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
+        break;
+      }
+      if (userInput === correctPassword) {
+        // Correct password
+        break;
+      } else {
+        attempts++;
+        if (attempts >= 3) {
+          alert("Too many incorrect attempts. Reloading page.");
+          window.location.reload();
+          break;
+        } else {
+          alert("Incorrect password. Try again.");
+        }
+      }
+    }
+  });
+})();
     const aiApps = [
       { name: "GithubCopilot", file: "AI/GithubCopilot.html" },
       { name: "Komo", file: "AI/Komo.html" },
-      { name: "Transfrly", file: "AI/Transfrly.html" },
-      { name: "iAsk", file: "AI/iAsk.html" }
+      { name: "Transfrly (Chat)", file: "AI/Transfrly.html" },
+       { name: "ChatCrypt (Chat Password & Room=ION all caps)", file: "AI/Transfrly.html" },
+     
     ];
     const aiAppsGrid = document.getElementById('ai-apps-grid');
     aiApps.forEach(app => {
