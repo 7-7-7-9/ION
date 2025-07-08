@@ -647,43 +647,92 @@
     // -- Password and warning logic --
 
 
-   (function() {
-  // Wait until the DOM is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get the password from localStorage
-    var correctPassword = localStorage.getItem('dailyPassword');
-    if (!correctPassword) {
-      alert("No password found in localStorage. Please generate today's password first.");
-      window.location.reload();
-      return;
-  
-    }
+  function getDailyPassword() {
+  const words = [
+    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", 
+    "Blaze", "Fury",
+    "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
+    "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
+    "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
+    "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
+    "Pyro", "Rift", "Scorch", "Talon",  
+    "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch",
+    "Helix", "Ignite",
+    "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
+    "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
+    "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk",
+    "Ember", "Enigma",
+    "Frostbite", "Glacier",  "Iron", "Freedom",
+    "Mirage", "Nebula", "Nightfall", "Obsidian", 
+    "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
+    "Savage", "Scythe", "Shard",  "Thunder"
+  ];
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const dateStr = `${yyyy}-${mm}-${dd}`;
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = (hash << 5) - hash + dateStr.charCodeAt(i);
+    hash |= 0;
+  }
+  const wordIndex = Math.abs(hash) % words.length;
+  const number = Math.abs(hash * 7) % 900 + 100;
+  return words[wordIndex] + number;
+}
 
-    // Show prompt until correct password is entered or user cancels
-    var attempts = 0;
-    while (true) {
-      var userInput = prompt("Enter today's ION password:");
-      if (userInput === null) {
-        // User pressed cancel
-        document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
-        break;
-      }
-      if (userInput === correctPassword) {
-        // Correct password
+document.addEventListener('DOMContentLoaded', function() {
+  var correctPassword = getDailyPassword();
+  var storedPassword = localStorage.getItem('dailyPassword');
+
+  // Debug output to console
+  console.log("=== ION Password Debug ===");
+  console.log("Today's date:", new Date());
+  console.log("Correct password (generated):", correctPassword);
+  console.log("Stored password (localStorage):", storedPassword);
+  console.log("Are they equal?", storedPassword === correctPassword);
+
+  // If localStorage doesn't have the correct password, alert with details
+  if (storedPassword !== correctPassword) {
+    alert(
+      "Local storage does not have today's correct password.\n" +
+      "What is currently stored under 'dailyPassword':\n\n" +
+      (storedPassword === null ? "(nothing stored)" : "'" + storedPassword + "'") +
+      "\n\nToday's correct password should be:\n'" + correctPassword + "'\n\n" +
+      "Please generate and store today's password first."
+    );
+    return;
+  } else {
+    // If localStorage is correct, show success alert
+    alert("Correct LocalStorage Data Found!");
+  }
+
+  // Prompt user for password input
+  var attempts = 0;
+  while (true) {
+    var userInput = prompt("Enter today's ION password:");
+    if (userInput === null) {
+      document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
+      break;
+    }
+    if (userInput === correctPassword) {
+      alert("Access granted!");
+      // You could redirect or show content here
+      break;
+    } else {
+      attempts++;
+      if (attempts >= 3) {
+        alert("Too many incorrect attempts. Reloading page.");
+        window.location.reload();
         break;
       } else {
-        attempts++;
-        if (attempts >= 3) {
-          alert("Too many incorrect attempts. Reloading page.");
-          window.location.reload();
-          break;
-        } else {
-          alert("Incorrect password. Try again.");
-        }
+        alert("Incorrect password. Try again.");
       }
     }
-  });
-})();
+  }
+});
+
 
 
     // Proxy apps from your repo Proxies folder
