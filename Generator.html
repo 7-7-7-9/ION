@@ -22,8 +22,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+    #ion-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
     }
     .container {
+      position: relative;
+      z-index: 1;
       background: var(--ion-light);
       border-radius: 18px;
       box-shadow: 0 6px 32px 0 rgba(0,0,0,0.45);
@@ -76,10 +85,34 @@
       box-shadow: 0 3px 12px 0 rgba(0,0,0,0.23);
       transition: background 0.2s, transform 0.1s;
       outline: none;
+      margin-bottom: 0.7em;
+      margin-top: 0.3em;
+      display: block;
+      width: 100%;
     }
     button:hover {
       background: linear-gradient(90deg, var(--ion-accent), var(--ion-blue));
       transform: translateY(-2px) scale(1.04);
+    }
+    #launch-btn {
+      margin-top: 1.1em;
+      font-size: 1.25em;
+      padding: 1.1em 2.5em;
+      background: linear-gradient(90deg, var(--ion-accent) 50%, var(--ion-blue) 100%);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px 0 rgba(0,224,255,0.22), 0 3px 12px 0 rgba(0,0,0,0.23);
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      width: 105%;
+      outline: none;
+    }
+    #launch-btn:hover {
+      background: linear-gradient(90deg, var(--ion-blue) 40%, var(--ion-accent) 100%);
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 12px 32px 0 rgba(0,224,255,0.32), 0 3px 12px 0 rgba(0,0,0,0.23);
     }
     #vip-code {
       margin-top: 1em;
@@ -107,34 +140,41 @@
       #password {
         font-size: 1em;
       }
+      #launch-btn {
+        font-size: 1.1em;
+        padding: 0.9em 1.2em;
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+  <canvas id="ion-bg"></canvas>
   <div class="container">
     <span class="ion-logo">ION</span>
     <h1>Today's Password</h1>
     <input id="vip-code" type="text" placeholder="Enter VIP code (optional)">
     <div id="password"></div>
     <button onclick="generateAndShowPassword()">Generate Password</button>
+    <button onclick="launchION()" id="launch-btn">Launch ION</button>
   </div>
   <script>
     // Word list: gaming-themed + cool words (~200+)
     const words = [
-    "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
-"Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
-"Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
-"Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
-"Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
-"Pyro", "Rift", "Scorch", "Talon",  
-"Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
-"Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
-"Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
-"Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk", "Ember", "Enigma",
- "Frostbite", "Glacier",  "Iron", "Freedom",
- "Mirage", "Nebula", "Nightfall", "Obsidian", 
-"Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
-"Savage", "Scythe", "Shard",  "Thunder"
+      "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", "Blaze", "Fury",
+      "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
+      "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
+      "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
+      "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
+      "Pyro", "Rift", "Scorch", "Talon",  
+      "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch", "Helix", "Ignite",
+      "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
+      "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
+      "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk", "Ember", "Enigma",
+      "Frostbite", "Glacier",  "Iron", "Freedom",
+      "Mirage", "Nebula", "Nightfall", "Obsidian", 
+      "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
+      "Savage", "Scythe", "Shard",  "Thunder"
       // Add more words to reach 200+ as needed
     ];
 
@@ -190,11 +230,66 @@
       pwElem.classList.add('visible');
     }
 
+    function launchION() {
+      window.open("https://7-7-7-8.github.io/ION", "_blank");
+    }
+
     // On load, do NOT show the password
     window.onload = function() {
       document.getElementById('password').textContent = '';
       document.getElementById('password').classList.remove('visible');
       document.getElementById('vip-code').value = '';
+      resizeBg();
+      animateBg();
+    }
+
+    // --- Minimalistic moving background ---
+    const canvas = document.getElementById('ion-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const colors = ['#3fa7ff', '#00e0ff', '#1a1e28', '#10131a'];
+    function resizeBg() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeBg);
+
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < 32; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2.5 + 1.5,
+          dx: (Math.random() - 0.5) * 0.7,
+          dy: (Math.random() - 0.5) * 0.7,
+          c: colors[Math.floor(Math.random() * 2)]
+        });
+      }
+    }
+    function animateBg() {
+      resizeBg();
+      createParticles();
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+          ctx.fillStyle = p.c;
+          ctx.globalAlpha = 0.18;
+          ctx.shadowColor = p.c;
+          ctx.shadowBlur = 8;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
+          p.x += p.dx;
+          p.y += p.dy;
+          if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
   </script>
 </body>
