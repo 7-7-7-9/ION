@@ -805,21 +805,21 @@
   // Include the same getDailyPassword() function as in your generator page
 
 
-function getDailyPassword() {
+  function getDailyPassword() {
   const words = [
     "Phantom", "Shadow", "Specter", "Ghost", "Vortex", "Nova", "Rogue", 
-  "Blaze", "Fury",
+    "Blaze", "Fury",
     "Titan", "Reaper", "Venom", "Cipher", "Dragon", "Falcon", "Havoc", "Inferno",
     "Knight", "Maverick", "Nemesis", "Oracle", "Ranger", "Saber", "Tempest",
     "Umbra", "Viper", "Wraith", "Zephyr", "Apex", "Dagger", "Echo",
     "Fang", "Grim", "Hawk", "Ion", "Lancer", "Nexus", "Onyx",
     "Pyro", "Rift", "Scorch", "Talon",  
     "Arcane", "Blitz", "Crimson", "Dread", "Ember", "Frost", "Glitch",
-  "Helix", "Ignite",
+    "Helix", "Ignite",
     "Mythic", "Nova", "Obsidian", "Phantom", "Rogue", "Vortex",
     "Abyss", "Alpha", "Arc",  "Atom", "Avalanche", "Bane", "Bolt", "Chaos",
     "Chrome", "Comet", "Cosmos", "Crimson", "Crypt", "Cyclone", "Dusk",
-  "Ember", "Enigma",
+    "Ember", "Enigma",
     "Frostbite", "Glacier",  "Iron", "Freedom",
     "Mirage", "Nebula", "Nightfall", "Obsidian", 
     "Orion", "Plasma",  "Quantum", "Raptor", "Rift", 
@@ -861,6 +861,9 @@ document.addEventListener('DOMContentLoaded', function() {
       "Please generate and store today's password first."
     );
     return;
+  } else {
+    // If localStorage is correct, show success alert
+    alert("Correct LocalStorage Data Found!");
   }
 
   // Prompt user for password input
@@ -1180,9 +1183,9 @@ document.getElementById('fullscreen-btn').onclick = function() {
 const cloakData = {
   off: {
     title: "ION",
-    favicon: "https://7-7-7-8.github.io/ION/assets/IONfavicon.png"
+    favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
   },
-   classroom: {
+   blank: {
     title: "",
     favicon: "https://7-7-7-8.github.io/ION/assets/blank.png"
   },
