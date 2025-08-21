@@ -869,25 +869,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Prompt user for password input
-  var attempts = 0;
-  while (true) {
-    var userInput = prompt("Enter today's ION password:");
-    if (userInput === null) {
-      document.body.innerHTML = "<h2 style='color:#3fa7ff;text-align:center;margin-top:3em;font-family:sans-serif;'>Access Cancelled</h2>";
-      break;
-    }
-    if (userInput === correctPassword) {
-      alert("Access granted!");
-      // You could redirect or show content here
-      break;
-    } else {
-      attempts++;
-      if (attempts >= 3) {
-        alert("Too many incorrect attempts. Reloading page.");
-        window.location.reload();
-        break;
-      } else {
-        alert("Incorrect password. Try again.");
       }
     }
   }
